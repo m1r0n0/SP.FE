@@ -1,16 +1,17 @@
 import { fetchUserEmail, proceedLogin, proceedRegister } from "../API";
 import { lifeTimeOfCookie } from "../JS/constants";
+import { IComponentDependentDisclaimerStates } from "../Models";
 import {
-  IComponentDependentDisclaimerStates} from "../Models";
-import { ILoginUser, IRegisterUser, IUser } from "../Models/user";
+  IAuthorizationBadRequestResponse,
+  ILoginUser,
+  IRegisterUser,
+  IUser,
+} from "../Models/user";
 import { AppDispatch } from "../Store";
 import {
-  setIsEmailSuitableAction,
-  setIsInvalidPasswordInputAction,
-  setIsExistingEmailAction,
   hideAllDisclaimersAction,
-  setIsInvalidEmailAction,
   setIsNoMatchingPasswordsAction,
+  setAuthorizationErrorsAction,
 } from "../Store/DisclaimerReducer";
 import {
   handleAppReadinessAction,
@@ -44,14 +45,12 @@ export const setUserStateBasedOnCookies =
 
     if (!isUserEmailRequested) {
       splittedCookies.forEach((cookie) => {
-
         if (cookie.startsWith("userID=")) {
           let tempUserID = cookie.split("=").pop()!;
 
           dispatch(setUserIdAction(tempUserID));
 
           if (!(tempUserID === undefined || tempUserID === "")) {
-
             dispatch(handleEmailRequestAction());
 
             fetchUserEmail(tempUserID).then((result) => {
@@ -76,29 +75,19 @@ export const handleRegister =
       !disclaimerStates.isNoMatchingPasswords &&
       !disclaimerStates.isInvalidEmail
     ) {
-      var isEmailSuitable: boolean = true;
-      var isInvalidPassword: boolean = false;
+      var registerSucceed: boolean = true;
 
       await proceedRegister(userState)
-        .catch((error) => {
-          isEmailSuitable = error.message !== "409";
-
-          dispatch(setIsEmailSuitableAction(isEmailSuitable));
-
-          if (isEmailSuitable) {
-            isInvalidPassword = true;
-
-            dispatch(setIsInvalidPasswordInputAction(isInvalidPassword));
-          }
-
-          dispatch(setIsExistingEmailAction(!isEmailSuitable));
+        .catch((errorResponse: IAuthorizationBadRequestResponse) => {
+          registerSucceed = false;
+          dispatch(setAuthorizationErrorsAction(errorResponse.result.errors));
           dispatch(handleRegisterFailureAction());
         })
-        .then((res) => {
-          if (isEmailSuitable && !isInvalidPassword) {
+        .then(() => {
+          if (registerSucceed) {
             const user: ILoginUser = {
-              email: res.email,
-              password: res.password,
+              email: userState.email,
+              password: userState.password,
               rememberMe: true,
             };
 
@@ -113,17 +102,13 @@ export const handleRegister =
 export const updateRegisterStateDependentDisclaimerStates =
   (disclaimerStates: IComponentDependentDisclaimerStates) =>
   async (dispatch: AppDispatch) => {
-
     dispatch(
       setIsNoMatchingPasswordsAction(disclaimerStates.isNoMatchingPasswords)
     );
-
-    dispatch(setIsInvalidEmailAction(disclaimerStates.isInvalidEmail));
   };
 
 export const handleLogin =
   (loginData: ILoginUser) => async (dispatch: AppDispatch) => {
-
     dispatch(handleLoginRequestAction());
 
     try {
@@ -136,7 +121,6 @@ export const handleLogin =
       } else {
         setOnCloseUserCookies(String(user.userId));
       }
-
     } catch (error) {
       dispatch(handleLoginFailureAction());
     }

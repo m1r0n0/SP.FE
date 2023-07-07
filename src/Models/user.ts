@@ -21,12 +21,23 @@ export interface IRegisterUser {
   password: string;
 }
 
-export interface IUserEmailId {
+export interface IUserEmail {
   newEmail: string;
-  userId: string;
 }
 
-export interface IUserPasswordId {
+export interface IUserPassword {
   newPassword: string;
-  userId: string;
+}
+
+export interface IAuthorizationBadRequestResponse {
+  email: string;
+  result: {
+    succeeded: boolean;
+    errors: IIdentityAuthorizationError[];
+  };
+}
+
+export interface IIdentityAuthorizationError {
+  code: string;
+  description: string;
 }

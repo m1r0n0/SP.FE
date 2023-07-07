@@ -1,9 +1,13 @@
 import { Reducer } from "redux";
-import { ILoginUserResponse, IUser } from "../Models/user";
+import {
+  IIdentityAuthorizationError,
+  ILoginUserResponse,
+  IUser,
+} from "../Models/user";
 
 interface IUserAction {
   type: string;
-  payload: ILoginUserResponse | string | IUser;
+  payload: ILoginUserResponse | string | IUser | IIdentityAuthorizationError[];
 }
 
 interface UserState {
@@ -52,6 +56,7 @@ export const userReducer: Reducer<UserState, IUserAction> = (
         ...state,
         user: { ...state.user, userId: action.payload as string },
       };
+
     case SET_USER_EMAIL:
       if (action.payload !== "") {
         return {
@@ -62,6 +67,7 @@ export const userReducer: Reducer<UserState, IUserAction> = (
 
     case HANDLE_LOGIN_REQUEST:
       return { ...state, isLoginRequested: true };
+
     case HANDLE_LOGIN_SUCCESS:
       return {
         ...state,
@@ -69,20 +75,26 @@ export const userReducer: Reducer<UserState, IUserAction> = (
         isLoginSuccessful: true,
         isLoginFinished: true,
       };
+
     case HANDLE_LOGIN_FAILURE:
       return {
         ...state,
         isLoginSuccessful: false,
         isLoginRequested: false,
       };
+
     case HANDLE_APP_READINESS:
       return { ...state, isAppLoaded: true };
+
     case HANDLE_EMAIL_REQUEST:
       return { ...state, isUserEmailRequested: true };
+
     case HANDLE_EMAIL_FETCHED:
       return { ...state, isUserEmailRequested: false };
+
     case HANDLE_REGISTER_SUCCESS:
       return { ...state, isRegisterSuccessful: true };
+
     case HANDLE_LOGOUT:
       return {
         ...state,
@@ -91,14 +103,17 @@ export const userReducer: Reducer<UserState, IUserAction> = (
         isLoginSuccessful: defaultState.isLoginSuccessful,
         isLoginFinished: defaultState.isLoginFinished,
       };
+
     case HANDLE_REGISTER_REQUEST:
       return { ...state, isRegisterRequested: true };
+
     case HANDLE_REGISTER_FAILURE:
       return {
         ...state,
         isRegisterRequested: false,
         isRegisterSuccessful: false,
       };
+
     default:
       return state;
   }

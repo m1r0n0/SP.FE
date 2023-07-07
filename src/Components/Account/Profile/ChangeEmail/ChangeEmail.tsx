@@ -9,7 +9,6 @@ export const ChangeEmail = () => {
   const userId = useAppSelector((state) => state.user.user.userId);
   const [state, setState] = useState({
     newEmail: "",
-    userId: String(userId),
   });
   const [isEmailChangedSuccessfully, setIsEmailChangedSuccessfully] =
     useState(false);
@@ -17,7 +16,7 @@ export const ChangeEmail = () => {
     useState(false);
 
   const handleSubmit = () => {
-    proceedEmailChange(state)
+    proceedEmailChange(userId, state)
       .catch(() => {
         setIsEmailChangedSuccessfully(false);
       })

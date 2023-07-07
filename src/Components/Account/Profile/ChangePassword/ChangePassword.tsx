@@ -7,7 +7,6 @@ export const ChangePassword = () => {
   const userId = useAppSelector((state) => state.user.user.userId);
   const [state, setState] = useState({
     newPassword: "",
-    userId: String(userId),
   });
   const [isPasswordChangedSuccessfully, setIsPasswordChangedSuccessfully] =
     useState(false);
@@ -15,10 +14,11 @@ export const ChangePassword = () => {
     useState(false);
 
   const handleSubmit = () => {
-    console.log(state);
     let isFetchResponseOk = true;
-    proceedPasswordChange(state)
+    proceedPasswordChange(userId, state)
       .catch(() => {
+        console.log("pukpuk");
+
         isFetchResponseOk = false;
         setIsPasswordChangedSuccessfully(false);
       })

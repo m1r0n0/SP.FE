@@ -1,34 +1,19 @@
 import { Reducer } from "redux";
+import { IIdentityAuthorizationError } from "../Models/user";
 
 interface IDisclaimerAction {
   type: string;
-  payload: boolean;
+  payload: boolean | IIdentityAuthorizationError[];
 }
 
 interface DisclaimerState {
-  isExistingEmail: boolean;
-  isInvalidEmail: boolean;
-  isInvalidPasswordInput: boolean;
+  authorizeErrors: IIdentityAuthorizationError[];
   isNoMatchingPasswords: boolean;
-  isEmailSuitable: boolean;
-  isStateUpdated: boolean;
-  isFullUrlInvalid: boolean;
-  isDeletingLinkNotFound: boolean;
-  isDeletingLinkUnaccessible: boolean;
-  isLinkDeletedSuccessfully: boolean;
 }
 
 const defaultState: DisclaimerState = {
-  isExistingEmail: false,
-  isInvalidEmail: false,
-  isInvalidPasswordInput: false,
+  authorizeErrors: [],
   isNoMatchingPasswords: false,
-  isEmailSuitable: true,
-  isStateUpdated: false,
-  isFullUrlInvalid: false,
-  isDeletingLinkNotFound: false,
-  isDeletingLinkUnaccessible: false,
-  isLinkDeletedSuccessfully: false,
 };
 
 //Common disclaimers action types
@@ -36,11 +21,8 @@ const HIDE_ALL_DISCLAIMERS = "HIDE_ALL_DISCLAIMERS";
 const SET_IS_STATE_UPDATED = "SET_IS_STATE_UPDATED";
 
 //Account disclaimers action types
-const SET_IS_EXISTING_EMAIL = "SET_IS_EXISTING_EMAIL";
-const SET_IS_INVALID_EMAIL = "IS_INVALID_EMAIL ";
-const SET_IS_INVALID_PASSWORD_INPUT = "IS_INVALID_PASSWORD_INPUT";
+const SET_AUTHORIZE_ERRORS = "SET_AUTHORIZE_ERRORS";
 const SET_IS_NO_MATCHING_PASSWORDS = "IS_NO_MATCHING_PASSWORDS";
-const SET_IS_EMAIL_SUITABLE = "SET_IS_EMAIL_SUITABLE";
 
 export const disclaimerReducer: Reducer<DisclaimerState, IDisclaimerAction> = (
   state = defaultState,
@@ -54,16 +36,13 @@ export const disclaimerReducer: Reducer<DisclaimerState, IDisclaimerAction> = (
         return { ...state, isStateUpdated: true };
 
     //Account disclaimers actions
-    case SET_IS_EXISTING_EMAIL:
-      return { ...state, isExistingEmail: action.payload };
-    case SET_IS_INVALID_EMAIL:
-      return { ...state, isInvalidEmail: action.payload };
-    case SET_IS_INVALID_PASSWORD_INPUT:
-      return { ...state, isInvalidPasswordInput: action.payload };
+    case SET_AUTHORIZE_ERRORS:
+      return {
+        ...state,
+        authorizeErrors: action.payload as IIdentityAuthorizationError[],
+      };
     case SET_IS_NO_MATCHING_PASSWORDS:
-      return { ...state, isNoMatchingPasswords: action.payload };
-    case SET_IS_EMAIL_SUITABLE:
-      return { ...state, isEmailSuitable: action.payload };
+      return { ...state, isNoMatchingPasswords: action.payload as boolean };
     default:
       return state;
   }
@@ -79,24 +58,14 @@ export const setIsStateUpdatedAction = () => ({
 });
 
 //Account disclaimers actions
-export const setIsExistingEmailAction = (payload: boolean) => ({
-  type: SET_IS_EXISTING_EMAIL,
-  payload,
-});
-export const setIsInvalidEmailAction = (payload: boolean) => ({
-  type: SET_IS_INVALID_EMAIL,
-  payload,
-});
-export const setIsInvalidPasswordInputAction = (payload: boolean) => ({
-  type: SET_IS_INVALID_PASSWORD_INPUT,
+export const setAuthorizationErrorsAction = (
+  payload: IIdentityAuthorizationError[]
+) => ({
+  type: SET_AUTHORIZE_ERRORS,
   payload,
 });
 export const setIsNoMatchingPasswordsAction = (payload: boolean) => ({
   type: SET_IS_NO_MATCHING_PASSWORDS,
-  payload,
-});
-export const setIsEmailSuitableAction = (payload: boolean) => ({
-  type: SET_IS_EMAIL_SUITABLE,
   payload,
 });
 
