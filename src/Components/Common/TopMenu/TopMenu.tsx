@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { isLogon } from "../../../Services/user";
+import { isLogon, proceedLogOut } from "../../../Services/user";
 import { handleLogoutAction } from "../../../Store/UserReducer";
 import "./TopMenu.css";
 
@@ -8,17 +8,6 @@ export function TopMenu() {
   const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.user.user.userId);
   const userEmail = useAppSelector((state) => state.user.user.userEmail);
-
-  const proceedLogOut:
-    | React.MouseEventHandler<HTMLInputElement>
-    | undefined = () => {
-    const deleteCookies = () => {
-      document.cookie = "userID= ; max-age=0";
-    };
-
-    deleteCookies();
-    dispatch(handleLogoutAction());
-  };
 
   return (
     <div>
@@ -29,8 +18,7 @@ export function TopMenu() {
               Service Provider
             </Link>
             <div className="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-              <ul className="navbar-nav flex-grow-1">
-              </ul>
+              <ul className="navbar-nav flex-grow-1"></ul>
             </div>
           </div>
           <div className="d-sm-inline-flex justify-content-between">
@@ -53,7 +41,7 @@ export function TopMenu() {
                       className="btn-primary"
                       type="submit"
                       value="Logout"
-                      onClick={proceedLogOut}
+                      onClick={() => dispatch(proceedLogOut())}
                     />
                   </Link>
                 ) : (

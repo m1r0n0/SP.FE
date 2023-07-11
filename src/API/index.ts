@@ -23,20 +23,10 @@ const GetUserEmailURI: string = `${API}/${API_VERSION_IDENTITY}/${IDENTITY}/${GE
 const ChangeUserEmailURI: string = `${API}/${API_VERSION_IDENTITY}/${IDENTITY}/${CHANGE_USER_EMAIL}`;
 const ChangeUserPasswordURI: string = `${API}/${API_VERSION_IDENTITY}/${IDENTITY}/${CHANGE_USER_PASSWORD}`;
 
-export async function fetchUserID(userEmail: string) {
-  const response = await fetch(`${GetUserIdURI}/${userEmail}`);
-  return await response.json();
-}
-
-export async function fetchUserEmail(tempUserID: string) {
-  const response = await fetch(`${GetUserEmailURI}/${tempUserID}`, {
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "http://localhost:3000/",
-    },
-  });
-  return await response.json();
-}
+// export async function fetchUserID(userEmail: string) {
+//   const response = await fetch(`${GetUserIdURI}/${userEmail}`);
+//   return await response.json();
+// }
 
 export async function proceedLogin(body: ILoginUser) {
   const response = await fetch(LoginURI, {
@@ -52,10 +42,23 @@ export async function proceedLogin(body: ILoginUser) {
   }
 }
 
+export async function fetchUserEmail(tempUserID: string) {
+  const response = await fetch(`${GetUserEmailURI}/${tempUserID}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: localStorage.getItem("Token")!.toString(),
+    },
+  });
+  return await response.json();
+}
+
 export async function proceedRegister(body: IRegisterUser) {
   const response = await fetch(RegisterURI, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: localStorage.getItem("Token")!.toString(),
+    },
     body: JSON.stringify(body),
     credentials: "include",
   });
@@ -69,7 +72,10 @@ export async function proceedRegister(body: IRegisterUser) {
 export async function proceedEmailChange(userId: string, body: IUserEmail) {
   const response = await fetch(`${ChangeUserEmailURI}/${userId}`, {
     method: "PATCH",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: localStorage.getItem("Token")!.toString(),
+    },
     body: JSON.stringify(body),
   });
   if (!response.ok) {
@@ -85,7 +91,10 @@ export async function proceedPasswordChange(
 ) {
   const response = await fetch(`${ChangeUserPasswordURI}/${userId}`, {
     method: "PATCH",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: localStorage.getItem("Token")!.toString(),
+    },
     body: JSON.stringify(body),
   });
   if (!response.ok) {

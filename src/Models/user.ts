@@ -14,6 +14,7 @@ export interface ILoginUserResponse {
   password: string;
   rememberMe: boolean;
   userId: string;
+  token: string;
 }
 
 export interface IRegisterUser {

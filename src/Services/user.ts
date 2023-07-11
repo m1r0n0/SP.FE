@@ -19,13 +19,14 @@ import {
   handleLoginFailureAction,
   handleLoginRequestAction,
   handleLoginSuccessAction,
+  handleLogoutAction,
   handleRegisterFailureAction,
   handleRegisterRequestAction,
   handleRegisterSuccessAction,
   setUserEmailAction,
   setUserIdAction,
 } from "../Store/UserReducer";
-import { useAppSelector } from "../hooks";
+import { useAppDispatch, useAppSelector } from "../hooks";
 
 const splittedCookies: string[] = document.cookie.split("; ");
 
@@ -54,7 +55,7 @@ export const setUserStateBasedOnCookies =
             dispatch(handleEmailRequestAction());
 
             fetchUserEmail(tempUserID).then((result) => {
-              dispatch(setUserEmailAction(result.newEmail));
+              dispatch(setUserEmailAction(result.email));
             });
           }
         }
@@ -114,6 +115,8 @@ export const handleLogin =
     try {
       const user = await proceedLogin(loginData);
 
+      localStorage.setItem("Token", user.token);
+
       dispatch(handleLoginSuccessAction(user));
 
       if (loginData.rememberMe) {
@@ -137,3 +140,8 @@ const setOnCloseUserCookies = (userID: string) => {
 export const isLogon = (userId: string): boolean => {
   return userId !== "";
 };
+
+export const proceedLogOut = () => async (dispatch: AppDispatch) =>{
+  localStorage.removeItem("Token");
+  dispatch(handleLogoutAction());
+}
