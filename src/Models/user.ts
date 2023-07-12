@@ -1,3 +1,13 @@
+export interface IDecodedJWT {
+  sub: string;
+  jti: string;
+  iat: string;
+  UserId: string;
+  exp: number;
+  iss: string;
+  aud: string;
+}
+
 export interface IUser {
   userId: string;
   userEmail: string;
@@ -32,10 +42,12 @@ export interface IUserPassword {
 
 export interface IAuthorizationBadRequestResponse {
   email: string;
-  result: {
-    succeeded: boolean;
-    errors: IIdentityAuthorizationError[];
-  };
+  result: IIdentityResult;
+}
+
+export interface IIdentityResult {
+  succeeded: boolean;
+  errors: IIdentityAuthorizationError[];
 }
 
 export interface IIdentityAuthorizationError {

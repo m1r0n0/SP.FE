@@ -1,23 +1,30 @@
-interface EmailChangedDisclaimerProps {
-  isEmailChanged: boolean;
-}
+import { hideAllDisclaimersAction } from "../../../../../Store/DisclaimerReducer";
+import { useAppDispatch, useAppSelector } from "../../../../../hooks";
+import IdentityErrorListItem from "../../../Common/IdentityErrorListItem";
 
-export const EmailChangedDisclaimer: React.FC<EmailChangedDisclaimerProps> = ({
-  isEmailChanged,
-}) => {
+export const EmailChangedDisclaimer = () => {
+  const dispatch = useAppDispatch();
+  const isEmailChangedSuccessfully = useAppSelector(
+    (s) => s.user.isEmailChangedSuccessfully
+  );
+  const errors = useAppSelector((state) => state.disclaimer.authorizeErrors);
+
+  dispatch(hideAllDisclaimersAction());
   return (
     <div className="mt-5">
-      {isEmailChanged ? (
-        <p>Email changed successfully!</p>
+      {isEmailChangedSuccessfully ? (
+        <p>Email was changed successfully!</p>
       ) : (
         <div>
-          <p>Email didn't changed!</p>
           <div>
-            <p>It may be caused by several problems: </p>
-            <ul>
-              <li> This email is already in use </li>
-              <li> Server issues</li>
-            </ul>
+            {errors.map((error) => {
+              return (
+                <IdentityErrorListItem
+                  errorDescription={error.description}
+                  key={error.code}
+                />
+              );
+            })}
           </div>
         </div>
       )}

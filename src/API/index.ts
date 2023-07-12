@@ -10,7 +10,6 @@ import {
   CHANGE_USER_EMAIL,
   CHANGE_USER_PASSWORD,
   GET_USER,
-  GET_USER_ID,
   LOGIN,
   REGISTER,
   API_VERSION_IDENTITY,
@@ -18,15 +17,11 @@ import {
 
 const LoginURI: string = `${API}/${API_VERSION_IDENTITY}/${IDENTITY}/${LOGIN}`;
 const RegisterURI: string = `${API}/${API_VERSION_IDENTITY}/${IDENTITY}/${REGISTER}`;
-const GetUserIdURI: string = `${API}/${API_VERSION_IDENTITY}/${IDENTITY}/${GET_USER_ID}`;
 const GetUserEmailURI: string = `${API}/${API_VERSION_IDENTITY}/${IDENTITY}/${GET_USER}`;
 const ChangeUserEmailURI: string = `${API}/${API_VERSION_IDENTITY}/${IDENTITY}/${CHANGE_USER_EMAIL}`;
 const ChangeUserPasswordURI: string = `${API}/${API_VERSION_IDENTITY}/${IDENTITY}/${CHANGE_USER_PASSWORD}`;
 
-// export async function fetchUserID(userEmail: string) {
-//   const response = await fetch(`${GetUserIdURI}/${userEmail}`);
-//   return await response.json();
-// }
+const AuthorizationHeader: string = `Bearer ${localStorage.getItem("Token")!}`;
 
 export async function proceedLogin(body: ILoginUser) {
   const response = await fetch(LoginURI, {
@@ -45,8 +40,7 @@ export async function proceedLogin(body: ILoginUser) {
 export async function fetchUserEmail(tempUserID: string) {
   const response = await fetch(`${GetUserEmailURI}/${tempUserID}`, {
     headers: {
-      "Content-Type": "application/json",
-      Authorization: localStorage.getItem("Token")!.toString(),
+      Authorization: AuthorizationHeader,
     },
   });
   return await response.json();
@@ -56,8 +50,7 @@ export async function proceedRegister(body: IRegisterUser) {
   const response = await fetch(RegisterURI, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
-      Authorization: localStorage.getItem("Token")!.toString(),
+      Authorization: AuthorizationHeader,
     },
     body: JSON.stringify(body),
     credentials: "include",
@@ -73,13 +66,12 @@ export async function proceedEmailChange(userId: string, body: IUserEmail) {
   const response = await fetch(`${ChangeUserEmailURI}/${userId}`, {
     method: "PATCH",
     headers: {
-      "Content-Type": "application/json",
-      Authorization: localStorage.getItem("Token")!.toString(),
+      Authorization: AuthorizationHeader,
     },
     body: JSON.stringify(body),
   });
   if (!response.ok) {
-    throw new Error("Network response was not OK");
+    throw await response.json();
   } else {
     return await response.json();
   }
@@ -92,12 +84,11 @@ export async function proceedPasswordChange(
   const response = await fetch(`${ChangeUserPasswordURI}/${userId}`, {
     method: "PATCH",
     headers: {
-      "Content-Type": "application/json",
-      Authorization: localStorage.getItem("Token")!.toString(),
+      Authorization: AuthorizationHeader,
     },
     body: JSON.stringify(body),
   });
   if (!response.ok) {
-    throw new Error("Network response was not OK");
+    throw await response.json();
   }
 }

@@ -1,5 +1,5 @@
 import { useAppSelector } from "../../../../hooks";
-import ErrorsListItem from "./ErrorsListItem";
+import IdentityErrorListItem from "../../Common/IdentityErrorListItem";
 import NoMatchingPasswordsDisclaimer from "./NoMatchingPasswordsDisclaimer";
 
 export const RegisterDisclaimers = () => {
@@ -17,7 +17,12 @@ export const RegisterDisclaimers = () => {
       </div>
       <div>
         {errors.map((error) => {
-          return <ErrorsListItem errorDescription={error.description} />;
+          return (
+            <IdentityErrorListItem
+              errorDescription={error.description}
+              key={error.code}
+            />
+          );
         })}
       </div>
     </div>

@@ -1,32 +1,22 @@
 import { useState } from "react";
-import { proceedPasswordChange } from "../../../../API";
-import { useAppSelector } from "../../../../hooks";
+import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import PasswordChangedDisclaimer from "./PasswordChangedDisclaimer";
+import { CircularProgress } from "@mui/material";
+import { handlePasswordChange } from "../../../../Services/user";
 
 export const ChangePassword = () => {
+  const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.user.user.userId);
+  const isPasswordChangeRequested = useAppSelector(
+    (state) => state.user.isPasswordChangeRequested
+  );
+  const isPasswordChangeFinished = useAppSelector(
+    (state) => state.user.isPasswordChangeFinished
+  );
+
   const [state, setState] = useState({
     newPassword: "",
   });
-  const [isPasswordChangedSuccessfully, setIsPasswordChangedSuccessfully] =
-    useState(false);
-  const [showPasswordChangedDisclaimer, setShowPasswordChangedDisclaimer] =
-    useState(false);
-
-  const handleSubmit = () => {
-    let isFetchResponseOk = true;
-    proceedPasswordChange(userId, state)
-      .catch(() => {
-        console.log("pukpuk");
-
-        isFetchResponseOk = false;
-        setIsPasswordChangedSuccessfully(false);
-      })
-      .then(() => {
-        if (isFetchResponseOk) setIsPasswordChangedSuccessfully(true);
-        setShowPasswordChangedDisclaimer(true);
-      });
-  };
 
   return (
     <div>
@@ -43,12 +33,16 @@ export const ChangePassword = () => {
         />
       </div>
       <div>
-        <input type="button" value="Change Password" onClick={handleSubmit} />
-        {showPasswordChangedDisclaimer ? (
-          <PasswordChangedDisclaimer
-            isPasswordChanged={isPasswordChangedSuccessfully}
+        {isPasswordChangeRequested ? (
+          <CircularProgress size={75} />
+        ) : (
+          <input
+            type="button"
+            value="Change Password"
+            onClick={() => dispatch(handlePasswordChange(userId, state))}
           />
-        ) : null}
+        )}
+        {isPasswordChangeFinished ? <PasswordChangedDisclaimer /> : null}
       </div>
     </div>
   );

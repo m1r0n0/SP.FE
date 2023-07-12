@@ -1,11 +1,22 @@
-import { fetchUserEmail, proceedLogin, proceedRegister } from "../API";
+import jwtDecode from "jwt-decode";
+import {
+  fetchUserEmail,
+  proceedEmailChange,
+  proceedLogin,
+  proceedPasswordChange,
+  proceedRegister,
+} from "../API";
 import { lifeTimeOfCookie } from "../JS/constants";
 import { IComponentDependentDisclaimerStates } from "../Models";
 import {
   IAuthorizationBadRequestResponse,
+  IDecodedJWT,
+  IIdentityResult,
   ILoginUser,
   IRegisterUser,
   IUser,
+  IUserEmail,
+  IUserPassword,
 } from "../Models/user";
 import { AppDispatch } from "../Store";
 import {
@@ -15,11 +26,17 @@ import {
 } from "../Store/DisclaimerReducer";
 import {
   handleAppReadinessAction,
+  handleEmailChangeFinishedAction,
+  handleEmailChangeRequestAction,
+  handleEmailChangedSuccessfullyAction,
   handleEmailRequestAction,
   handleLoginFailureAction,
   handleLoginRequestAction,
   handleLoginSuccessAction,
   handleLogoutAction,
+  handlePasswordChangeFinishedAction,
+  handlePasswordChangeRequestAction,
+  handlePasswordChangedSuccessfullyAction,
   handleRegisterFailureAction,
   handleRegisterRequestAction,
   handleRegisterSuccessAction,
@@ -28,14 +45,11 @@ import {
 } from "../Store/UserReducer";
 import { useAppDispatch, useAppSelector } from "../hooks";
 
-const splittedCookies: string[] = document.cookie.split("; ");
-
 export const prepareAppToLoad =
   (user: IUser) => async (dispatch: AppDispatch) => {
     await dispatch(setUserStateBasedOnCookies());
 
-    if (user.userEmail !== "" || splittedCookies.at(0) === "")
-      dispatch(handleAppReadinessAction());
+    if (user.userEmail !== "") dispatch(handleAppReadinessAction());
   };
 
 export const setUserStateBasedOnCookies =
@@ -45,21 +59,20 @@ export const setUserStateBasedOnCookies =
     );
 
     if (!isUserEmailRequested) {
-      splittedCookies.forEach((cookie) => {
-        if (cookie.startsWith("userID=")) {
-          let tempUserID = cookie.split("=").pop()!;
+      var token: string | null = localStorage.getItem("Token");
+      if (token !== null) {
+        var decodedToken: IDecodedJWT = jwtDecode(token);
+        var userId: string = decodedToken.UserId;
 
-          dispatch(setUserIdAction(tempUserID));
+        dispatch(setUserIdAction(userId));
+        if (userId !== "") {
+          dispatch(handleEmailRequestAction());
 
-          if (!(tempUserID === undefined || tempUserID === "")) {
-            dispatch(handleEmailRequestAction());
-
-            fetchUserEmail(tempUserID).then((result) => {
-              dispatch(setUserEmailAction(result.email));
-            });
-          }
+          fetchUserEmail(userId).then((result) => {
+            dispatch(setUserEmailAction(result.email));
+          });
         }
-      });
+      }
     }
   };
 
@@ -141,7 +154,43 @@ export const isLogon = (userId: string): boolean => {
   return userId !== "";
 };
 
-export const proceedLogOut = () => async (dispatch: AppDispatch) =>{
+export const proceedLogOut = () => async (dispatch: AppDispatch) => {
   localStorage.removeItem("Token");
   dispatch(handleLogoutAction());
-}
+};
+
+export const handleEmailChange =
+  (userId: string, state: IUserEmail) => async (dispatch: AppDispatch) => {
+    let exceptionThrown = false;
+    dispatch(handleEmailChangeRequestAction());
+
+    proceedEmailChange(userId, state)
+      .catch((errorResponse: IIdentityResult) => {
+        exceptionThrown = true;
+        dispatch(setAuthorizationErrorsAction(errorResponse.errors));
+      })
+      .then((response) => {
+        if (!exceptionThrown && response.newEmail !== null) {
+          dispatch(handleEmailChangedSuccessfullyAction());
+          dispatch(setUserEmailAction(response.newEmail));
+        }
+        dispatch(handleEmailChangeFinishedAction());
+      });
+  };
+
+export const handlePasswordChange =
+  (userId: string, state: IUserPassword) => async (dispatch: AppDispatch) => {
+    let isFetchResponseOk = true;
+    dispatch(handlePasswordChangeRequestAction());
+
+    proceedPasswordChange(userId, state)
+      .catch((errorResponse: IIdentityResult) => {
+        isFetchResponseOk = false;
+        dispatch(setAuthorizationErrorsAction(errorResponse.errors));
+      })
+      .then(() => {
+        if (isFetchResponseOk)
+          dispatch(handlePasswordChangedSuccessfullyAction());
+        dispatch(handlePasswordChangeFinishedAction());
+      });
+  };

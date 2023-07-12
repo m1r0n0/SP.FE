@@ -1,22 +1,26 @@
+import { useAppSelector } from "../../../../../hooks";
+import IdentityErrorListItem from "../../../Common/IdentityErrorListItem";
 
-interface PasswordChangedDisclaimerProps {
-  isPasswordChanged: boolean;
-}
+export const PasswordChangedDisclaimer = () => {
+  const isPasswordChangedSuccessfully = useAppSelector(
+    (state) => state.user.isPasswordChangedSuccessfully
+  );
+  const errors = useAppSelector((state) => state.disclaimer.authorizeErrors);
 
-export const PasswordChangedDisclaimer: React.FC<
-  PasswordChangedDisclaimerProps
-> = ({ isPasswordChanged }) => {
   return (
     <div className="mt-5">
-      {isPasswordChanged ? (
+      {isPasswordChangedSuccessfully ? (
         <p>Password changed successfully!</p>
       ) : (
         <div>
-          <p>Password didn't changed!</p>
-          <div>
-            <p>It may be caused by several problems: </p>
-            {/* <InvalidPasswordInputDisclaimer /> */}
-          </div>
+          {errors.map((error) => {
+            return (
+              <IdentityErrorListItem
+                errorDescription={error.description}
+                key={error.code}
+              />
+            );
+          })}
         </div>
       )}
     </div>
