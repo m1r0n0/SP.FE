@@ -14,6 +14,8 @@ import {
   REGISTER,
   API_VERSION_IDENTITY,
 } from "../JS/routeConstants";
+import { tokenLS } from "../JS/constants";
+import { useAppSelector } from "../hooks";
 
 const LoginURI: string = `${API}/${API_VERSION_IDENTITY}/${IDENTITY}/${LOGIN}`;
 const RegisterURI: string = `${API}/${API_VERSION_IDENTITY}/${IDENTITY}/${REGISTER}`;
@@ -21,7 +23,10 @@ const GetUserEmailURI: string = `${API}/${API_VERSION_IDENTITY}/${IDENTITY}/${GE
 const ChangeUserEmailURI: string = `${API}/${API_VERSION_IDENTITY}/${IDENTITY}/${CHANGE_USER_EMAIL}`;
 const ChangeUserPasswordURI: string = `${API}/${API_VERSION_IDENTITY}/${IDENTITY}/${CHANGE_USER_PASSWORD}`;
 
-const AuthorizationHeader: string = `Bearer ${localStorage.getItem("Token")!}`;
+const GetAuthHeader = () => {
+  const token = useAppSelector(s => s.user.authenticationToken);
+  return `Bearer ${token}`;
+}
 
 export async function proceedLogin(body: ILoginUser) {
   const response = await fetch(LoginURI, {
@@ -40,7 +45,7 @@ export async function proceedLogin(body: ILoginUser) {
 export async function fetchUserEmail(tempUserID: string) {
   const response = await fetch(`${GetUserEmailURI}/${tempUserID}`, {
     headers: {
-      Authorization: AuthorizationHeader,
+      Authorization: GetAuthHeader(),
     },
   });
   return await response.json();
@@ -50,7 +55,7 @@ export async function proceedRegister(body: IRegisterUser) {
   const response = await fetch(RegisterURI, {
     method: "POST",
     headers: {
-      Authorization: AuthorizationHeader,
+      Authorization: GetAuthHeader(),
     },
     body: JSON.stringify(body),
     credentials: "include",
@@ -66,7 +71,7 @@ export async function proceedEmailChange(userId: string, body: IUserEmail) {
   const response = await fetch(`${ChangeUserEmailURI}/${userId}`, {
     method: "PATCH",
     headers: {
-      Authorization: AuthorizationHeader,
+      Authorization: GetAuthHeader(),
     },
     body: JSON.stringify(body),
   });
@@ -84,7 +89,7 @@ export async function proceedPasswordChange(
   const response = await fetch(`${ChangeUserPasswordURI}/${userId}`, {
     method: "PATCH",
     headers: {
-      Authorization: AuthorizationHeader,
+      Authorization: GetAuthHeader(),
     },
     body: JSON.stringify(body),
   });

@@ -12,6 +12,7 @@ interface IUserAction {
 
 interface IUserState {
   user: IUser;
+  authenticationToken: string;
   isAppLoaded: boolean;
   isUserEmailRequested: boolean;
   isLoginRequested: boolean;
@@ -29,6 +30,7 @@ interface IUserState {
 
 const defaultState: IUserState = {
   user: { userId: "", userEmail: "" },
+  authenticationToken: "",
   isAppLoaded: false,
   isUserEmailRequested: false,
   isLoginRequested: false,
@@ -46,6 +48,7 @@ const defaultState: IUserState = {
 
 const SET_USER_ID = "SET_USER_ID";
 const SET_USER_EMAIL = "SET_USER_EMAIL";
+const SET_AUTHENTICATION_TOKEN = "SET_AUTHENTICATION_TOKEN";
 const HANDLE_LOGIN_REQUEST = "HANDLE_LOGIN_REQUEST";
 const HANDLE_LOGIN_SUCCESS = "HANDLE_LOGIN_SUCCESS";
 const HANDLE_LOGIN_FAILURE = "HANDLE_LOGIN_FAILURE";
@@ -69,6 +72,7 @@ export const userReducer: Reducer<IUserState, IUserAction> = (
   action: IUserAction
 ) => {
   let loginUser: ILoginUserResponse = action.payload as ILoginUserResponse;
+
   switch (action.type) {
     case SET_USER_ID:
       return {
@@ -82,6 +86,12 @@ export const userReducer: Reducer<IUserState, IUserAction> = (
           user: { ...state.user, userEmail: action.payload as string },
         };
       } else return { ...state };
+      
+      case SET_AUTHENTICATION_TOKEN:
+      return {
+        ...state,
+        authenticationToken: action.payload as string,
+      };
 
     case HANDLE_APP_READINESS:
       return { ...state, isAppLoaded: true };
@@ -144,23 +154,23 @@ export const userReducer: Reducer<IUserState, IUserAction> = (
         isEmailChangeFinished: true,
       };
 
-      case HANDLE_PASSWORD_CHANGE_REQUEST:
-        return {
-          ...state,
-          isPasswordChangeRequested: true,
-          isPasswordChangedSuccessfully: false,
-        };
-      case HANDLE_PASSWORD_CHANGED_SUCCESSFULLY:
-        return {
-          ...state,
-          isPasswordChangedSuccessfully: true,
-        };
-      case HANDLE_PASSWORD_CHANGE_FINISHED:
-        return {
-          ...state,
-          isPasswordChangeRequested: false,
-          isPasswordChangeFinished: true,
-        };
+    case HANDLE_PASSWORD_CHANGE_REQUEST:
+      return {
+        ...state,
+        isPasswordChangeRequested: true,
+        isPasswordChangedSuccessfully: false,
+      };
+    case HANDLE_PASSWORD_CHANGED_SUCCESSFULLY:
+      return {
+        ...state,
+        isPasswordChangedSuccessfully: true,
+      };
+    case HANDLE_PASSWORD_CHANGE_FINISHED:
+      return {
+        ...state,
+        isPasswordChangeRequested: false,
+        isPasswordChangeFinished: true,
+      };
 
     default:
       return state;
@@ -173,6 +183,11 @@ export const setUserIdAction = (payload: string) => ({
 });
 export const setUserEmailAction = (payload: string) => ({
   type: SET_USER_EMAIL,
+  payload,
+});
+
+export const setAuthenticationTokenAction = (payload: string) => ({
+  type: SET_AUTHENTICATION_TOKEN,
   payload,
 });
 

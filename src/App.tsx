@@ -11,6 +11,7 @@ function App() {
   const isAppLoaded = useAppSelector((state) => state.user.isAppLoaded);
 
   dispatch(prepareAppToLoad(user));
+  
   return (
     <div>
       {isAppLoaded ? (

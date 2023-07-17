@@ -49,7 +49,6 @@ export const Register = () => {
   ) : (
     <div>
       <h2>Register</h2>
-      <form method="post" asp-controller="Account" asp-action="Register">
         <div>
           <label htmlFor="Email">Email</label>
           <input
@@ -99,7 +98,6 @@ export const Register = () => {
           )}
         </div>
         <RegisterDisclaimers />
-      </form>
     </div>
   );
 };

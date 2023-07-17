@@ -6,7 +6,7 @@ import {
   proceedPasswordChange,
   proceedRegister,
 } from "../API";
-import { lifeTimeOfCookie } from "../JS/constants";
+import { tokenLS } from "../JS/constants";
 import { IComponentDependentDisclaimerStates } from "../Models";
 import {
   IAuthorizationBadRequestResponse,
@@ -40,39 +40,42 @@ import {
   handleRegisterFailureAction,
   handleRegisterRequestAction,
   handleRegisterSuccessAction,
+  setAuthenticationTokenAction,
   setUserEmailAction,
   setUserIdAction,
 } from "../Store/UserReducer";
-import { useAppDispatch, useAppSelector } from "../hooks";
+import { useAppSelector } from "../hooks";
 
 export const prepareAppToLoad =
   (user: IUser) => async (dispatch: AppDispatch) => {
-    await dispatch(setUserStateBasedOnCookies());
+    await dispatch(setUserStateBasedOnAuthenticationToken());
 
     if (user.userEmail !== "") dispatch(handleAppReadinessAction());
   };
 
-export const setUserStateBasedOnCookies =
+export const setUserStateBasedOnAuthenticationToken =
   () => async (dispatch: AppDispatch) => {
     const isUserEmailRequested = useAppSelector(
       (state) => state.user.isUserEmailRequested
     );
 
     if (!isUserEmailRequested) {
-      var token: string | null = localStorage.getItem("Token");
+      var token: string | null = localStorage.getItem(tokenLS);
       if (token !== null) {
+        dispatch(setAuthenticationTokenAction(token));
+
         var decodedToken: IDecodedJWT = jwtDecode(token);
         var userId: string = decodedToken.UserId;
 
-        dispatch(setUserIdAction(userId));
         if (userId !== "") {
+          dispatch(setUserIdAction(userId));
           dispatch(handleEmailRequestAction());
 
           fetchUserEmail(userId).then((result) => {
             dispatch(setUserEmailAction(result.email));
           });
         }
-      }
+      } else dispatch(handleAppReadinessAction());
     }
   };
 
@@ -128,34 +131,27 @@ export const handleLogin =
     try {
       const user = await proceedLogin(loginData);
 
-      localStorage.setItem("Token", user.token);
+      localStorage.setItem(tokenLS, user.token);
+      dispatch(setAuthenticationTokenAction(user.token));
 
       dispatch(handleLoginSuccessAction(user));
 
       if (loginData.rememberMe) {
-        setLongTermUserCookies(String(user.userId));
+        //setLongTermUserCookies(String(user.userId));
       } else {
-        setOnCloseUserCookies(String(user.userId));
+        //setOnCloseUserCookies(String(user.userId));
       }
     } catch (error) {
       dispatch(handleLoginFailureAction());
     }
   };
 
-const setLongTermUserCookies = (userID: string) => {
-  document.cookie = "userID=" + userID + "; max-age=" + lifeTimeOfCookie;
-};
-
-const setOnCloseUserCookies = (userID: string) => {
-  document.cookie = "userID=" + userID;
-};
-
 export const isLogon = (userId: string): boolean => {
   return userId !== "";
 };
 
 export const proceedLogOut = () => async (dispatch: AppDispatch) => {
-  localStorage.removeItem("Token");
+  localStorage.removeItem(tokenLS);
   dispatch(handleLogoutAction());
 };
 

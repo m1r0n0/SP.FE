@@ -22,10 +22,6 @@ export const Login = () => {
     rememberMe: false,
   });
 
-  const handleSubmit: React.MouseEventHandler<HTMLInputElement> = (event) => {
-    dispatch(handleLogin(state));
-  };
-
   return isLogon(userId) ? (
     <Navigate to="/" />
   ) : (
@@ -69,15 +65,13 @@ export const Login = () => {
         {isLoginFinished ? (
           <Navigate to="/" />
         ) : isLoginRequested ? (
-          <CircularProgress 
-            size={75}
-          />
+          <CircularProgress size={75} />
         ) : (
           <input
             type="button"
             className="btn btn-primary btn-lg"
             value="Log in"
-            onClick={handleSubmit}
+            onClick={() => dispatch(handleLogin(state))}
           />
         )}
       </div>

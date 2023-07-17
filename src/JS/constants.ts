@@ -1,1 +1,1 @@
-export const lifeTimeOfCookie = 5148000;
+export const tokenLS = "Token";
