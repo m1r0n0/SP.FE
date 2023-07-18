@@ -5,7 +5,7 @@ import {
   proceedLogin,
   proceedPasswordChange,
   proceedRegister,
-} from "../API";
+} from "../API/user";
 import { tokenLS } from "../JS/constants";
 import { IComponentDependentDisclaimerStates } from "../Models";
 import {
@@ -71,9 +71,7 @@ export const setUserStateBasedOnAuthenticationToken =
           dispatch(setUserIdAction(userId));
           dispatch(handleEmailRequestAction());
 
-          fetchUserEmail(userId).then((result) => {
-            dispatch(setUserEmailAction(result.email));
-          });
+          fetchUserEmail(userId);
         }
       } else dispatch(handleAppReadinessAction());
     }
@@ -157,19 +155,13 @@ export const proceedLogOut = () => async (dispatch: AppDispatch) => {
 
 export const handleEmailChange =
   (userId: string, state: IUserEmail) => async (dispatch: AppDispatch) => {
-    let exceptionThrown = false;
     dispatch(handleEmailChangeRequestAction());
 
-    proceedEmailChange(userId, state)
+    await proceedEmailChange(userId, state)
       .catch((errorResponse: IIdentityResult) => {
-        exceptionThrown = true;
         dispatch(setAuthorizationErrorsAction(errorResponse.errors));
       })
-      .then((response) => {
-        if (!exceptionThrown && response.newEmail !== null) {
-          dispatch(handleEmailChangedSuccessfullyAction());
-          dispatch(setUserEmailAction(response.newEmail));
-        }
+      .then(() => {
         dispatch(handleEmailChangeFinishedAction());
       });
   };

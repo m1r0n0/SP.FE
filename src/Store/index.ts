@@ -2,10 +2,12 @@ import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { userReducer } from "./UserReducer";
 import thunk from "redux-thunk";
 import {disclaimerReducer} from "./DisclaimerReducer"
+import { providerReducer } from "./ProviderReducer";
 
 const rootReducer = combineReducers({
   user: userReducer,
   disclaimer: disclaimerReducer,
+  provider: providerReducer,
 });
 
 export const store = configureStore({
@@ -15,3 +17,4 @@ export const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+export type GetState = typeof store.getState;
