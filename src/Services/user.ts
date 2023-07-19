@@ -11,7 +11,6 @@ import { IComponentDependentDisclaimerStates } from "../Models";
 import {
   IAuthorizationBadRequestResponse,
   IDecodedJWT,
-  IIdentityResult,
   ILoginUser,
   IRegisterUser,
   IUser,
@@ -28,7 +27,6 @@ import {
   handleAppReadinessAction,
   handleEmailChangeFinishedAction,
   handleEmailChangeRequestAction,
-  handleEmailChangedSuccessfullyAction,
   handleEmailRequestAction,
   handleLoginFailureAction,
   handleLoginRequestAction,
@@ -36,22 +34,21 @@ import {
   handleLogoutAction,
   handlePasswordChangeFinishedAction,
   handlePasswordChangeRequestAction,
-  handlePasswordChangedSuccessfullyAction,
   handleRegisterFailureAction,
   handleRegisterRequestAction,
   handleRegisterSuccessAction,
   setAuthenticationTokenAction,
-  setUserEmailAction,
   setUserIdAction,
 } from "../Store/UserReducer";
 import { useAppSelector } from "../hooks";
 
-export const prepareAppToLoad =
-  (user: IUser) => async (dispatch: AppDispatch) => {
-    await dispatch(setUserStateBasedOnAuthenticationToken());
+export const prepareUserData = () => async (dispatch: AppDispatch) => {
+  const user = useAppSelector((s) => s.user.user);
+  
+  await dispatch(setUserStateBasedOnAuthenticationToken());
 
-    if (user.userEmail !== "") dispatch(handleAppReadinessAction());
-  };
+  if (user.userEmail !== "") dispatch(handleAppReadinessAction());
+};
 
 export const setUserStateBasedOnAuthenticationToken =
   () => async (dispatch: AppDispatch) => {
@@ -71,7 +68,7 @@ export const setUserStateBasedOnAuthenticationToken =
           dispatch(setUserIdAction(userId));
           dispatch(handleEmailRequestAction());
 
-          fetchUserEmail(userId);
+          await dispatch(fetchUserEmail(userId));
         }
       } else dispatch(handleAppReadinessAction());
     }
@@ -156,29 +153,13 @@ export const proceedLogOut = () => async (dispatch: AppDispatch) => {
 export const handleEmailChange =
   (userId: string, state: IUserEmail) => async (dispatch: AppDispatch) => {
     dispatch(handleEmailChangeRequestAction());
-
-    await proceedEmailChange(userId, state)
-      .catch((errorResponse: IIdentityResult) => {
-        dispatch(setAuthorizationErrorsAction(errorResponse.errors));
-      })
-      .then(() => {
-        dispatch(handleEmailChangeFinishedAction());
-      });
+    await dispatch(await proceedEmailChange(userId, state));
+    dispatch(handleEmailChangeFinishedAction());
   };
 
 export const handlePasswordChange =
   (userId: string, state: IUserPassword) => async (dispatch: AppDispatch) => {
-    let isFetchResponseOk = true;
     dispatch(handlePasswordChangeRequestAction());
-
-    proceedPasswordChange(userId, state)
-      .catch((errorResponse: IIdentityResult) => {
-        isFetchResponseOk = false;
-        dispatch(setAuthorizationErrorsAction(errorResponse.errors));
-      })
-      .then(() => {
-        if (isFetchResponseOk)
-          dispatch(handlePasswordChangedSuccessfullyAction());
-        dispatch(handlePasswordChangeFinishedAction());
-      });
+    await dispatch(await proceedPasswordChange(userId, state));
+    dispatch(handlePasswordChangeFinishedAction());
   };

@@ -19,7 +19,6 @@ export const ChangeEmail = () => {
     newEmail: "",
   });
 
-  dispatch(hideAllDisclaimersAction());
   return (
     <div>
       <div className="mb-3">
@@ -36,13 +35,14 @@ export const ChangeEmail = () => {
       </div>
       <div>
         {isEmailChangeRequested ? (
-        <CircularProgress size={75} />
-        ) :
-        <input
-          type="button"
-          value="Change Email"
-          onClick={() => dispatch(handleEmailChange(userId, state))}
-        />}
+          <CircularProgress size={75} />
+        ) : (
+          <input
+            type="button"
+            value="Change Email"
+            onClick={() => dispatch(handleEmailChange(userId, state))}
+          />
+        )}
         {isEmailChangeFinished ? <EmailChangedDisclaimer /> : null}
       </div>
     </div>

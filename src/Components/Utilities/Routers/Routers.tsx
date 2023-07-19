@@ -8,6 +8,7 @@ import HomePage from "../../Common/HomePage";
 import TopMenu from "../../Common/TopMenu";
 import "./Routers.css";
 import RegisterProvider from "../../Provider/RegisterProvider/RegisterProvider";
+import EditProvider from "../../Provider/EditProvider/EditProvider";
 
 export const Routers = () => {
   return (
@@ -20,6 +21,7 @@ export const Routers = () => {
           <Route path="/Login" element={<Login />} />
           <Route path="/Register" element={<Register />} />
           <Route path="/Profile/*" element={<Profile />} />
+          <Route path="/Profile/Edit" element={<EditProvider />} />
 
           <Route path="/Register/Provider" element={<RegisterProvider />} />
 

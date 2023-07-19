@@ -83,7 +83,7 @@ export const providerReducer: Reducer<IProviderState, IProviderAction> = (
   }
 };
 
-export const setProviderDataAction = (payload: IProvider) => ({
+export const setProviderInfoAction = (payload: IProvider) => ({
   type: SET_PROVIDER,
   payload,
 });

@@ -9,7 +9,7 @@ export const EmailChangedDisclaimer = () => {
   );
   const errors = useAppSelector((state) => state.disclaimer.authorizeErrors);
 
-  dispatch(hideAllDisclaimersAction());
+  //dispatch(hideAllDisclaimersAction());
   return (
     <div className="mt-5">
       {isEmailChangedSuccessfully ? (

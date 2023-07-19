@@ -4,11 +4,15 @@ import { isLogon } from "../../../Services/user";
 import { CircularProgress } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import RegisterDisclaimers from "../../Account/Register/Disclaimers";
-import { handleProviderRegister } from "../../../Services/provider";
+import {
+  handleProviderEdit,
+  handleProviderRegister,
+} from "../../../Services/provider";
 import { IProvider } from "../../../Models/provider";
-import InvalidInputDisclaimer from "./InvalidInputDisclaimer/InvalidInputDisclaimer";
+import InvalidInputDisclaimer from "../RegisterProvider/InvalidInputDisclaimer";
+import SuccessDisclaimer from "../RegisterProvider/InvalidInputDisclaimer/SuccessDisclaimer/SuccessDisclaimer";
 
-export default function RegisterProvider() {
+export default function EditProvider() {
   const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.user.user.userId);
   const isRegisterRequested = useAppSelector(
@@ -36,7 +40,7 @@ export default function RegisterProvider() {
 
   return (
     <div>
-      <h2>Register</h2>
+      <h2>Edit</h2>
       <div>
         <label htmlFor="firstName">First Name</label>
         <input
@@ -112,11 +116,9 @@ export default function RegisterProvider() {
         ) : (
           <input
             type="button"
-            value="Register"
+            value="Edit"
             className="btn btn-success btn-lg"
-            onClick={() =>
-              dispatch(handleProviderRegister(userId, providerState))
-            }
+            onClick={() => dispatch(handleProviderEdit(userId, providerState))}
           />
         )}
       </div>
