@@ -23,7 +23,7 @@ export const Login = () => {
   });
 
   return isLogon(userId) ? (
-    <Navigate to="/" />
+    <Navigate to="/Profile" />
   ) : (
     <div>
       <h2> Enter the app</h2>

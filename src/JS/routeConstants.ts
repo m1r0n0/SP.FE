@@ -7,6 +7,7 @@ export const REGISTER = "register";
 export const GET_USER = "user/get";
 export const CHANGE_USER_EMAIL = "user/email";
 export const CHANGE_USER_PASSWORD = "user/password";
+export const DELETE_USER = "user/delete";
 
 //Provider
 export const API_PROVIDER = "https://localhost:7260/api";

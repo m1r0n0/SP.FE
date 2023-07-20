@@ -13,6 +13,7 @@ import {
   LOGIN,
   REGISTER,
   API_VERSION_IDENTITY,
+  DELETE_USER,
 } from "../JS/routeConstants";
 import { AppDispatch, GetState } from "../Store";
 import {
@@ -22,12 +23,15 @@ import {
   setUserEmailAction,
 } from "../Store/UserReducer";
 import { setAuthorizationErrorsAction } from "../Store/DisclaimerReducer";
+import { proceedLogOut } from "../Services";
+import { proceedProviderDelete } from "./provider";
 
 const LoginURI: string = `${API_ACCOUNT}/${API_VERSION_IDENTITY}/${IDENTITY}/${LOGIN}`;
 const RegisterURI: string = `${API_ACCOUNT}/${API_VERSION_IDENTITY}/${IDENTITY}/${REGISTER}`;
 const GetUserEmailURI: string = `${API_ACCOUNT}/${API_VERSION_IDENTITY}/${IDENTITY}/${GET_USER}`;
 const ChangeUserEmailURI: string = `${API_ACCOUNT}/${API_VERSION_IDENTITY}/${IDENTITY}/${CHANGE_USER_EMAIL}`;
 const ChangeUserPasswordURI: string = `${API_ACCOUNT}/${API_VERSION_IDENTITY}/${IDENTITY}/${CHANGE_USER_PASSWORD}`;
+const DeleteUserURI = `${API_ACCOUNT}/${API_VERSION_IDENTITY}/${IDENTITY}/${DELETE_USER}`;
 
 const GetAuthHeader =
   () => async (dispatch: AppDispatch, getState: GetState) => {
@@ -121,6 +125,21 @@ export async function proceedPasswordChange(
       dispatch(setAuthorizationErrorsAction(errorResponse.errors));
     } else {
       dispatch(handlePasswordChangedSuccessfullyAction());
+    }
+  };
+}
+
+export async function proceedUserDelete(userId: string) {
+  return async (dispatch: AppDispatch) => {
+    const response = await fetch(`${DeleteUserURI}/${userId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: await dispatch(GetAuthHeader()),
+      },
+    });
+
+    if (response.ok) {
+      dispatch(await proceedProviderDelete(userId))
     }
   };
 }
