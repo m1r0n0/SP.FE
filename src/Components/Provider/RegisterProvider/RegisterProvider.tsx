@@ -14,8 +14,8 @@ export default function RegisterProvider() {
   const isRegisterRequested = useAppSelector(
     (s) => s.provider.isRegisterRequested
   );
-  const isRegisterSuccessful = useAppSelector(
-    (state) => state.provider.isRegisterSuccessful
+  const isRegisterFinished = useAppSelector(
+    (state) => state.provider.isRegisterFinished
   );
 
   const [state, setState] = useState({
@@ -34,7 +34,9 @@ export default function RegisterProvider() {
     workHoursEnd: parseInt(state.workHoursEnd, 10),
   };
 
-  return (
+  return isLogon(userId) && !isRegisterFinished ? (
+    <Navigate to="/Profile" />
+  ) : (
     <div>
       <h2>Register</h2>
       <div>
@@ -105,20 +107,18 @@ export default function RegisterProvider() {
         />
       </div>
       <div className="m-4">
-        {isRegisterSuccessful ? (
-          <Navigate to="/" />
-        ) : isRegisterRequested ? (
-          <CircularProgress size={75} />
+        isRegisterRequested ? (
+        <CircularProgress size={75} />
         ) : (
-          <input
-            type="button"
-            value="Register"
-            className="btn btn-success btn-lg"
-            onClick={() =>
-              dispatch(handleProviderRegister(userId, providerState))
-            }
-          />
-        )}
+        <input
+          type="button"
+          value="Register"
+          className="btn btn-success btn-lg"
+          onClick={() =>
+            dispatch(handleProviderRegister(userId, providerState))
+          }
+        />
+        )
       </div>
 
       <InvalidInputDisclaimer />

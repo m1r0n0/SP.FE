@@ -11,8 +11,10 @@ import {
 } from "../Store/DisclaimerReducer";
 import {
   handleDataChangeFinishedAction,
+  handleDataChangeRequestAction,
   handleDataChangedSuccessfullyAction,
   handleRegisterFailureAction,
+  handleRegisterRequestAction,
   handleRegisterSuccessAction,
   setProviderInfoAction,
 } from "../Store/ProviderReducer";
@@ -29,6 +31,8 @@ export const handleProviderRegister =
   (userId: string, body: IProvider) => async (dispatch: AppDispatch) => {
     var registerSucceed = true;
 
+    dispatch(hideAllDisclaimersAction());
+    dispatch(handleRegisterRequestAction());
     dispatch(setProviderInfoAction(body));
 
     proceedProviderRegister(userId, body)
@@ -46,20 +50,23 @@ export const handleProviderRegister =
 
 export const handleProviderEdit =
   (userId: string, body: IProvider) => async (dispatch: AppDispatch) => {
-    var registerSucceed = true;
+    var editSucceed = true;
 
-    dispatch(setProviderInfoAction(body));
+    dispatch(hideAllDisclaimersAction());
+    dispatch(handleDataChangeRequestAction());
 
     proceedProviderEdit(userId, body)
       .catch(() => {
-        registerSucceed = false;
-        dispatch(handleDataChangeFinishedAction());
+        editSucceed = false;
         dispatch(handleShowProviderRegisterFailedDisclaimer());
       })
       .then(() => {
-        if (registerSucceed) {
+        if (editSucceed) {
+          dispatch(setProviderInfoAction(body));
           dispatch(handleDataChangedSuccessfullyAction());
           dispatch(hideAllDisclaimersAction());
         }
+
+        dispatch(handleDataChangeFinishedAction());
       });
   };

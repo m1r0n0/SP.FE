@@ -15,25 +15,22 @@ import SuccessDisclaimer from "../RegisterProvider/InvalidInputDisclaimer/Succes
 export default function EditProvider() {
   const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.user.user.userId);
-  const isRegisterRequested = useAppSelector(
-    (s) => s.provider.isRegisterRequested
+  const isDataChangeRequested = useAppSelector(
+    (s) => s.provider.isDataChangeRequested
   );
-  const isRegisterSuccessful = useAppSelector(
-    (state) => state.provider.isRegisterSuccessful
+  const provider = useAppSelector((s) => s.provider.provider);
+  const isDataChangedSuccessfully = useAppSelector(
+    (state) => state.provider.isDataChangedSuccessfully
   );
 
   const [state, setState] = useState({
-    firstName: "",
-    lastName: "",
-    enterpriseName: "",
-    workHoursBegin: "8",
-    workHoursEnd: "16",
+    ...provider,
+    workHoursBegin: provider.workHoursBegin.toString(),
+    workHoursEnd: provider.workHoursEnd.toString(),
   });
 
   const providerState: IProvider = {
-    firstName: state.firstName,
-    lastName: state.lastName,
-    enterpriseName: state.enterpriseName,
+    ...state,
     workHoursBegin: parseInt(state.workHoursBegin, 10),
     workHoursEnd: parseInt(state.workHoursEnd, 10),
   };
@@ -109,9 +106,7 @@ export default function EditProvider() {
         />
       </div>
       <div className="m-4">
-        {isRegisterSuccessful ? (
-          <Navigate to="/" />
-        ) : isRegisterRequested ? (
+        {isDataChangeRequested ? (
           <CircularProgress size={75} />
         ) : (
           <input

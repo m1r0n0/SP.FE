@@ -44,7 +44,7 @@ import { useAppSelector } from "../hooks";
 
 export const prepareUserData = () => async (dispatch: AppDispatch) => {
   const user = useAppSelector((s) => s.user.user);
-  
+
   await dispatch(setUserStateBasedOnAuthenticationToken());
 
   if (user.userEmail !== "") dispatch(handleAppReadinessAction());
@@ -145,7 +145,7 @@ export const isLogon = (userId: string): boolean => {
   return userId !== "";
 };
 
-export const proceedLogOut = () => async (dispatch: AppDispatch) => {
+export const proceedUserLogOut = () => async (dispatch: AppDispatch) => {
   localStorage.removeItem(tokenLS);
   dispatch(handleLogoutAction());
 };

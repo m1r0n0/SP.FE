@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { isLogon, proceedLogOut } from "../../../Services/user";
+import { isLogon, proceedUserLogOut } from "../../../Services/user";
 import { handleLogoutAction } from "../../../Store/UserReducer";
 import "./TopMenu.css";
+import { proceedLogOut } from "../../../Services";
 
 export function TopMenu() {
   const dispatch = useAppDispatch();
