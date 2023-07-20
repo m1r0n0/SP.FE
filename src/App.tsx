@@ -1,22 +1,26 @@
-import React from 'react';
-import './App.css';
+import "./App.css";
+import { CircularProgress } from "@mui/material";
+import Routers from "./Components/Utilities/Routers";
+import { useAppDispatch, useAppSelector } from "./hooks";
+import { prepareAppToLoad } from "./Services";
 
 function App() {
+  const dispatch = useAppDispatch();
+  const isAppLoaded = useAppSelector((state) => state.user.isAppLoaded);
+
+  dispatch(prepareAppToLoad());
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {isAppLoaded ? (
+        <div className="App">
+          <Routers />
+        </div>
+      ) : (
+        <div className="container d-flex justify-content-center">
+          <CircularProgress size={300} />
+        </div>
+      )}
     </div>
   );
 }
