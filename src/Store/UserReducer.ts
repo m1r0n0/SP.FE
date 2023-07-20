@@ -20,6 +20,7 @@ interface IUserState {
   isLoginFinished: boolean;
   isRegisterSuccessful: boolean;
   isRegisterRequested: boolean;
+  isRegisterFinished: boolean;
   isEmailChangeRequested: boolean;
   isEmailChangedSuccessfully: boolean;
   isEmailChangeFinished: boolean;
@@ -38,6 +39,7 @@ const defaultState: IUserState = {
   isLoginFinished: false,
   isRegisterSuccessful: false,
   isRegisterRequested: false,
+  isRegisterFinished: false,
   isEmailChangeRequested: false,
   isEmailChangedSuccessfully: false,
   isEmailChangeFinished: false,
@@ -59,12 +61,15 @@ const HANDLE_USER_REGISTER_SUCCESS = "HANDLE_USER_REGISTER_SUCCESS";
 const HANDLE_USER_REGISTER_REQUEST = "HANDLE_USER_REGISTER_REQUEST";
 const HANDLE_USER_REGISTER_FAILURE = "HANDLE_USER_REGISTER_FAILURE";
 const HANDLE_USER_EMAIL_CHANGE_REQUEST = "HANDLE_USER_EMAIL_CHANGE_REQUEST";
-const HANDLE_USER_EMAIL_CHANGED_SUCCESSFULLY = "HANDLE_USER_EMAIL_CHANGED_SUCCESSFULLY";
+const HANDLE_USER_EMAIL_CHANGED_SUCCESSFULLY =
+  "HANDLE_USER_EMAIL_CHANGED_SUCCESSFULLY";
 const HANDLE_USER_EMAIL_CHANGE_FINISHED = "HANDLE_USER_EMAIL_CHANGE_FINISHED";
-const HANDLE_USER_PASSWORD_CHANGE_REQUEST = "HANDLE_USER_PASSWORD_CHANGE_REQUEST";
+const HANDLE_USER_PASSWORD_CHANGE_REQUEST =
+  "HANDLE_USER_PASSWORD_CHANGE_REQUEST";
 const HANDLE_USER_PASSWORD_CHANGED_SUCCESSFULLY =
   "HANDLE_USER_PASSWORD_CHANGED_SUCCESSFULLY";
-const HANDLE_USER_PASSWORD_CHANGE_FINISHED = "HANDLE_USER_PASSWORD_CHANGE_FINISHED";
+const HANDLE_USER_PASSWORD_CHANGE_FINISHED =
+  "HANDLE_USER_PASSWORD_CHANGE_FINISHED";
 const HANDLE_USER_LOGOUT = "HANDLE_USER_LOGOUT";
 
 export const userReducer: Reducer<IUserState, IUserAction> = (
@@ -122,7 +127,7 @@ export const userReducer: Reducer<IUserState, IUserAction> = (
       };
 
     case HANDLE_USER_REGISTER_SUCCESS:
-      return { ...state, isRegisterSuccessful: true };
+      return { ...state, isRegisterSuccessful: true, isRegisterFinished: true };
     case HANDLE_USER_REGISTER_REQUEST:
       return { ...state, isRegisterRequested: true };
     case HANDLE_USER_REGISTER_FAILURE:
@@ -130,6 +135,7 @@ export const userReducer: Reducer<IUserState, IUserAction> = (
         ...state,
         isRegisterRequested: false,
         isRegisterSuccessful: false,
+        isRegisterFinished: true,
       };
 
     case HANDLE_USER_EMAIL_CHANGE_REQUEST:

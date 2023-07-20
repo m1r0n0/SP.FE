@@ -15,9 +15,10 @@ export const Register = () => {
   const isRegisterSuccessful = useAppSelector(
     (state) => state.user.isRegisterSuccessful
   );
-  const isProviderRegisterFinished = useAppSelector(
-    (state) => state.provider.isRegisterFinished
+  const isRegisterFinished = useAppSelector(
+    (state) => state.user.isRegisterFinished
   );
+  
   const [state, setState] = useState({
     email: "",
     password: "",
@@ -42,7 +43,7 @@ export const Register = () => {
     dispatch(handleRegister(properUserState, disclaimerStates));
   }
 
-  return isLogon(userId) && !isProviderRegisterFinished ? (
+  return isLogon(userId) && !isRegisterFinished ? (
     <Navigate to="/Profile" />
   ) : (
     <div>

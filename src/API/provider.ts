@@ -5,6 +5,7 @@ import {
   REGISTER_PROVIDER,
 } from "../JS/routeConstants";
 import { IProvider } from "../Models/provider";
+import { proceedLogOut } from "../Services";
 import { AppDispatch } from "../Store";
 import { setProviderInfoAction } from "../Store/ProviderReducer";
 
@@ -47,4 +48,18 @@ export async function proceedProviderEdit(userId: string, body: IProvider) {
   } else {
     return await response.json();
   }
+}
+
+export async function proceedProviderDelete(userId: string) {
+  return async (dispatch: AppDispatch) => {
+    await fetch(`${ProviderURI}/${userId}`, {
+      method: "DELETE",
+      // headers: {
+      //   Authorization: await dispatch(GetAuthHeader()),
+      // },
+    });
+
+    window.alert("User deleted successfully!");
+    dispatch(proceedLogOut());
+  };
 }

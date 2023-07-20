@@ -58,6 +58,7 @@ export const providerReducer: Reducer<IProviderState, IProviderAction> = (
     case HANDLE_PROVIDER_REGISTER_SUCCESS:
       return {
         ...state,
+        isDataChangeRequested: false,
         isRegisterSuccessful: true,
         isRegisterFinished: true,
       };

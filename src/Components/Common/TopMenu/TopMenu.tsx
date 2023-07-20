@@ -26,7 +26,7 @@ export function TopMenu() {
             <ul className="navbar-nav flex-grow-1 align-items-end">
               <li className="nav-item">
                 {isLogon(String(userId)) ? (
-                  <Link to="/Profile/ChangeEmail">
+                  <Link to="/Profile">
                     <p className="username"> {userEmail} </p>
                   </Link>
                 ) : (

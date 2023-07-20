@@ -9,6 +9,7 @@ import TopMenu from "../../Common/TopMenu";
 import "./Routers.css";
 import RegisterProvider from "../../Provider/RegisterProvider/RegisterProvider";
 import EditProvider from "../../Provider/EditProvider/EditProvider";
+import DeleteAccount from "../../Account/Profile/DeleteAccount/DeleteAccount";
 
 export const Routers = () => {
   return (
