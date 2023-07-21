@@ -1,14 +1,22 @@
 import { proceedProviderDelete } from "../API/provider";
 import { proceedUserDelete } from "../API/user";
-import { AppDispatch } from "../Store";
+import { IUser } from "../Models/user";
+import { AppDispatch, GetState } from "../Store";
 import { handleProviderLogoutAction } from "../Store/ProviderReducer";
 import { prepareProviderData } from "./provider";
 import { prepareUserData, proceedUserLogOut } from "./user";
 
-export const prepareAppToLoad = () => async (dispatch: AppDispatch) => {
-  dispatch(prepareUserData());
-  dispatch(prepareProviderData());
-};
+export const prepareAppToLoad =
+  (
+    user: IUser,
+    isUserEmailRequested: boolean,
+    isUserRegisterFinished: boolean,
+    token: string | null
+  ) =>
+  async (dispatch: AppDispatch) => {
+    dispatch(prepareUserData(user, isUserEmailRequested, token));
+    dispatch(prepareProviderData(user.userId, isUserRegisterFinished));
+  };
 
 export const proceedLogOut = () => async (dispatch: AppDispatch) => {
   dispatch(proceedUserLogOut());
@@ -18,6 +26,12 @@ export const proceedLogOut = () => async (dispatch: AppDispatch) => {
 export const confirmDelete =
   (userId: string) => async (dispatch: AppDispatch) => {
     if (window.confirm("Do you really want to delete your account?")) {
-      dispatch(await proceedUserDelete(userId))
+      dispatch(await proceedUserDelete(userId));
     }
+  };
+
+export const GetAuthHeader =
+  () => async (dispatch: AppDispatch, getState: GetState) => {
+    const token = getState().user.authenticationToken;
+    return `Bearer ${token}`;
   };

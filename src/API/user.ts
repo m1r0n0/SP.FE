@@ -23,7 +23,7 @@ import {
   setUserEmailAction,
 } from "../Store/UserReducer";
 import { setAuthorizationErrorsAction } from "../Store/DisclaimerReducer";
-import { proceedLogOut } from "../Services";
+import { GetAuthHeader, proceedLogOut } from "../Services";
 import { proceedProviderDelete } from "./provider";
 
 const LoginURI: string = `${API_ACCOUNT}/${API_VERSION_IDENTITY}/${IDENTITY}/${LOGIN}`;
@@ -32,12 +32,6 @@ const GetUserEmailURI: string = `${API_ACCOUNT}/${API_VERSION_IDENTITY}/${IDENTI
 const ChangeUserEmailURI: string = `${API_ACCOUNT}/${API_VERSION_IDENTITY}/${IDENTITY}/${CHANGE_USER_EMAIL}`;
 const ChangeUserPasswordURI: string = `${API_ACCOUNT}/${API_VERSION_IDENTITY}/${IDENTITY}/${CHANGE_USER_PASSWORD}`;
 const DeleteUserURI = `${API_ACCOUNT}/${API_VERSION_IDENTITY}/${IDENTITY}/${DELETE_USER}`;
-
-const GetAuthHeader =
-  () => async (dispatch: AppDispatch, getState: GetState) => {
-    const token = getState().user.authenticationToken;
-    return `Bearer ${token}`;
-  };
 
 export async function proceedLogin(body: ILoginUser) {
   const response = await fetch(LoginURI, {
