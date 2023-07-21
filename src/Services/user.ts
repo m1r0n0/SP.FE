@@ -40,37 +40,32 @@ import {
   setAuthenticationTokenAction,
   setUserIdAction,
 } from "../Store/UserReducer";
-import { useAppSelector } from "../hooks";
 
-export const prepareUserData = () => async (dispatch: AppDispatch) => {
-  const user = useAppSelector((s) => s.user.user);
-
-  await dispatch(setUserStateBasedOnAuthenticationToken());
-
-  if (user.userEmail !== "") dispatch(handleAppReadinessAction());
-};
-
-export const setUserStateBasedOnAuthenticationToken =
-  () => async (dispatch: AppDispatch) => {
-    const isUserEmailRequested = useAppSelector(
-      (state) => state.user.isUserEmailRequested
+export const prepareUserData =
+  (user: IUser, isUserEmailRequested: boolean, token: string | null) =>
+  async (dispatch: AppDispatch) => {
+    await dispatch(
+      setUserStateBasedOnAuthenticationToken(isUserEmailRequested, token)
     );
 
+    if (user.userEmail !== "") dispatch(handleAppReadinessAction());
+  };
+
+export const setUserStateBasedOnAuthenticationToken =
+  (isUserEmailRequested: boolean, token: string | null) =>
+  async (dispatch: AppDispatch) => {
     if (!isUserEmailRequested) {
-      var token: string | null = localStorage.getItem(tokenLS);
       if (token !== null) {
-        dispatch(setAuthenticationTokenAction(token));
+        dispatch(() => dispatch(setAuthenticationTokenAction(token)));
 
         var decodedToken: IDecodedJWT = jwtDecode(token);
         var userId: string = decodedToken.UserId;
 
-        if (userId !== "") {
-          dispatch(setUserIdAction(userId));
-          dispatch(handleEmailRequestAction());
+        dispatch(setUserIdAction(userId));
+        dispatch(handleEmailRequestAction());
 
-          await dispatch(fetchUserEmail(userId));
-        }
-      } else dispatch(handleAppReadinessAction());
+        await dispatch(() => dispatch(fetchUserEmail(userId)));
+      } else dispatch(() => dispatch(handleAppReadinessAction()));
     }
   };
 
@@ -163,5 +158,3 @@ export const handlePasswordChange =
     await dispatch(await proceedPasswordChange(userId, state));
     dispatch(handlePasswordChangeFinishedAction());
   };
-
-
