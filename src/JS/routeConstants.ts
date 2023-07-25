@@ -1,5 +1,5 @@
 //Account
-export const API_ACCOUNT = "https://localhost:7019/api";
+export const API_ACCOUNT = "https://localhost:32777/api";
 export const API_VERSION_IDENTITY = "v1";
 export const IDENTITY = "identity";
 export const LOGIN = "login";
