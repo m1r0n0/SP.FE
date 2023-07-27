@@ -7,11 +7,17 @@ import {
 
 interface IUserAction {
   type: string;
-  payload: ILoginUserResponse | string | IUser | IIdentityAuthorizationError[];
+  payload:
+    | ILoginUserResponse
+    | string
+    | IUser
+    | IIdentityAuthorizationError[]
+    | boolean;
 }
 
 interface IUserState {
   user: IUser;
+  isProvider: boolean;
   authenticationToken: string;
   isAppLoaded: boolean;
   isUserEmailRequested: boolean;
@@ -31,6 +37,7 @@ interface IUserState {
 
 const defaultState: IUserState = {
   user: { userId: "", userEmail: "" },
+  isProvider: false,
   authenticationToken: "",
   isAppLoaded: false,
   isUserEmailRequested: false,
@@ -50,6 +57,7 @@ const defaultState: IUserState = {
 
 const SET_USER_ID = "SET_USER_ID";
 const SET_USER_EMAIL = "SET_USER_EMAIL";
+const SET_IS_PROVIDER = "SET_IS_PROVIDER";
 const SET_AUTHENTICATION_TOKEN = "SET_AUTHENTICATION_TOKEN";
 const HANDLE_USER_LOGIN_REQUEST = "HANDLE_USER_LOGIN_REQUEST";
 const HANDLE_USER_LOGIN_SUCCESS = "HANDLE_USER_LOGIN_SUCCESS";
@@ -91,6 +99,8 @@ export const userReducer: Reducer<IUserState, IUserAction> = (
           user: { ...state.user, userEmail: action.payload as string },
         };
       } else return { ...state };
+    case SET_IS_PROVIDER:
+      return { ...state, isProvider: action.payload as boolean };
 
     case SET_AUTHENTICATION_TOKEN:
       return {
@@ -185,6 +195,10 @@ export const setUserIdAction = (payload: string) => ({
 });
 export const setUserEmailAction = (payload: string) => ({
   type: SET_USER_EMAIL,
+  payload,
+});
+export const setIsProviderAction = (payload: boolean) => ({
+  type: SET_IS_PROVIDER,
   payload,
 });
 

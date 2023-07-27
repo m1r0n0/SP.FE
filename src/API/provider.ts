@@ -8,7 +8,7 @@ import { IProvider } from "../Models/provider";
 import { GetAuthHeader, proceedLogOut } from "../Services";
 import { AppDispatch } from "../Store";
 import {
-  handleShowProviderRegisterFailedDisclaimer,
+  handleShowCustomerProviderRegisterFailedDisclaimer,
   hideAllDisclaimersAction,
 } from "../Store/DisclaimerReducer";
 import {
@@ -50,7 +50,7 @@ export async function proceedProviderRegister(userId: string, body: IProvider) {
     });
     if (!response.ok) {
       dispatch(handleRegisterFailureAction());
-      dispatch(handleShowProviderRegisterFailedDisclaimer());
+      dispatch(handleShowCustomerProviderRegisterFailedDisclaimer());
     } else {
       dispatch(handleRegisterSuccessAction());
     }
@@ -68,7 +68,7 @@ export async function proceedProviderEdit(userId: string, body: IProvider) {
       body: JSON.stringify(body),
     });
     if (!response.ok) {
-      dispatch(handleShowProviderRegisterFailedDisclaimer());
+      dispatch(handleShowCustomerProviderRegisterFailedDisclaimer());
     } else {
       dispatch(setProviderInfoAction(body));
       dispatch(handleDataChangedSuccessfullyAction());

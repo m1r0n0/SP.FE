@@ -27,7 +27,8 @@ const SET_AUTHORIZE_ERRORS = "SET_AUTHORIZE_ERRORS";
 const SET_IS_NO_MATCHING_PASSWORDS = "IS_NO_MATCHING_PASSWORDS";
 
 //Provider disclaimers action types
-const HANDLE_PROVIDER_REGISTER_FAILURE = "HANDLE_PROVIDER_REGISTER_FAILURE";
+const HANDLE_CUSTOMER_PROVIDER_REGISTER_FAILURE =
+  "HANDLE_CUSTOMER_PROVIDER_REGISTER_FAILURE";
 
 export const disclaimerReducer: Reducer<DisclaimerState, IDisclaimerAction> = (
   state = defaultState,
@@ -50,7 +51,7 @@ export const disclaimerReducer: Reducer<DisclaimerState, IDisclaimerAction> = (
       return { ...state, isNoMatchingPasswords: action.payload as boolean };
 
     //Account disclaimers actions
-    case HANDLE_PROVIDER_REGISTER_FAILURE:
+    case HANDLE_CUSTOMER_PROVIDER_REGISTER_FAILURE:
       return { ...state, showProviderRegisterFailedDisclaimer: true };
 
     default:
@@ -79,6 +80,6 @@ export const setIsNoMatchingPasswordsAction = (payload: boolean) => ({
 });
 
 //Provider disclaimers actions
-export const handleShowProviderRegisterFailedDisclaimer = () => ({
-  type: HANDLE_PROVIDER_REGISTER_FAILURE,
+export const handleShowCustomerProviderRegisterFailedDisclaimer = () => ({
+  type: HANDLE_CUSTOMER_PROVIDER_REGISTER_FAILURE,
 });

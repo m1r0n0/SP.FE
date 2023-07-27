@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks";
 import RegisterDisclaimers from "../../Account/Register/Disclaimers";
 import { handleProviderRegister } from "../../../Services/provider";
 import { IProvider } from "../../../Models/provider";
-import InvalidInputDisclaimer from "./InvalidInputDisclaimer/InvalidInputDisclaimer";
+import InvalidInputDisclaimer from "../../Common/InvalidInputDisclaimer/InvalidInputDisclaimer";
 
 export default function RegisterProvider() {
   const dispatch = useAppDispatch();

@@ -9,8 +9,8 @@ import {
   handleProviderRegister,
 } from "../../../Services/provider";
 import { IProvider } from "../../../Models/provider";
-import InvalidInputDisclaimer from "../RegisterProvider/InvalidInputDisclaimer";
-import SuccessDisclaimer from "../RegisterProvider/InvalidInputDisclaimer/SuccessDisclaimer/SuccessDisclaimer";
+import InvalidInputDisclaimer from "../../Common/InvalidInputDisclaimer";
+import SuccessDisclaimer from "../../Common/InvalidInputDisclaimer/SuccessDisclaimer/SuccessDisclaimer";
 
 export default function EditProvider() {
   const dispatch = useAppDispatch();

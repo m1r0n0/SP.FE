@@ -21,6 +21,7 @@ export const Login = () => {
     password: "",
     rememberMe: false,
   });
+  const [isProvider, setIsProvider] = useState(false);
 
   return isLogon(userId) ? (
     <Navigate to="/Profile" />
@@ -60,6 +61,33 @@ export const Login = () => {
           name="rememberMe"
           id="rememberMe"
         />
+      </div>
+      <div>
+        <div>
+          <input
+            type="radio"
+            id="customer"
+            name="user"
+            value="customer"
+            onClick={() => {
+              setIsProvider(false);
+            }}
+            defaultChecked
+          />
+          <label htmlFor="customer">Customer</label>
+        </div>
+        <div>
+          <input
+            type="radio"
+            id="provider"
+            name="user"
+            value="provider"
+            onClick={() => {
+              setIsProvider(true);
+            }}
+          />
+          <label htmlFor="provider">Provider</label>
+        </div>
       </div>
       <div className="m-3">
         {isLoginFinished ? (

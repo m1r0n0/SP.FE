@@ -1,5 +1,5 @@
 //Account
-export const API_ACCOUNT = "https://localhost:32777/api";
+export const API_ACCOUNT = "https://localhost:7019/api";
 export const API_VERSION_IDENTITY = "v1";
 export const IDENTITY = "identity";
 export const LOGIN = "login";
@@ -14,3 +14,9 @@ export const API_PROVIDER = "https://localhost:7260/api";
 export const API_VERSION_PROVIDER = "v1";
 export const PROVIDER = "provider";
 export const REGISTER_PROVIDER = "new";
+
+//Customer
+export const API_CUSTOMER = "https://localhost:7148/api";
+export const API_VERSION_CUSTOMER = "v1";
+export const CUSTOMER = "customer";
+export const REGISTER_CUSTOMER = "new";

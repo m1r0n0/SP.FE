@@ -8,8 +8,8 @@ import HomePage from "../../Common/HomePage";
 import TopMenu from "../../Common/TopMenu";
 import "./Routers.css";
 import RegisterProvider from "../../Provider/RegisterProvider/RegisterProvider";
-import EditProvider from "../../Provider/EditProvider/EditProvider";
-import DeleteAccount from "../../Account/Profile/DeleteAccount/DeleteAccount";
+import RegisterCustomer from "../../Customer/RegisterCustomer";
+import EditProfile from "../../Account/Profile/EditProfile/EditProfile";
 
 export const Routers = () => {
   return (
@@ -22,9 +22,10 @@ export const Routers = () => {
           <Route path="/Login" element={<Login />} />
           <Route path="/Register" element={<Register />} />
           <Route path="/Profile/*" element={<Profile />} />
-          <Route path="/Profile/Edit" element={<EditProvider />} />
+          <Route path="/Profile/Edit" element={<EditProfile />} />
 
           <Route path="/Register/Provider" element={<RegisterProvider />} />
+          <Route path="/Register/Customer" element={<RegisterCustomer />} />
 
           <Route path="/Unauthorized" element={<Unauthorized />} />
           <Route path="/NotFound" element={<NotFound />} />

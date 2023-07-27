@@ -5,14 +5,16 @@ import ProviderProfile from "../../Provider/ProviderProfile/ProviderProfile";
 import DeleteAccount from "./DeleteAccount";
 import { useAppSelector } from "../../../hooks";
 import { isLogon } from "../../../Services/user";
+import CustomerProfile from "../../Customer/CustomerProfile";
 
 export const Profile = () => {
   const userId = useAppSelector((s) => s.user.user.userId);
+  const isProvider = useAppSelector((s) => s.user.isProvider);
 
   return isLogon(userId) ? (
     <>
       <div className="d-flex align-items-center justify-content-center">
-        <ProviderProfile />
+        {isProvider ? <ProviderProfile /> : <CustomerProfile />}
         <div>
           <Link to="/Profile/ChangeEmail">Change Email</Link>
         </div>

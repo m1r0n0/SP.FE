@@ -25,6 +25,7 @@ import {
 import { setAuthorizationErrorsAction } from "../Store/DisclaimerReducer";
 import { GetAuthHeader, proceedLogOut } from "../Services";
 import { proceedProviderDelete } from "./provider";
+import { proceedCustomerDelete } from "./customer";
 
 const LoginURI: string = `${API_ACCOUNT}/${API_VERSION_IDENTITY}/${IDENTITY}/${LOGIN}`;
 const RegisterURI: string = `${API_ACCOUNT}/${API_VERSION_IDENTITY}/${IDENTITY}/${REGISTER}`;
@@ -133,7 +134,8 @@ export async function proceedUserDelete(userId: string) {
     });
 
     if (response.ok) {
-      dispatch(await proceedProviderDelete(userId))
+      dispatch(await proceedProviderDelete(userId));
+      dispatch(await proceedCustomerDelete(userId));
     }
   };
 }

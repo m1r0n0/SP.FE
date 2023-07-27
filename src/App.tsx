@@ -16,8 +16,17 @@ function App() {
     (s) => s.user.isRegisterFinished
   );
   const token: string | null = localStorage.getItem(tokenLS);
+  const isProvider = useAppSelector((s) => s.user.isProvider);
 
-  dispatch(prepareAppToLoad(user, isUserEmailRequested, isUserRegisterFinished, token));
+  dispatch(
+    prepareAppToLoad(
+      user,
+      isUserEmailRequested,
+      isUserRegisterFinished,
+      token,
+      isProvider
+    )
+  );
 
   return (
     <div>

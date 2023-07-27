@@ -1,6 +1,6 @@
 import React from "react";
-import { useAppSelector } from "../../../../hooks";
 import SuccessDisclaimer from "./SuccessDisclaimer";
+import { useAppSelector } from "../../../hooks";
 
 export default function InvalidInputDisclaimer() {
   const showProviderRegisterFailedDisclaimer = useAppSelector(

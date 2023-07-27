@@ -1,13 +1,15 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { userReducer } from "./UserReducer";
 import thunk from "redux-thunk";
-import {disclaimerReducer} from "./DisclaimerReducer"
+import { disclaimerReducer } from "./DisclaimerReducer";
 import { providerReducer } from "./ProviderReducer";
+import { customerReducer } from "./CustomerReducer";
 
 const rootReducer = combineReducers({
   user: userReducer,
   disclaimer: disclaimerReducer,
   provider: providerReducer,
+  customer: customerReducer,
 });
 
 export const store = configureStore({
