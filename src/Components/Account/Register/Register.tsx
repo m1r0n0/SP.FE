@@ -40,7 +40,7 @@ export const Register = () => {
       isInvalidEmail: state.email === "",
     };
 
-    dispatch(handleRegister(properUserState, disclaimerStates));
+    dispatch(handleRegister(properUserState, disclaimerStates, state.isProvider));
   }
 
   return isLogon(userId) && !isRegisterFinished ? (

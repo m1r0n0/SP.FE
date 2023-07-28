@@ -99,7 +99,7 @@ export const Login = () => {
             type="button"
             className="btn btn-primary btn-lg"
             value="Log in"
-            onClick={() => dispatch(handleLogin(state))}
+            onClick={() => dispatch(handleLogin(state, isProvider))}
           />
         )}
       </div>

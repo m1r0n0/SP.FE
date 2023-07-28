@@ -6,7 +6,7 @@ import {
   proceedPasswordChange,
   proceedRegister,
 } from "../API/user";
-import { tokenLS } from "../JS/constants";
+import { isProviderLS, tokenLS } from "../JS/constants";
 import { IComponentDependentDisclaimerStates } from "../Models";
 import {
   IAuthorizationBadRequestResponse,
@@ -38,6 +38,7 @@ import {
   handleRegisterRequestAction,
   handleRegisterSuccessAction,
   setAuthenticationTokenAction,
+  setIsProviderAction,
   setUserIdAction,
 } from "../Store/UserReducer";
 
@@ -72,7 +73,8 @@ export const setUserStateBasedOnAuthenticationToken =
 export const handleRegister =
   (
     userState: IRegisterUser,
-    disclaimerStates: IComponentDependentDisclaimerStates
+    disclaimerStates: IComponentDependentDisclaimerStates,
+    isProvider: boolean
   ) =>
   async (dispatch: AppDispatch) => {
     dispatch(handleRegisterRequestAction());
@@ -98,7 +100,7 @@ export const handleRegister =
               rememberMe: true,
             };
 
-            dispatch(handleLogin(user));
+            dispatch(handleLogin(user, isProvider));
             dispatch(handleRegisterSuccessAction());
             dispatch(hideAllDisclaimersAction());
           }
@@ -115,7 +117,8 @@ export const updateRegisterStateDependentDisclaimerStates =
   };
 
 export const handleLogin =
-  (loginData: ILoginUser) => async (dispatch: AppDispatch) => {
+  (loginData: ILoginUser, isProvider: boolean) =>
+  async (dispatch: AppDispatch) => {
     dispatch(handleLoginRequestAction());
 
     try {
@@ -123,6 +126,9 @@ export const handleLogin =
 
       localStorage.setItem(tokenLS, user.token);
       dispatch(setAuthenticationTokenAction(user.token));
+
+      localStorage.setItem(isProviderLS, isProvider.toString());
+      dispatch(setIsProviderAction(isProvider));
 
       dispatch(handleLoginSuccessAction(user));
 
@@ -142,6 +148,7 @@ export const isLogon = (userId: string): boolean => {
 
 export const proceedUserLogOut = () => async (dispatch: AppDispatch) => {
   localStorage.removeItem(tokenLS);
+  localStorage.removeItem(isProviderLS);
   dispatch(handleLogoutAction());
 };
 

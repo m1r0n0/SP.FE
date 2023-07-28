@@ -3,7 +3,7 @@ import { CircularProgress } from "@mui/material";
 import Routers from "./Components/Utilities/Routers";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import { prepareAppToLoad } from "./Services";
-import { tokenLS } from "./JS/constants";
+import { isProviderLS, tokenLS } from "./JS/constants";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -16,7 +16,7 @@ function App() {
     (s) => s.user.isRegisterFinished
   );
   const token: string | null = localStorage.getItem(tokenLS);
-  const isProvider = useAppSelector((s) => s.user.isProvider);
+  const isProvider = /true/i.test(localStorage.getItem(isProviderLS)!);
 
   dispatch(
     prepareAppToLoad(
