@@ -2,7 +2,7 @@ import {
     API_CUSTOMER,
     API_VERSION_CUSTOMER,
     CUSTOMER,
-    REGISTER_CUSTOMER,
+    NEW,
   } from "../JS/routeConstants";
   import { ICustomer } from "../Models/customer";
   import { GetAuthHeader, proceedLogOut } from "../Services";
@@ -20,7 +20,7 @@ import {
   } from "../Store/CustomerReducer";
   
   const CustomerURI = `${API_CUSTOMER}/${API_VERSION_CUSTOMER}/${CUSTOMER}`;
-  const RegisterCustomerURI = `${API_CUSTOMER}/${API_VERSION_CUSTOMER}/${CUSTOMER}/${REGISTER_CUSTOMER}`;
+  const RegisterCustomerURI = `${API_CUSTOMER}/${API_VERSION_CUSTOMER}/${CUSTOMER}/${NEW}`;
   
   export async function fetchCustomerInfo(userId: string) {
     return async (dispatch: AppDispatch) => {

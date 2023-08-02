@@ -2,7 +2,7 @@ import {
   API_PROVIDER,
   API_VERSION_PROVIDER,
   PROVIDER,
-  REGISTER_PROVIDER,
+  NEW,
 } from "../JS/routeConstants";
 import { IProvider } from "../Models/provider";
 import { GetAuthHeader, proceedLogOut } from "../Services";
@@ -20,7 +20,7 @@ import {
 } from "../Store/ProviderReducer";
 
 const ProviderURI = `${API_PROVIDER}/${API_VERSION_PROVIDER}/${PROVIDER}`;
-const RegisterProviderURI = `${API_PROVIDER}/${API_VERSION_PROVIDER}/${PROVIDER}/${REGISTER_PROVIDER}`;
+const RegisterProviderURI = `${API_PROVIDER}/${API_VERSION_PROVIDER}/${PROVIDER}/${NEW}`;
 
 export async function fetchProviderInfo(userId: string) {
   return async (dispatch: AppDispatch) => {

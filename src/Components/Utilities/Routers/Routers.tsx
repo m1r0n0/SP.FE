@@ -7,8 +7,8 @@ import Unauthorized from "../../Common/HtmlErrors/Unauthorized";
 import HomePage from "../../Common/HomePage";
 import TopMenu from "../../Common/TopMenu";
 import "./Routers.css";
-import RegisterProvider from "../../Provider/RegisterProvider/RegisterProvider";
-import RegisterCustomer from "../../Customer/RegisterCustomer";
+import RegisterProvider from "../../Provider/Profile/RegisterProvider/RegisterProvider";
+import RegisterCustomer from "../../Customer/Profile/RegisterCustomer";
 import EditProfile from "../../Account/Profile/EditProfile/EditProfile";
 
 export const Routers = () => {

@@ -1,11 +1,11 @@
 import { Link, Navigate, Route, Routes } from "react-router-dom";
 import ChangeEmail from "./ChangeEmail";
 import ChangePassword from "./ChangePassword";
-import ProviderProfile from "../../Provider/ProviderProfile/ProviderProfile";
+import ProviderProfile from "../../Provider/Profile/ProviderProfile/ProviderProfile";
 import DeleteAccount from "./DeleteAccount";
 import { useAppSelector } from "../../../hooks";
 import { isLogon } from "../../../Services/user";
-import CustomerProfile from "../../Customer/CustomerProfile";
+import CustomerProfile from "../../Customer/Profile/CustomerProfile";
 
 export const Profile = () => {
   const userId = useAppSelector((s) => s.user.user.userId);

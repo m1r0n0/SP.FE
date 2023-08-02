@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
-import { isLogon } from "../../../Services/user";
+import { isLogon } from "../../../../Services/user";
 import { CircularProgress } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../../../hooks";
-import RegisterDisclaimers from "../../Account/Register/Disclaimers";
+import { useAppDispatch, useAppSelector } from "../../../../hooks";
+import RegisterDisclaimers from "../../../Account/Register/Disclaimers";
 import {
   handleCustomerEdit,
   handleCustomerRegister,
-} from "../../../Services/customer";
-import { ICustomer } from "../../../Models/customer";
-import InvalidInputDisclaimer from "../../Common/InvalidInputDisclaimer";
-import SuccessDisclaimer from "../../Common/InvalidInputDisclaimer/SuccessDisclaimer/SuccessDisclaimer";
+} from "../../../../Services/customer";
+import { ICustomer } from "../../../../Models/customer";
+import InvalidInputDisclaimer from "../../../Common/InvalidInputDisclaimer";
+import SuccessDisclaimer from "../../../Common/InvalidInputDisclaimer/SuccessDisclaimer/SuccessDisclaimer";
 
 export default function EditCustomer() {
   const dispatch = useAppDispatch();

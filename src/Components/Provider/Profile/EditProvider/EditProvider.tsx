@@ -1,47 +1,43 @@
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
-import { isLogon } from "../../../Services/user";
+import { isLogon } from "../../../../Services/user";
 import { CircularProgress } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../../../hooks";
-import RegisterDisclaimers from "../../Account/Register/Disclaimers";
-import { handleProviderRegister } from "../../../Services/provider";
-import { IProvider } from "../../../Models/provider";
-import InvalidInputDisclaimer from "../../Common/InvalidInputDisclaimer/InvalidInputDisclaimer";
+import { useAppDispatch, useAppSelector } from "../../../../hooks";
+import RegisterDisclaimers from "../../../Account/Register/Disclaimers";
+import {
+  handleProviderEdit,
+  handleProviderRegister,
+} from "../../../../Services/provider";
+import { IProvider } from "../../../../Models/provider";
+import InvalidInputDisclaimer from "../../../Common/InvalidInputDisclaimer";
+import SuccessDisclaimer from "../../../Common/InvalidInputDisclaimer/SuccessDisclaimer/SuccessDisclaimer";
 
-export default function RegisterProvider() {
+export default function EditProvider() {
   const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.user.user.userId);
-  const isRegisterRequested = useAppSelector(
-    (s) => s.provider.isRegisterRequested
+  const isDataChangeRequested = useAppSelector(
+    (s) => s.provider.isDataChangeRequested
   );
-  const isRegisterFinished = useAppSelector(
-    (state) => state.user.isRegisterFinished
-  );
-  const isRegisterSuccessful = useAppSelector(
-    (s) => s.provider.isRegisterSuccessful
+  const provider = useAppSelector((s) => s.provider.provider);
+  const isDataChangedSuccessfully = useAppSelector(
+    (state) => state.provider.isDataChangedSuccessfully
   );
 
   const [state, setState] = useState({
-    firstName: "",
-    lastName: "",
-    enterpriseName: "",
-    workHoursBegin: "8",
-    workHoursEnd: "16",
+    ...provider,
+    workHoursBegin: provider.workHoursBegin.toString(),
+    workHoursEnd: provider.workHoursEnd.toString(),
   });
 
   const providerState: IProvider = {
-    firstName: state.firstName,
-    lastName: state.lastName,
-    enterpriseName: state.enterpriseName,
+    ...state,
     workHoursBegin: parseInt(state.workHoursBegin, 10),
     workHoursEnd: parseInt(state.workHoursEnd, 10),
   };
 
-  return (isLogon(userId) && !isRegisterFinished) || isRegisterSuccessful ? (
-    <Navigate to="/Profile" />
-  ) : (
+  return (
     <div>
-      <h2>Register</h2>
+      <h2>Edit</h2>
       <div>
         <label htmlFor="firstName">First Name</label>
         <input
@@ -110,16 +106,14 @@ export default function RegisterProvider() {
         />
       </div>
       <div className="m-4">
-        {isRegisterRequested ? (
+        {isDataChangeRequested ? (
           <CircularProgress size={75} />
         ) : (
           <input
             type="button"
-            value="Register"
+            value="Edit"
             className="btn btn-success btn-lg"
-            onClick={() =>
-              dispatch(handleProviderRegister(userId, providerState))
-            }
+            onClick={() => dispatch(handleProviderEdit(userId, providerState))}
           />
         )}
       </div>

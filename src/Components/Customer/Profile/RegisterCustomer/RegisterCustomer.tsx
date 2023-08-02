@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
-import { isLogon } from "../../../Services/user";
+import { isLogon } from "../../../../Services/user";
 import { CircularProgress } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../../../hooks";
-import InvalidInputDisclaimer from "../../Common/InvalidInputDisclaimer/InvalidInputDisclaimer";
-import { ICustomer } from "../../../Models/customer";
-import { handleCustomerRegister } from "../../../Services/customer";
+import { useAppDispatch, useAppSelector } from "../../../../hooks";
+import InvalidInputDisclaimer from "../../../Common/InvalidInputDisclaimer/InvalidInputDisclaimer";
+import { ICustomer } from "../../../../Models/customer";
+import { handleCustomerRegister } from "../../../../Services/customer";
 
 export default function RegisterProvider() {
   const dispatch = useAppDispatch();

@@ -1,5 +1,5 @@
 import { Link, redirect } from "react-router-dom";
-import { useAppSelector } from "../../../hooks";
+import { useAppSelector } from "../../../../hooks";
 
 export default function ProviderProfile() {
   const customer = useAppSelector((s) => s.customer.customer);
