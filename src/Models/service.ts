@@ -12,3 +12,14 @@ export interface IEvent {
     DateOfStart: string,
     DateOfEnd: string
 }
+
+export interface IServiceCreation {
+    name: string,
+    price: number,
+    providerUserId: string
+}
+
+export interface IServiceEdition {
+    name: string,
+    price: number,
+}

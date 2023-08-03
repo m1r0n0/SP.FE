@@ -1,29 +1,38 @@
-import { Reducer } from "redux";
+import {Reducer} from "redux";
+import {IEvent, IService} from "../Models/service";
 
-interface ICustomerAction {
+interface IServiceAction {
     type: string;
-    payload: string;
+    payload: string | IEvent[] | IService[];
 }
 
-interface ICustomerState {
-
+interface IServiceState {
+    events: IEvent[]
+    services: IService[]
 }
 
-const defaultState: ICustomerState = {
-
+const defaultState: IServiceState = {
+    events: [],
+    services: []
 };
 
-const SET_CUSTOMER = "SET_CUSTOMER";
+const SET_EVENTS = "SET_EVENTS";
+const SET_SERVICES = "SET_SERVICES";
 
-export const customerReducer: Reducer<ICustomerState, ICustomerAction> = (
+export const serviceReducer: Reducer<IServiceState, IServiceAction> = (
     state = defaultState,
-    action: ICustomerAction
+    action: IServiceAction
 ) => {
     switch (action.type) {
-        case SET_CUSTOMER:
+        case SET_EVENTS:
             return {
                 ...state,
-                customer: action.payload,
+                events: action.payload as IEvent[],
+            };
+        case SET_SERVICES:
+            return {
+                ...state,
+                services: action.payload as IService[],
             };
 
         default:
@@ -31,7 +40,12 @@ export const customerReducer: Reducer<ICustomerState, ICustomerAction> = (
     }
 };
 
-export const handleRegisterSuccessAction = () => ({
-    type: ,
+export const setEventsAction = (payload: IEvent[]) => ({
+    type: SET_EVENTS,
+    payload
+});
+export const setServicesAction = (payload: IService[]) => ({
+    type: SET_SERVICES,
+    payload
 });
 
