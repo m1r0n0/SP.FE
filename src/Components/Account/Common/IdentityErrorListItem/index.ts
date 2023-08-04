@@ -1,3 +1,3 @@
-import { IdentityErrorListItem } from "./ErrorsListItem";
+import {IdentityErrorListItem} from "./ErrorsListItem";
 
 export default IdentityErrorListItem;

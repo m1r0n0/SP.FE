@@ -1,3 +1,3 @@
-import { IncorrectLoginInputDisclaimer } from "./IncorrectLoginInputDisclaimer";
+import {IncorrectLoginInputDisclaimer} from "./IncorrectLoginInputDisclaimer";
 
 export default IncorrectLoginInputDisclaimer;

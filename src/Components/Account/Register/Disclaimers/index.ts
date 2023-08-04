@@ -1,3 +1,3 @@
-import { RegisterDisclaimers } from "./RegisterDisclaimers";
+import {RegisterDisclaimers} from "./RegisterDisclaimers";
 
 export default RegisterDisclaimers;

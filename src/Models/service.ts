@@ -1,5 +1,5 @@
 export interface IService {
-    serviceId: string,
+    serviceId: number,
     name: string,
     price: number,
     providerUserId: string

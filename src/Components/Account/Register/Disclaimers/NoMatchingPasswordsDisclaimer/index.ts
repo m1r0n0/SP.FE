@@ -1,3 +1,3 @@
-import { NoMatchingPasswordsDisclaimer } from "./NoMatchingPasswordsDisclaimer";
+import {NoMatchingPasswordsDisclaimer} from "./NoMatchingPasswordsDisclaimer";
 
 export default NoMatchingPasswordsDisclaimer;

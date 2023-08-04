@@ -92,7 +92,7 @@ export async function getEventsForCustomer(customerUserId: string) {
 
 export async function getEventsForProvider(providerUserId: string) {
     return async (dispatch: AppDispatch) => {
-        const response = await fetch(`${GetEventsForCustomerURI}/${providerUserId}`, {
+        const response = await fetch(`${GetEventsForProviderURI}/${providerUserId}`, {
             headers: {
                 Authorization: await dispatch(GetAuthHeader()),
             },
