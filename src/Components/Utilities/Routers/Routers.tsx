@@ -10,6 +10,7 @@ import RegisterProvider from "../../Profile/Provider/RegisterProvider/RegisterPr
 import RegisterCustomer from "../../Profile/Customer/RegisterCustomer";
 import Profile from "../../Profile/User";
 import EditProfile from "../../Profile/User/EditProfile";
+import Services from "../../Services";
 
 export const Routers = () => {
     return (
@@ -17,6 +18,9 @@ export const Routers = () => {
             <TopMenu/>
             <div className="app-body">
                 <Routes>
+                    <Route path="/Unauthorized" element={<Unauthorized/>}/>
+                    <Route path="/NotFound" element={<NotFound/>}/>
+
                     <Route path="/" element={<HomePage/>}/>
 
                     <Route path="/Login" element={<Login/>}/>
@@ -27,8 +31,7 @@ export const Routers = () => {
                     <Route path="/Register/Provider" element={<RegisterProvider/>}/>
                     <Route path="/Register/Customer" element={<RegisterCustomer/>}/>
 
-                    <Route path="/Unauthorized" element={<Unauthorized/>}/>
-                    <Route path="/NotFound" element={<NotFound/>}/>
+                    <Route path="/Services" element={<Services/>}/>
                 </Routes>
             </div>
         </BrowserRouter>

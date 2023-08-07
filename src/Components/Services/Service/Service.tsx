@@ -17,7 +17,7 @@ export default function Service({service, provider}: props) {
 
     dispatch(prepareProviderData(service.providerUserId, false))
     newData = provider;
-    dispatch(setProviderInfoAction(oldData))
+    dispatch(setProviderInfoAction(oldData));
 
     return <div>
         <p>{service.name}</p>
