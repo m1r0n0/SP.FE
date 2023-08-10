@@ -26,3 +26,6 @@ export const SERVICE = "service";
 export const EVENTS = "events";
 export const EVENT = "event";
 export const NEW = "new";
+
+//Graphql
+export const API_GRAPHQL = "https://localhost:7130/graphql/";

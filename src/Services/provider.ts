@@ -1,5 +1,5 @@
 import {fetchProviderInfo, proceedProviderEdit, proceedProviderRegister,} from "../API/provider";
-import {IProvider} from "../Models/provider";
+import {IProviderInfo} from "../Models/provider";
 import {AppDispatch} from "../Store";
 import {hideAllDisclaimersAction} from "../Store/DisclaimerReducer";
 import {
@@ -14,7 +14,7 @@ export const prepareProviderData = (userId: string, isUserRegisterFinished: bool
 };
 
 export const handleProviderRegister =
-    (userId: string, body: IProvider) => async (dispatch: AppDispatch) => {
+    (userId: string, body: IProviderInfo) => async (dispatch: AppDispatch) => {
         dispatch(hideAllDisclaimersAction());
         dispatch(handleRegisterRequestAction());
         dispatch(setProviderInfoAction(body));
@@ -22,7 +22,7 @@ export const handleProviderRegister =
     };
 
 export const handleProviderEdit =
-    (userId: string, body: IProvider) => async (dispatch: AppDispatch) => {
+    (userId: string, body: IProviderInfo) => async (dispatch: AppDispatch) => {
         dispatch(hideAllDisclaimersAction());
         dispatch(handleDataChangeRequestAction());
 

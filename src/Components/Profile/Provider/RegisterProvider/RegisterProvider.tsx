@@ -4,7 +4,7 @@ import {isLogon} from "../../../../Services/user";
 import {CircularProgress} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../../../hooks";
 import {handleProviderRegister} from "../../../../Services/provider";
-import {IProvider} from "../../../../Models/provider";
+import {IProviderInfo} from "../../../../Models/provider";
 import InvalidInputDisclaimer from "../../../Common/InvalidInputDisclaimer/InvalidInputDisclaimer";
 
 export default function RegisterProvider() {
@@ -28,7 +28,7 @@ export default function RegisterProvider() {
         workHoursEnd: "16",
     });
 
-    const providerState: IProvider = {
+    const providerState: IProviderInfo = {
         firstName: state.firstName,
         lastName: state.lastName,
         enterpriseName: state.enterpriseName,

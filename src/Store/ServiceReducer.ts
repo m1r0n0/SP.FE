@@ -1,14 +1,15 @@
 import {Reducer} from "redux";
 import {IEvent, IService} from "../Models/service";
+import {IServiceWithProvider} from "../Models";
 
 interface IServiceAction {
     type: string;
-    payload: string | IEvent[] | IService[];
+    payload: string | IEvent[] | IService[] | IServiceWithProvider[];
 }
 
 interface IServiceState {
     events: IEvent[]
-    services: IService[]
+    services: IServiceWithProvider[]
 }
 
 const defaultState: IServiceState = {
@@ -32,7 +33,7 @@ export const serviceReducer: Reducer<IServiceState, IServiceAction> = (
         case SET_SERVICES:
             return {
                 ...state,
-                services: action.payload as IService[],
+                services: action.payload as IServiceWithProvider[],
             };
 
         default:
@@ -44,7 +45,7 @@ export const setEventsAction = (payload: IEvent[]) => ({
     type: SET_EVENTS,
     payload
 });
-export const setServicesAction = (payload: IService[]) => ({
+export const setServicesAction = (payload: IServiceWithProvider[]) => ({
     type: SET_SERVICES,
     payload
 });

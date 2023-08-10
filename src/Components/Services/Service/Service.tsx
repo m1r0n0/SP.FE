@@ -1,29 +1,21 @@
 import React from 'react'
 import {useAppDispatch} from "../../../hooks";
-import {IProvider} from "../../../Models/provider";
-import {setProviderInfoAction} from "../../../Store/ProviderReducer";
-import {IService} from "../../../Models/service";
-import {prepareProviderData} from "../../../Services/provider";
+import {IProviderInfo} from "../../../Models/provider";
+import {IServiceInfo} from "../../../Models/service";
 
 interface props {
-    service: IService,
-    provider: IProvider
+    service: IServiceInfo,
+    provider: IProviderInfo
 }
 
 export default function Service({service, provider}: props) {
     var dispatch = useAppDispatch();
-    var oldData = provider;
-    var newData: IProvider;
-
-    dispatch(prepareProviderData(service.providerUserId, false))
-    newData = provider;
-    dispatch(setProviderInfoAction(oldData));
 
     return <div>
         <p>{service.name}</p>
-        <p>{service.price}</p>
-        <p>{newData.firstName} {newData.lastName}</p>
-        <p>{newData.enterpriseName}</p>
-        <p>Workhours: {newData.workHoursBegin} - {newData.workHoursEnd}</p>
+        <p>{service.price}$</p>
+        <p>{provider.firstName} {provider.lastName}</p>
+        <p>{provider.enterpriseName}</p>
+        <p>Workhours: {provider.workHoursBegin} - {provider.workHoursEnd}</p>
     </div>
 }

@@ -1,10 +1,19 @@
-import {API_SERVICE, API_VERSION_SERVICE, CUSTOMER, EVENTS, NEW, PROVIDER, SERVICE} from "../JS/routeConstants";
+import {
+    API_GRAPHQL,
+    API_SERVICE,
+    API_VERSION_SERVICE,
+    CUSTOMER,
+    EVENTS,
+    NEW,
+    PROVIDER,
+    SERVICE
+} from "../JS/routeConstants";
 import {AppDispatch} from "../Store";
 import {GetAuthHeader} from "../Services";
 import {setEventsAction, setServicesAction} from "../Store/ServiceReducer";
 import {IServiceCreation, IServiceEdition} from "../Models/service";
 
-const ServiceURI = `${API_SERVICE}/${API_VERSION_SERVICE}/${SERVICE}`;
+const ServiceURI = `${API_GRAPHQL}`;
 const CreateServiceURI = `${API_SERVICE}/${API_VERSION_SERVICE}/${SERVICE}/${NEW}`;
 const GetServicesForProviderURI = `${API_SERVICE}/${API_VERSION_SERVICE}/${SERVICE}/${PROVIDER}`
 const GetEventsForProviderURI = `${API_SERVICE}/${API_VERSION_SERVICE}/${SERVICE}/${EVENTS}/${PROVIDER}`

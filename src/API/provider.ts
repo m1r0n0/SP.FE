@@ -1,17 +1,17 @@
 import {API_PROVIDER, API_VERSION_PROVIDER, NEW, PROVIDER,} from "../JS/routeConstants";
-import {IProvider} from "../Models/provider";
+import {IProviderInfo} from "../Models/provider";
 import {GetAuthHeader, proceedLogOut} from "../Services";
 import {AppDispatch} from "../Store";
 import {
-  handleShowCustomerProviderRegisterFailedDisclaimer,
-  hideAllDisclaimersAction,
+    handleShowCustomerProviderRegisterFailedDisclaimer,
+    hideAllDisclaimersAction,
 } from "../Store/DisclaimerReducer";
 import {
-  handleDataChangedSuccessfullyAction,
-  handleDataChangeFinishedAction,
-  handleRegisterFailureAction,
-  handleRegisterSuccessAction,
-  setProviderInfoAction,
+    handleDataChangedSuccessfullyAction,
+    handleDataChangeFinishedAction,
+    handleRegisterFailureAction,
+    handleRegisterSuccessAction,
+    setProviderInfoAction,
 } from "../Store/ProviderReducer";
 
 const ProviderURI = `${API_PROVIDER}/${API_VERSION_PROVIDER}/${PROVIDER}`;
@@ -33,7 +33,7 @@ export async function fetchProviderInfo(userId: string) {
     };
 }
 
-export async function proceedProviderRegister(userId: string, body: IProvider) {
+export async function proceedProviderRegister(userId: string, body: IProviderInfo) {
     return async (dispatch: AppDispatch) => {
         const response = await fetch(`${RegisterProviderURI}/${userId}`, {
             method: "POST",
@@ -52,7 +52,7 @@ export async function proceedProviderRegister(userId: string, body: IProvider) {
     };
 }
 
-export async function proceedProviderEdit(userId: string, body: IProvider) {
+export async function proceedProviderEdit(userId: string, body: IProviderInfo) {
     return async (dispatch: AppDispatch) => {
         const response = await fetch(`${ProviderURI}/${userId}`, {
             method: "PUT",

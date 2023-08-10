@@ -5,6 +5,12 @@ export interface IService {
     providerUserId: string
 }
 
+export interface IServiceInfo {
+    serviceId: number,
+    name: string,
+    price: number,
+}
+
 export interface IEvent {
     EventId: number,
     ServiceId: number,

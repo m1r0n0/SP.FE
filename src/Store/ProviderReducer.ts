@@ -1,13 +1,13 @@
 import {Reducer} from "redux";
-import {IProvider} from "../Models/provider";
+import {IProviderInfo} from "../Models/provider";
 
 interface IProviderAction {
     type: string;
-    payload: string | IProvider;
+    payload: string | IProviderInfo;
 }
 
 interface IProviderState {
-    provider: IProvider;
+    provider: IProviderInfo;
     isRegisterSuccessful: boolean;
     isRegisterRequested: boolean;
     isRegisterFinished: boolean;
@@ -52,7 +52,7 @@ export const providerReducer: Reducer<IProviderState, IProviderAction> = (
         case SET_PROVIDER:
             return {
                 ...state,
-                provider: action.payload as IProvider,
+                provider: action.payload as IProviderInfo,
             };
 
         case HANDLE_PROVIDER_REGISTER_SUCCESS:
@@ -102,7 +102,7 @@ export const providerReducer: Reducer<IProviderState, IProviderAction> = (
     }
 };
 
-export const setProviderInfoAction = (payload: IProvider) => ({
+export const setProviderInfoAction = (payload: IProviderInfo) => ({
     type: SET_PROVIDER,
     payload,
 });

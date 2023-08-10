@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {CircularProgress} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../../../hooks";
 import {handleProviderEdit,} from "../../../../Services/provider";
-import {IProvider} from "../../../../Models/provider";
+import {IProviderInfo} from "../../../../Models/provider";
 import InvalidInputDisclaimer from "../../../Common/InvalidInputDisclaimer";
 
 export default function EditProvider() {
@@ -22,7 +22,7 @@ export default function EditProvider() {
         workHoursEnd: provider.workHoursEnd.toString(),
     });
 
-    const providerState: IProvider = {
+    const providerState: IProviderInfo = {
         ...state,
         workHoursBegin: parseInt(state.workHoursBegin, 10),
         workHoursEnd: parseInt(state.workHoursEnd, 10),

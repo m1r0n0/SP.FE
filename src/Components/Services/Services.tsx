@@ -1,15 +1,21 @@
-import {IService} from "../../Models/service";
+import {IServiceInfo} from "../../Models/service";
 import Service from "./Service";
-import {useAppSelector} from "../../hooks";
+import {IProvider} from "../../Models/provider";
 
 export default function Services() {
-    var service: IService = {
+    var service: IServiceInfo = {
         serviceId: 3,
         name: "nameee",
-        price: 109,
-        providerUserId: "4920e9e8-0b68-4c4b-b063-6a24963217b6"
+        price: 109
     }
-    var provider = useAppSelector(state => state.provider.provider)
+    var provider: IProvider = {
+        userId: "c5677ebc-7099-428f-aa29-8159714de76e",
+        firstName: "John",
+        lastName: "Martin",
+        enterpriseName: "Martin Inc",
+        workHoursBegin: 8,
+        workHoursEnd: 16
+    }
 
     return (<Service service={service} provider={provider}/>)
 }
