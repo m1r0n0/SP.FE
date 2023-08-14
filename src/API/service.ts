@@ -10,9 +10,13 @@ import {
 } from "../JS/routeConstants";
 import { AppDispatch } from "../Store";
 import { GetAuthHeader } from "../Services";
-import { setEventsAction, setServicesAction } from "../Store/ServiceReducer";
+import {
+  setEventsAction,
+  setServicesWithProvidersAction,
+  setServicesFetchedStatus,
+} from "../Store/ServiceReducer";
 import { IServiceCreation, IServiceEdition } from "../Models/service";
-import { getServices } from "../Services/service";
+import { getServices, modifyServicesForProvider } from "../Services/service";
 
 const GraphQlURI = `${API_GRAPHQL}`;
 const CreateServiceURI = `${API_SERVICE}/${API_VERSION_SERVICE}/${SERVICE}/${NEW}`;
@@ -34,7 +38,8 @@ export async function getAllServices(query: string) {
     if (response.ok) {
       var services = await response.json();
 
-      dispatch(setServicesAction(services.data));
+      dispatch(setServicesWithProvidersAction(services.data.services));
+      dispatch(setServicesFetchedStatus(true));
     }
   };
 }
@@ -53,7 +58,9 @@ export async function getServicesForProvider(providerUserId: string) {
     if (response.ok) {
       var services = await response.json();
 
-      dispatch(setServicesAction(services));
+      services = modifyServicesForProvider(services);
+      dispatch(setServicesWithProvidersAction(services));
+      dispatch(setServicesFetchedStatus(true));
     }
   };
 }

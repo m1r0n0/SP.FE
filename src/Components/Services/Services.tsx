@@ -1,16 +1,14 @@
-import {IServiceInfo} from "../../Models/service";
-import Service from "./Service";
-import {IProvider} from "../../Models/provider";
-import {useAppDispatch, useAppSelector} from "../../hooks";
-import {getServices} from "../../Services/service";
+import { IServiceInfo } from "../../Models/service";
+import Service from "./CustomerServices/Service";
+import { IProvider } from "../../Models/provider";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { getServices } from "../../Services/service";
+import { IServiceWithProvider } from "../../Models";
+import ProviderServices from "./ProviderServices/ProviderServices";
+import CustomerServices from "./CustomerServices/CustomerServices";
 
 export default function Services() {
-    var dispatch = useAppDispatch();
-    dispatch(getServices());
-    var services = useAppSelector(s => s.service.services);
+  var isProvider = useAppSelector((s) => s.user.isProvider);
 
-    var service: IServiceInfo = services.pop()?.service as IServiceInfo;
-    var provider: IProvider = services.pop()?.provider as IProvider;
-
-    return (<Service service={service} provider={provider}/>)
+  return isProvider ? <ProviderServices /> : <CustomerServices />;
 }

@@ -8,5 +8,5 @@ export interface IComponentDependentDisclaimerStates {
 
 export interface IServiceWithProvider {
     service: IServiceInfo;
-    provider: IProvider
+    provider: IProvider | undefined
 }
