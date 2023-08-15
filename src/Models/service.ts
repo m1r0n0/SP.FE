@@ -29,3 +29,8 @@ export interface IServiceEdition {
     name: string,
     price: number,
 }
+
+export interface IServiceEditionInStrings {
+    name: string,
+    price: string,
+}

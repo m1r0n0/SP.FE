@@ -1,8 +1,19 @@
 import { AppDispatch } from "../Store";
-import { getAllServices, getServicesForProvider } from "../API/service";
+import {
+  getAllServices,
+  getServicesForProvider,
+  proceedServiceCreation,
+  proceedServiceEditing,
+} from "../API/service";
 import { jsonToGraphQLQuery } from "json-to-graphql-query";
-import { IServiceInfo } from "../Models/service";
+import {
+  IServiceCreation,
+  IServiceEdition,
+  IServiceEditionInStrings,
+  IServiceInfo,
+} from "../Models/service";
 import { IServiceWithProvider } from "../Models";
+import { handleServiceCreationRequest } from "../Store/ServiceReducer";
 
 export const getServices = () => async (dispatch: AppDispatch) => {
   const query = {
@@ -34,7 +45,7 @@ export const getProviderServices =
     dispatch(await getServicesForProvider(providerUserId));
   };
 
-export const modifyServicesForProvider = (
+export const modifyServicesArrayForProvider = (
   services: IServiceInfo[]
 ): IServiceWithProvider[] => {
   var newArray: IServiceWithProvider[] = [];
@@ -50,3 +61,34 @@ export const modifyServicesForProvider = (
 
   return newArray;
 };
+
+export const editService =
+  (
+    service: IServiceEditionInStrings,
+    serviceId: number,
+  ) =>
+  async (dispatch: AppDispatch) => {
+    var properService: IServiceEdition = {
+      name: service.name,
+      price: Number(service.price),
+    };
+
+    dispatch(
+      await proceedServiceEditing(properService, serviceId)
+    );
+  };
+
+export const createService =
+  (service: IServiceEditionInStrings, providerUserId: string) =>
+  async (dispatch: AppDispatch) => {
+    var properService: IServiceCreation = {
+      name: service.name,
+      price: Number(service.price),
+      providerUserId: providerUserId,
+    };
+
+    dispatch(handleServiceCreationRequest());
+    dispatch(
+      await proceedServiceCreation(properService)
+    );
+  };

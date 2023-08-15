@@ -44,31 +44,27 @@ import {
 import { setServicesFetchedStatus } from "../Store/ServiceReducer";
 
 export const prepareUserData =
-  (user: IUser, isUserEmailRequested: boolean, token: string | null) =>
+  (user: IUser, isUserEmailRequested: boolean, token: string) =>
   async (dispatch: AppDispatch) => {
-    await dispatch(
-      setUserStateBasedOnAuthenticationToken(isUserEmailRequested, token)
-    );
-
-    if (user.userEmail !== "") dispatch(handleAppReadinessAction());
+    if (!isUserEmailRequested && token !== null) {
+      dispatch(
+        setUserStateBasedOnAuthenticationToken(isUserEmailRequested, token)
+      );
+    }
   };
 
 export const setUserStateBasedOnAuthenticationToken =
-  (isUserEmailRequested: boolean, token: string | null) =>
+  (isUserEmailRequested: boolean, token: string) =>
   async (dispatch: AppDispatch) => {
-    if (!isUserEmailRequested) {
-      if (token !== null) {
-        dispatch(() => dispatch(setAuthenticationTokenAction(token)));
+    dispatch(setAuthenticationTokenAction(token));
 
-        var decodedToken: IDecodedJWT = jwtDecode(token);
-        var userId: string = decodedToken.UserId;
+    var decodedToken: IDecodedJWT = jwtDecode(token);
+    var userId: string = decodedToken.UserId;
 
-        dispatch(setUserIdAction(userId));
-        dispatch(handleEmailRequestAction());
+    dispatch(setUserIdAction(userId));
+    dispatch(handleEmailRequestAction());
 
-        await dispatch(() => dispatch(fetchUserEmail(userId)));
-      } else dispatch(() => dispatch(handleAppReadinessAction()));
-    }
+    await dispatch(fetchUserEmail(userId));
   };
 
 export const handleRegister =
@@ -151,7 +147,6 @@ export const proceedUserLogOut = () => async (dispatch: AppDispatch) => {
   localStorage.removeItem(tokenLS);
   localStorage.removeItem(isProviderLS);
   dispatch(handleLogoutAction());
-  
 };
 
 export const handleEmailChange =
