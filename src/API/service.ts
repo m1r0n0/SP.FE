@@ -16,8 +16,13 @@ import {
   setServicesFetchedStatus,
   handleServiceCreationSuccess,
   handleServiceCreationFailure,
+  handleEventCreationFailure,
 } from "../Store/ServiceReducer";
-import { IServiceCreation, IServiceEdition } from "../Models/service";
+import {
+  IEventCreation,
+  IServiceCreation,
+  IServiceEdition,
+} from "../Models/service";
 import {
   getServices,
   modifyServicesArrayForProvider,
@@ -84,7 +89,7 @@ export async function proceedServiceCreation(body: IServiceCreation) {
 
     if (response.ok) {
       const providerUserId = getState().user.user.userId;
-      
+
       dispatch(await getServicesForProvider(providerUserId));
       dispatch(handleServiceCreationSuccess());
     } else dispatch(handleServiceCreationFailure());
@@ -159,5 +164,24 @@ export async function getEventsForProvider(providerUserId: string) {
 
       dispatch(setEventsAction(events));
     }
+  };
+}
+
+export async function proceedEventCreation(event: IEventCreation, serviceId: number) {
+  return async (dispatch: AppDispatch) => {
+    const response = await fetch(`${ServiceURI}/${serviceId}/new/event`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: await dispatch(GetAuthHeader()),
+      },
+      body: JSON.stringify(event),
+    });
+
+    if (response.ok) {
+
+      dispatch(getServices());
+      dispatch(handleServiceCreationSuccess());
+    } else dispatch(handleEventCreationFailure());
   };
 }

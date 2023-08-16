@@ -23,9 +23,14 @@ export function TopMenu() {
             </div>
             <div>
               {isLogon(String(userId)) ? (
-                <Link className={"navi-link"} to="/Services">
-                  {isProvider ? "My services" : "Services"}
-                </Link>
+                <div>
+                  <Link className={"navi-link"} to="/Services">
+                    {isProvider ? "My services" : "Services"}
+                  </Link>
+                  <Link className={"navi-link"} to="/Service/Create">
+                    {isProvider ? "Create Service" : null}
+                  </Link>
+                </div>
               ) : null}
             </div>
           </div>

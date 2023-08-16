@@ -2,18 +2,24 @@ import { AppDispatch } from "../Store";
 import {
   getAllServices,
   getServicesForProvider,
+  proceedEventCreation,
   proceedServiceCreation,
+  proceedServiceDeletion,
   proceedServiceEditing,
 } from "../API/service";
 import { jsonToGraphQLQuery } from "json-to-graphql-query";
 import {
+  IEventCreation,
   IServiceCreation,
   IServiceEdition,
   IServiceEditionInStrings,
   IServiceInfo,
 } from "../Models/service";
 import { IServiceWithProvider } from "../Models";
-import { handleServiceCreationRequest } from "../Store/ServiceReducer";
+import {
+  handleEventCreationRequest,
+  handleServiceCreationRequest,
+} from "../Store/ServiceReducer";
 
 export const getServices = () => async (dispatch: AppDispatch) => {
   const query = {
@@ -63,19 +69,14 @@ export const modifyServicesArrayForProvider = (
 };
 
 export const editService =
-  (
-    service: IServiceEditionInStrings,
-    serviceId: number,
-  ) =>
+  (service: IServiceEditionInStrings, serviceId: number) =>
   async (dispatch: AppDispatch) => {
     var properService: IServiceEdition = {
       name: service.name,
       price: Number(service.price),
     };
 
-    dispatch(
-      await proceedServiceEditing(properService, serviceId)
-    );
+    dispatch(await proceedServiceEditing(properService, serviceId));
   };
 
 export const createService =
@@ -88,7 +89,23 @@ export const createService =
     };
 
     dispatch(handleServiceCreationRequest());
-    dispatch(
-      await proceedServiceCreation(properService)
-    );
+    dispatch(await proceedServiceCreation(properService));
+  };
+
+export const deleteService =
+  (service: IServiceInfo) => async (dispatch: AppDispatch) => {
+    if (window.confirm(`Do you really want to delete "${service.name}"?`))
+      dispatch(await proceedServiceDeletion(service.serviceId));
+  };
+
+export const createEvent =
+  (event: IEventCreation, serviceId: number) =>
+  async (dispatch: AppDispatch) => {
+    // var properService: IServiceCreation = {
+    //   name: service.name,
+    //   price: Number(service.price),
+    // };
+
+    dispatch(handleEventCreationRequest());
+    dispatch(await proceedEventCreation(event, serviceId));
   };

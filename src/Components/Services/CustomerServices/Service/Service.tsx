@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAppDispatch } from "../../../../hooks";
 import { IProviderInfo } from "../../../../Models/provider";
 import { IServiceInfo } from "../../../../Models/service";
+import CreateEvent from "./CreateEvent/CreateEvent";
 
 interface props {
   service: IServiceInfo;
@@ -10,9 +11,11 @@ interface props {
 
 export default function Service({ service, provider }: props) {
   var dispatch = useAppDispatch();
+  const [isCreatingEvent, setIsCreatingEvent] = useState(false);
 
   return (
     <div>
+      <p>-----------------------------</p>
       <p>{service.name}</p>
       <p>Price: {service.price}$</p>
       <p>
@@ -22,7 +25,17 @@ export default function Service({ service, provider }: props) {
       <p>
         Workhours: {provider.workHoursBegin} - {provider.workHoursEnd}
       </p>
-      <p>-----------------------------</p>
+
+      {isCreatingEvent ? (
+        <CreateEvent />
+      ) : (
+        <input
+          type="button"
+          className="btn btn-primary btn-lg"
+          value="Order"
+          onClick={() => setIsCreatingEvent(true)}
+        />
+      )}
     </div>
   );
 }

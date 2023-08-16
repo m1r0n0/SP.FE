@@ -2,6 +2,7 @@ import React from "react";
 import { IServiceInfo } from "../../../../../Models/service";
 import { proceedServiceDeletion } from "../../../../../API/service";
 import { useAppDispatch } from "../../../../../hooks";
+import { deleteService } from "../../../../../Services/service";
 
 interface ProviderServiceViewProps {
   service: IServiceInfo;
@@ -16,6 +17,7 @@ export default function ProviderServiceView({
 
   return (
     <div>
+      <p>-----------------------------</p>
       <p>{service.name}</p>
       <p>Price: {service.price}$</p>
       <input
@@ -28,11 +30,8 @@ export default function ProviderServiceView({
         type="button"
         className="btn btn-primary btn-lg"
         value="Delete"
-        onClick={async () =>
-          dispatch(await proceedServiceDeletion(service.serviceId))
-        }
+        onClick={async () => dispatch(deleteService(service))}
       />
-      <p>-----------------------------</p>
     </div>
   );
 }

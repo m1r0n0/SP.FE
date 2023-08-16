@@ -27,6 +27,7 @@ export default function ProviderServiceEdit({
 
   return (
     <div>
+      <p>-----------------------------</p>
       <div>
         <label htmlFor="price">Service Name </label>
         <input
@@ -55,7 +56,6 @@ export default function ProviderServiceEdit({
         value="Apply changes"
         onClick={prepareServiceToEdit}
       />
-      <p>-----------------------------</p>
     </div>
   );
 }

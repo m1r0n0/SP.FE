@@ -13,6 +13,7 @@ export default function CustomerServices() {
 
   return isServicesFetched ? (
     <div className="d-flex flex-column">
+      <h1>Services</h1>
       {services?.map(
         (serviceWithProvider: IServiceWithProvider, index: number) => {
           return (

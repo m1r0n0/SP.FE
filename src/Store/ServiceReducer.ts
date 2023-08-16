@@ -19,6 +19,9 @@ interface IServiceState {
   isServiceCreationRequested: boolean;
   isServiceCreationSucceeded: boolean;
   isServiceCreationFinished: boolean;
+  isEventCreationRequested: boolean;
+  isEventCreationSucceeded: boolean;
+  isEventCreationFinished: boolean;
 }
 
 const defaultState: IServiceState = {
@@ -28,6 +31,9 @@ const defaultState: IServiceState = {
   isServiceCreationRequested: false,
   isServiceCreationSucceeded: false,
   isServiceCreationFinished: false,
+  isEventCreationRequested: false,
+  isEventCreationSucceeded: false,
+  isEventCreationFinished: false,
 };
 
 const SET_EVENTS = "SET_EVENTS";
@@ -39,6 +45,10 @@ const HANDLE_USER_LOGOUT = "HANDLE_USER_LOGOUT";
 const HANDLE_SERVICE_CREATION_REQUEST = "HANDLE_SERVICE_CREATION_REQUEST";
 const HANDLE_SERVICE_CREATION_SUCCESS = "HANDLE_SERVICE_CREATION_SUCCESS";
 const HANDLE_SERVICE_CREATION_FAILURE = "HANDLE_SERVICE_CREATION_FAILURE";
+
+const HANDLE_EVENT_CREATION_REQUEST = "HANDLE_EVENT_CREATION_REQUEST";
+const HANDLE_EVENT_CREATION_SUCCESS = "HANDLE_EVENT_CREATION_SUCCESS";
+const HANDLE_EVENT_CREATION_FAILURE = "HANDLE_EVENT_CREATION_FAILURE";
 
 export const serviceReducer: Reducer<IServiceState, IServiceAction> = (
   state = defaultState,
@@ -80,6 +90,26 @@ export const serviceReducer: Reducer<IServiceState, IServiceAction> = (
         isServiceCreationSucceeded: false,
       };
 
+    case HANDLE_EVENT_CREATION_REQUEST:
+      return {
+        ...state,
+        isEventCreationRequested: true,
+      };
+    case HANDLE_EVENT_CREATION_SUCCESS:
+      return {
+        ...state,
+        isEventCreationRequested: false,
+        isEventCreationFinished: true,
+        isEventCreationSucceeded: true,
+      };
+    case HANDLE_EVENT_CREATION_FAILURE:
+      return {
+        ...state,
+        isEventCreationRequested: false,
+        isEventCreationFinished: true,
+        isEventCreationSucceeded: false,
+      };
+
     case HANDLE_USER_LOGOUT:
       return { ...defaultState };
     default:
@@ -117,4 +147,14 @@ export const handleServiceCreationSuccess = () => ({
 });
 export const handleServiceCreationFailure = () => ({
   type: HANDLE_SERVICE_CREATION_FAILURE,
+});
+
+export const handleEventCreationRequest = () => ({
+  type: HANDLE_EVENT_CREATION_REQUEST,
+});
+export const handleEventCreationSuccess = () => ({
+  type: HANDLE_EVENT_CREATION_SUCCESS,
+});
+export const handleEventCreationFailure = () => ({
+  type: HANDLE_EVENT_CREATION_FAILURE,
 });
