@@ -1,60 +1,108 @@
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import AdapterDateFns, {
+  DateCalendar,
+  DigitalClock,
+  MultiSectionDigitalClock,
+} from "@mui/x-date-pickers/";
 import { LocalizationProvider } from "@mui/x-date-pickers/";
 import { DateField } from "@mui/x-date-pickers/";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import dayjs, { Dayjs } from "dayjs";
 import { useState } from "react";
 import { createEvent } from "../../../../../Services/service";
+import { AppDispatch } from "../../../../../Store";
+import { useAppDispatch, useAppSelector } from "../../../../../hooks";
+import EventCreationResultMessage from "./EventCreationResultMessage/EventCreationResultMessage";
+import { CircularProgress } from "@mui/material";
 
-interface CreateEventProps {}
+interface CreateEventProps {
+  serviceId: number;
+}
 
-export default function CreateEvent({}: CreateEventProps) {
+export default function CreateEvent({ serviceId }: CreateEventProps) {
   const date = new Date();
-  var value = date.toISOString();
-  value = value.slice(0, 10);
-  console.log(value);
+  const dispatch = useAppDispatch();
+  const isEventCreationRequested = useAppSelector(
+    (s) => s.service.isEventCreationRequested
+  );
+  const isEventCreationFinished = useAppSelector(
+    (s) => s.service.isEventCreationFinished
+  );
 
   const [state, setState] = useState({
-    dateOfStart: "16-08-23",
-    dateOfEnd: "17-08-23",
+    dateOfStart: date.toISOString(),
+    dateOfEnd: date.toISOString(),
   });
+
   return (
-    <div>
-      {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <DateField
-          label="Controlled picker"
-          value={value}
-          //onChange={(newValue) => setValue(newValue)}
-        />
-      </LocalizationProvider> */}
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div>
-        <label htmlFor="price">dateOfStart </label>
-        <input
-          value={state.dateOfStart}
-          onChange={(event) =>
-            setState({ ...state, dateOfStart: event.target.value })
-          }
-          type="text"
-          name="name"
-          id="name"
-        />
+        <div>
+          <label htmlFor="price">Choose start date and time </label>
+          <DateCalendar
+            value={dayjs(state.dateOfStart)}
+            onChange={(newValue) =>
+              setState({
+                ...state,
+                dateOfStart: newValue!.toISOString(),
+              })
+            }
+            minDate={dayjs(date.toISOString())}
+          />
+          <MultiSectionDigitalClock
+            value={dayjs(state.dateOfStart)}
+            onChange={(newValue) =>
+              setState({
+                ...state,
+                dateOfStart: newValue!.toISOString(),
+              })
+            }
+            minTime={dayjs(date.toISOString()).add(1, "hour")}
+            ampm={false}
+            timeSteps={{ hours: 1, minutes: 60 }}
+          />
+        </div>
+        <div>
+          <label htmlFor="price">Choose end date and time </label>
+          <DateCalendar
+            value={dayjs(state.dateOfEnd)}
+            onChange={(newValue) =>
+              setState({
+                ...state,
+                dateOfEnd: newValue!.format("YYYY-MM-DD"),
+              })
+            }
+            minDate={dayjs(state.dateOfStart).add(1, "hours")}
+          />
+          <MultiSectionDigitalClock
+            value={dayjs(state.dateOfEnd)}
+            onChange={(newValue) =>
+              setState({
+                ...state,
+                dateOfEnd: newValue!.toISOString(),
+              })
+            }
+            minTime={dayjs(state.dateOfStart).add(1, "hours")}
+            ampm={false}
+            timeSteps={{ hours: 1, minutes: 60 }}
+          />
+        </div>
+
+        {isEventCreationRequested ? (
+          <div>
+            <CircularProgress size={75} />
+          </div>
+        ) : (
+          <input
+            type="button"
+            className="btn btn-primary btn-lg"
+            value="Order"
+            onClick={() => dispatch(createEvent(state, serviceId))}
+          />
+        )}
+
+        {isEventCreationFinished ? <EventCreationResultMessage /> : null}
       </div>
-      <div>
-        <label htmlFor="price">dateOfEnd </label>
-        <input
-          value={state.dateOfEnd}
-          onChange={(event) =>
-            setState({ ...state, dateOfEnd: event.target.value })
-          }
-          type="text"
-          name="name"
-          id="name"
-        />
-      </div>
-      <input
-        type="button"
-        className="btn btn-primary btn-lg"
-        value="Order"
-        onClick={async() => dispatch(createEvent())}
-      />
-    </div>
+    </LocalizationProvider>
   );
 }

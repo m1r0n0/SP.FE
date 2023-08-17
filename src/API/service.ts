@@ -17,6 +17,7 @@ import {
   handleServiceCreationSuccess,
   handleServiceCreationFailure,
   handleEventCreationFailure,
+  handleEventCreationSuccess,
 } from "../Store/ServiceReducer";
 import {
   IEventCreation,
@@ -167,7 +168,10 @@ export async function getEventsForProvider(providerUserId: string) {
   };
 }
 
-export async function proceedEventCreation(event: IEventCreation, serviceId: number) {
+export async function proceedEventCreation(
+  event: IEventCreation,
+  serviceId: number
+) {
   return async (dispatch: AppDispatch) => {
     const response = await fetch(`${ServiceURI}/${serviceId}/new/event`, {
       method: "POST",
@@ -179,9 +183,7 @@ export async function proceedEventCreation(event: IEventCreation, serviceId: num
     });
 
     if (response.ok) {
-
-      dispatch(getServices());
-      dispatch(handleServiceCreationSuccess());
+      dispatch(handleEventCreationSuccess());
     } else dispatch(handleEventCreationFailure());
   };
 }

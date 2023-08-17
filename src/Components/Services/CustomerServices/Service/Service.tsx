@@ -27,7 +27,7 @@ export default function Service({ service, provider }: props) {
       </p>
 
       {isCreatingEvent ? (
-        <CreateEvent />
+        <CreateEvent serviceId={service.serviceId} />
       ) : (
         <input
           type="button"

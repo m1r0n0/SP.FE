@@ -1,4 +1,4 @@
-import { AppDispatch } from "../Store";
+import { AppDispatch, GetState } from "../Store";
 import {
   getAllServices,
   getServicesForProvider,
@@ -10,6 +10,7 @@ import {
 import { jsonToGraphQLQuery } from "json-to-graphql-query";
 import {
   IEventCreation,
+  IEventDates,
   IServiceCreation,
   IServiceEdition,
   IServiceEditionInStrings,
@@ -20,6 +21,8 @@ import {
   handleEventCreationRequest,
   handleServiceCreationRequest,
 } from "../Store/ServiceReducer";
+import { TimeView } from "@mui/x-date-pickers";
+import { Dayjs } from "dayjs";
 
 export const getServices = () => async (dispatch: AppDispatch) => {
   const query = {
@@ -99,13 +102,32 @@ export const deleteService =
   };
 
 export const createEvent =
-  (event: IEventCreation, serviceId: number) =>
-  async (dispatch: AppDispatch) => {
-    // var properService: IServiceCreation = {
-    //   name: service.name,
-    //   price: Number(service.price),
-    // };
+  (dates: IEventDates, serviceId: number) =>
+  async (dispatch: AppDispatch, getState: GetState) => {
+    var event: IEventCreation = {
+      dateOfStart: dates.dateOfStart,
+      dateOfEnd: dates.dateOfEnd,
+      customerUserId: getState().user.user.userId,
+    };
 
     dispatch(handleEventCreationRequest());
     dispatch(await proceedEventCreation(event, serviceId));
   };
+
+//Method which hour is passed and if specific time should be disabled the method
+//should return true
+const shouldDisableTime = (
+  value: Dayjs,
+  view: TimeView,
+  unavailableHours: number[]
+) => {
+  const hour = value.hour();
+  if (view === "hours") {
+    return hour < 9 || hour > 13;
+  }
+  if (view === "minutes") {
+    const minute = value.minute();
+    return minute > 20 && hour === 13;
+  }
+  return false;
+};
