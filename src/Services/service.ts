@@ -22,7 +22,7 @@ import {
   handleServiceCreationRequest,
 } from "../Store/ServiceReducer";
 import { TimeView } from "@mui/x-date-pickers";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 
 export const getServices = () => async (dispatch: AppDispatch) => {
   const query = {
@@ -113,21 +113,3 @@ export const createEvent =
     dispatch(handleEventCreationRequest());
     dispatch(await proceedEventCreation(event, serviceId));
   };
-
-//Method which hour is passed and if specific time should be disabled the method
-//should return true
-const shouldDisableTime = (
-  value: Dayjs,
-  view: TimeView,
-  unavailableHours: number[]
-) => {
-  const hour = value.hour();
-  if (view === "hours") {
-    return hour < 9 || hour > 13;
-  }
-  if (view === "minutes") {
-    const minute = value.minute();
-    return minute > 20 && hour === 13;
-  }
-  return false;
-};

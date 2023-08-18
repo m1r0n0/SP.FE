@@ -2,6 +2,7 @@ import AdapterDateFns, {
   DateCalendar,
   DigitalClock,
   MultiSectionDigitalClock,
+  TimeView,
 } from "@mui/x-date-pickers/";
 import { LocalizationProvider } from "@mui/x-date-pickers/";
 import { DateField } from "@mui/x-date-pickers/";
@@ -30,9 +31,54 @@ export default function CreateEvent({ serviceId }: CreateEventProps) {
   );
 
   const [state, setState] = useState({
-    dateOfStart: date.toISOString(),
-    dateOfEnd: date.toISOString(),
+    dateOfStart: dayjs(date.toISOString()).add(1, "hour").toISOString(),
+    dateOfEnd: dayjs(date.toISOString()).add(2, "hour").toISOString(),
   });
+
+  const changeDatesValues = (newValue: Dayjs) => {
+    if (dayjs(state.dateOfEnd).isAfter(newValue)) {
+      setState({
+        ...state,
+        dateOfStart: newValue!.startOf("hour").toISOString(),
+      });
+    } else
+      setState({
+        dateOfStart: newValue!.startOf("hour").toISOString(),
+        dateOfEnd: newValue!.add(1, "hour").toISOString(),
+      });
+  };
+
+  //Method which hour is passed and if specific time should be disabled the method
+  //should return true
+  const shouldDisableTime = (
+    value: Dayjs,
+    view: TimeView,
+    unavailableHours: number[]
+  ) => {
+    const hour = value.hour();
+    if (view === "hours") {
+      return hour < 9 || hour > 13;
+    }
+    if (view === "minutes") {
+      const minute = value.minute();
+      return minute > 20 && hour === 13;
+    }
+    return false;
+  };
+
+  const getMinTimeForEventCreation = (newDate: Dayjs, minimumDate: Dayjs) => {
+    var properMinTime;
+
+    if (newDate.isAfter(minimumDate, "d")) {
+      properMinTime = newDate.startOf("day");
+    } else {
+      properMinTime = minimumDate.add(1, "hour");
+    }
+
+    return properMinTime;
+  };
+
+  //console.log(state);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -40,28 +86,22 @@ export default function CreateEvent({ serviceId }: CreateEventProps) {
         <div>
           <label htmlFor="price">Choose start date and time </label>
           <DateCalendar
-            value={dayjs(state.dateOfStart)}
-            onChange={(newValue) =>
-              setState({
-                ...state,
-                dateOfStart: newValue!.toISOString(),
-              })
-            }
             minDate={dayjs(date.toISOString())}
+            value={dayjs(state.dateOfStart)}
+            onChange={(newValue) => changeDatesValues(newValue!)}
           />
           <MultiSectionDigitalClock
-            value={dayjs(state.dateOfStart)}
-            onChange={(newValue) =>
-              setState({
-                ...state,
-                dateOfStart: newValue!.toISOString(),
-              })
-            }
-            minTime={dayjs(date.toISOString()).add(1, "hour")}
+            minTime={getMinTimeForEventCreation(
+              dayjs(state.dateOfStart),
+              dayjs(date.toISOString())
+            )}
+            value={dayjs(state.dateOfStart).startOf("hour")}
+            onChange={(newValue) => changeDatesValues(newValue!)}
             ampm={false}
             timeSteps={{ hours: 1, minutes: 60 }}
           />
         </div>
+
         <div>
           <label htmlFor="price">Choose end date and time </label>
           <DateCalendar
@@ -69,20 +109,23 @@ export default function CreateEvent({ serviceId }: CreateEventProps) {
             onChange={(newValue) =>
               setState({
                 ...state,
-                dateOfEnd: newValue!.format("YYYY-MM-DD"),
+                dateOfEnd: newValue!.startOf("hour").toISOString(),
               })
             }
             minDate={dayjs(state.dateOfStart).add(1, "hours")}
           />
           <MultiSectionDigitalClock
-            value={dayjs(state.dateOfEnd)}
+            minTime={getMinTimeForEventCreation(
+              dayjs(state.dateOfEnd),
+              dayjs(state.dateOfStart)
+            )}
+            value={dayjs(state.dateOfEnd).startOf("hour")}
             onChange={(newValue) =>
               setState({
                 ...state,
-                dateOfEnd: newValue!.toISOString(),
+                dateOfEnd: newValue!.startOf("hour").toISOString(),
               })
             }
-            minTime={dayjs(state.dateOfStart).add(1, "hours")}
             ampm={false}
             timeSteps={{ hours: 1, minutes: 60 }}
           />
