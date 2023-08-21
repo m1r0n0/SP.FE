@@ -31,8 +31,14 @@ export default function CreateEvent({ serviceId }: CreateEventProps) {
   );
 
   const [state, setState] = useState({
-    dateOfStart: dayjs(date.toISOString()).add(1, "hour").toISOString(),
-    dateOfEnd: dayjs(date.toISOString()).add(2, "hour").toISOString(),
+    dateOfStart: dayjs(date.toISOString())
+      .add(1, "hour")
+      .startOf("hour")
+      .toISOString(),
+    dateOfEnd: dayjs(date.toISOString())
+      .add(2, "hour")
+      .startOf("hour")
+      .toISOString(),
   });
 
   const changeDatesValues = (newValue: Dayjs) => {
@@ -78,7 +84,7 @@ export default function CreateEvent({ serviceId }: CreateEventProps) {
     return properMinTime;
   };
 
-  //console.log(state);
+  // console.log(state);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>

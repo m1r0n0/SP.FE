@@ -14,14 +14,15 @@ export const prepareAppToLoad =
     isUserEmailRequested: boolean,
     isUserRegisterFinished: boolean,
     token: string | null,
-    isProvider: boolean
-  ) =>
-  async (dispatch: AppDispatch) => {
+    isProvider: boolean,
+    isEmailFetched: boolean,
+    isPersonalDataFetched: boolean
+  ) => async (dispatch: AppDispatch) => {
     await dispatch(
       prepareUserData(user, isUserEmailRequested, token as string)
     );
 
-    if (isProvider !== null) {
+    if (!isPersonalDataFetched) {
       if (isProvider) {
         await dispatch(
           prepareProviderData(user.userId, isUserRegisterFinished)
@@ -32,7 +33,9 @@ export const prepareAppToLoad =
         );
     }
 
-    dispatch(handleAppReadinessAction());
+    //Load app if there's NO user info OR all user info fetched
+    if (token === null || (isEmailFetched && isPersonalDataFetched))
+      dispatch(handleAppReadinessAction());
   };
 
 export const proceedLogOut = () => async (dispatch: AppDispatch) => {
