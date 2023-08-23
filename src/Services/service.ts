@@ -1,6 +1,7 @@
 import { AppDispatch, GetState } from "../Store";
 import {
   getAllServices,
+  getProviderAvailAbilitySchedule,
   getServicesForProvider,
   proceedEventCreation,
   proceedServiceCreation,
@@ -112,4 +113,9 @@ export const createEvent =
 
     dispatch(handleEventCreationRequest());
     dispatch(await proceedEventCreation(event, serviceId));
+  };
+
+export const getUnavailableHours =
+  (providerUserId: string) => async (dispatch: AppDispatch) => {
+    dispatch(await getProviderAvailAbilitySchedule(providerUserId));
   };

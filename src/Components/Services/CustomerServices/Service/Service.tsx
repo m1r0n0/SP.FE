@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useAppDispatch } from "../../../../hooks";
-import { IProviderInfo } from "../../../../Models/provider";
+import { IProvider, IProviderInfo } from "../../../../Models/provider";
 import { IServiceInfo } from "../../../../Models/service";
 import CreateEvent from "./CreateEvent/CreateEvent";
 
 interface props {
   service: IServiceInfo;
-  provider: IProviderInfo;
+  provider: IProvider;
 }
 
 export default function Service({ service, provider }: props) {
@@ -27,7 +27,7 @@ export default function Service({ service, provider }: props) {
       </p>
 
       {isCreatingEvent ? (
-        <CreateEvent serviceId={service.serviceId} />
+        <CreateEvent serviceId={service.serviceId} providerUserId={provider.userId} />
       ) : (
         <input
           type="button"

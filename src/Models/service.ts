@@ -45,3 +45,8 @@ export interface IEventDates {
   dateOfStart: string;
   dateOfEnd: string;
 }
+
+export interface IAvailabilitySchedule{
+  date: string,
+  unavailableHours: number[];
+}

@@ -1,5 +1,10 @@
 import { Reducer } from "redux";
-import { IEvent, IService, IServiceInfo } from "../Models/service";
+import {
+  IAvailabilitySchedule,
+  IEvent,
+  IService,
+  IServiceInfo,
+} from "../Models/service";
 import { IServiceWithProvider } from "../Models";
 
 interface IServiceAction {
@@ -9,12 +14,14 @@ interface IServiceAction {
     | IEvent[]
     | IServiceInfo[]
     | IServiceWithProvider[]
+    | IAvailabilitySchedule[]
     | boolean;
 }
 
 interface IServiceState {
   events: IEvent[];
   services: IServiceWithProvider[];
+  availabilitySchedule: IAvailabilitySchedule[];
   isServicesFetched: boolean;
   isServiceCreationRequested: boolean;
   isServiceCreationSucceeded: boolean;
@@ -27,6 +34,7 @@ interface IServiceState {
 const defaultState: IServiceState = {
   events: [],
   services: [],
+  availabilitySchedule: [],
   isServicesFetched: false,
   isServiceCreationRequested: false,
   isServiceCreationSucceeded: false,
@@ -41,6 +49,8 @@ const SET_SERVICES_WITH_PROVIDERS = "SET_SERVICES_WITH_PROVIDERS";
 const SET_SERVICES = "SET_SERVICES";
 const SET_SERVICE_FETCHED_STATUS = "SET_SERVICE_FETCHED_STATUS";
 const HANDLE_USER_LOGOUT = "HANDLE_USER_LOGOUT";
+
+const SET_AVAILABILITY_SCHEDULE = "SET_AVAILABILITY_SCHEDULE";
 
 const HANDLE_SERVICE_CREATION_REQUEST = "HANDLE_SERVICE_CREATION_REQUEST";
 const HANDLE_SERVICE_CREATION_SUCCESS = "HANDLE_SERVICE_CREATION_SUCCESS";
@@ -69,6 +79,12 @@ export const serviceReducer: Reducer<IServiceState, IServiceAction> = (
       return { ...state, services: action.payload as IServiceWithProvider[] };
     case SET_SERVICE_FETCHED_STATUS:
       return { ...state, isServicesFetched: action.payload as boolean };
+
+    case SET_AVAILABILITY_SCHEDULE:
+      return {
+        ...state,
+        availabilitySchedule: action.payload as IAvailabilitySchedule[],
+      };
 
     case HANDLE_SERVICE_CREATION_REQUEST:
       return {
@@ -135,6 +151,12 @@ export const setServicesFetchedStatus = (payload: boolean) => ({
   type: SET_SERVICE_FETCHED_STATUS,
   payload,
 });
+
+export const setAvailabilitySchedule = (payload: IAvailabilitySchedule[]) => ({
+  type: SET_AVAILABILITY_SCHEDULE,
+  payload,
+})
+
 export const handleLogoutAction = () => ({
   type: HANDLE_USER_LOGOUT,
 });

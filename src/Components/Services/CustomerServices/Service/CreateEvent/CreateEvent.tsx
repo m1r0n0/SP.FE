@@ -5,22 +5,26 @@ import AdapterDateFns, {
   TimeView,
 } from "@mui/x-date-pickers/";
 import { LocalizationProvider } from "@mui/x-date-pickers/";
-import { DateField } from "@mui/x-date-pickers/";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import dayjs, { Dayjs } from "dayjs";
 import { useState } from "react";
-import { createEvent } from "../../../../../Services/service";
-import { AppDispatch } from "../../../../../Store";
+import {
+  createEvent,
+  getUnavailableHours,
+} from "../../../../../Services/service";
 import { useAppDispatch, useAppSelector } from "../../../../../hooks";
 import EventCreationResultMessage from "./EventCreationResultMessage/EventCreationResultMessage";
 import { CircularProgress } from "@mui/material";
 
 interface CreateEventProps {
   serviceId: number;
+  providerUserId: string;
 }
 
-export default function CreateEvent({ serviceId }: CreateEventProps) {
+export default function CreateEvent({
+  serviceId,
+  providerUserId,
+}: CreateEventProps) {
   const date = new Date();
   const dispatch = useAppDispatch();
   const isEventCreationRequested = useAppSelector(
@@ -28,6 +32,9 @@ export default function CreateEvent({ serviceId }: CreateEventProps) {
   );
   const isEventCreationFinished = useAppSelector(
     (s) => s.service.isEventCreationFinished
+  );
+  const availabilitySchedule = useAppSelector(
+    (s) => s.service.availabilitySchedule
   );
 
   const [state, setState] = useState({
@@ -40,6 +47,8 @@ export default function CreateEvent({ serviceId }: CreateEventProps) {
       .startOf("hour")
       .toISOString(),
   });
+
+  var shouldDisable = false;
 
   const changeDatesValues = (newValue: Dayjs) => {
     if (dayjs(state.dateOfEnd).isAfter(newValue)) {
@@ -56,20 +65,20 @@ export default function CreateEvent({ serviceId }: CreateEventProps) {
 
   //Method which hour is passed and if specific time should be disabled the method
   //should return true
-  const shouldDisableTime = (
-    value: Dayjs,
-    view: TimeView,
-    unavailableHours: number[]
-  ) => {
-    const hour = value.hour();
-    if (view === "hours") {
-      return hour < 9 || hour > 13;
-    }
-    if (view === "minutes") {
-      const minute = value.minute();
-      return minute > 20 && hour === 13;
-    }
-    return false;
+  const shouldDisableTime = (date: Dayjs, view: TimeView) => {
+    //if (view === "hours") {
+    availabilitySchedule.forEach((schedule) => {
+      var day = dayjs(schedule.date);
+      if (day.isSame(date, "D")) {
+        schedule.unavailableHours.forEach((hour) => {
+          if (hour === date.hour()) {
+            shouldDisable = true;
+          }
+        });
+      }
+    });
+    //}
+    return shouldDisable;
   };
 
   const getMinTimeForEventCreation = (newDate: Dayjs, minimumDate: Dayjs) => {
@@ -84,7 +93,8 @@ export default function CreateEvent({ serviceId }: CreateEventProps) {
     return properMinTime;
   };
 
-  // console.log(state);
+  console.log(state);
+  dispatch(getUnavailableHours(providerUserId));
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -105,6 +115,8 @@ export default function CreateEvent({ serviceId }: CreateEventProps) {
             onChange={(newValue) => changeDatesValues(newValue!)}
             ampm={false}
             timeSteps={{ hours: 1, minutes: 60 }}
+            skipDisabled
+            shouldDisableTime={shouldDisableTime}
           />
         </div>
 
@@ -134,6 +146,8 @@ export default function CreateEvent({ serviceId }: CreateEventProps) {
             }
             ampm={false}
             timeSteps={{ hours: 1, minutes: 60 }}
+            skipDisabled
+            shouldDisableTime={shouldDisableTime}
           />
         </div>
 
@@ -141,7 +155,7 @@ export default function CreateEvent({ serviceId }: CreateEventProps) {
           <div>
             <CircularProgress size={75} />
           </div>
-        ) : (
+        ) : shouldDisable ? null : (
           <input
             type="button"
             className="btn btn-primary btn-lg"

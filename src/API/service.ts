@@ -18,6 +18,7 @@ import {
   handleServiceCreationFailure,
   handleEventCreationFailure,
   handleEventCreationSuccess,
+  setAvailabilitySchedule,
 } from "../Store/ServiceReducer";
 import {
   IEventCreation,
@@ -185,5 +186,23 @@ export async function proceedEventCreation(
     if (response.ok) {
       dispatch(handleEventCreationSuccess());
     } else dispatch(handleEventCreationFailure());
+  };
+}
+
+export async function getProviderAvailAbilitySchedule(providerUserId: string) {
+  return async (dispatch: AppDispatch) => {
+    const response = await fetch(
+      `${GetEventsForProviderURI}/${providerUserId}/unavailableHours`,
+      {
+        headers: {
+          Authorization: await dispatch(GetAuthHeader()),
+        },
+      }
+    );
+    if (response.ok) {
+      var schedules = await response.json();
+
+      dispatch(setAvailabilitySchedule(schedules));
+    }
   };
 }
