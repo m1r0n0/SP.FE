@@ -48,7 +48,10 @@ export default function CreateEvent({
       .toISOString(),
   });
 
-  var shouldDisable = false;
+  const [isStartDateAppropriate, setIsStartDateAppropriate] = useState(false);
+  const [isEndDateAppropriate, setIsEndDateAppropriate] = useState(false);
+
+  //var shouldDisable = false;
 
   const changeDatesValues = (newValue: Dayjs) => {
     if (dayjs(state.dateOfEnd).isAfter(newValue)) {
@@ -65,8 +68,12 @@ export default function CreateEvent({
 
   //Method which hour is passed and if specific time should be disabled the method
   //should return true
-  const shouldDisableTime = (date: Dayjs, view: TimeView) => {
-    //if (view === "hours") {
+  const shouldDisableTime = (
+    date: Dayjs,
+    setButtonReadiness: React.Dispatch<React.SetStateAction<boolean>>
+  ) => {
+    var shouldDisable = false;
+
     availabilitySchedule.forEach((schedule) => {
       var day = dayjs(schedule.date);
       if (day.isSame(date, "D")) {
@@ -77,7 +84,7 @@ export default function CreateEvent({
         });
       }
     });
-    //}
+    setButtonReadiness(shouldDisable);
     return shouldDisable;
   };
 
@@ -93,7 +100,7 @@ export default function CreateEvent({
     return properMinTime;
   };
 
-  console.log(state);
+  //console.log(state);
   dispatch(getUnavailableHours(providerUserId));
 
   return (
@@ -116,7 +123,9 @@ export default function CreateEvent({
             ampm={false}
             timeSteps={{ hours: 1, minutes: 60 }}
             skipDisabled
-            shouldDisableTime={shouldDisableTime}
+            shouldDisableTime={(date) =>
+              shouldDisableTime(date, setIsStartDateAppropriate)
+            }
           />
         </div>
 
@@ -147,7 +156,9 @@ export default function CreateEvent({
             ampm={false}
             timeSteps={{ hours: 1, minutes: 60 }}
             skipDisabled
-            shouldDisableTime={shouldDisableTime}
+            shouldDisableTime={(date) =>
+              shouldDisableTime(date, setIsEndDateAppropriate)
+            }
           />
         </div>
 
@@ -155,7 +166,7 @@ export default function CreateEvent({
           <div>
             <CircularProgress size={75} />
           </div>
-        ) : shouldDisable ? null : (
+        ) : isStartDateAppropriate && isEndDateAppropriate ? null : (
           <input
             type="button"
             className="btn btn-primary btn-lg"
