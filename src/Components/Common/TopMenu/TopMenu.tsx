@@ -27,9 +27,11 @@ export function TopMenu() {
                   <Link className={"navi-link"} to="/Services">
                     {isProvider ? "My services" : "Services"}
                   </Link>
-                  <Link className={"navi-link"} to="/Service/Create">
-                    {isProvider ? "Create Service" : null}
-                  </Link>
+                  {isProvider ? (
+                    <Link className={"navi-link"} to="/Service/Create">
+                      Create Service
+                    </Link>
+                  ) : null}
                 </div>
               ) : null}
             </div>

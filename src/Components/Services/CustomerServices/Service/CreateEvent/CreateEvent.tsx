@@ -7,7 +7,7 @@ import AdapterDateFns, {
 import { LocalizationProvider } from "@mui/x-date-pickers/";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   createEvent,
   getUnavailableHours,
@@ -15,6 +15,8 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../../../hooks";
 import EventCreationResultMessage from "./EventCreationResultMessage/EventCreationResultMessage";
 import { CircularProgress } from "@mui/material";
+import utc from "dayjs/plugin/utc";
+import tz from "dayjs/plugin/timezone";
 
 interface CreateEventProps {
   serviceId: number;
@@ -26,6 +28,9 @@ export default function CreateEvent({
   providerUserId,
 }: CreateEventProps) {
   const date = new Date();
+  dayjs.extend(utc);
+  dayjs.extend(tz);
+
   const dispatch = useAppDispatch();
   const isEventCreationRequested = useAppSelector(
     (s) => s.service.isEventCreationRequested
@@ -51,8 +56,6 @@ export default function CreateEvent({
   const [isStartDateAppropriate, setIsStartDateAppropriate] = useState(false);
   const [isEndDateAppropriate, setIsEndDateAppropriate] = useState(false);
 
-  //var shouldDisable = false;
-
   const changeDatesValues = (newValue: Dayjs) => {
     if (dayjs(state.dateOfEnd).isAfter(newValue)) {
       setState({
@@ -73,12 +76,14 @@ export default function CreateEvent({
     setButtonReadiness: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
     var shouldDisable = false;
+    const d = dayjs.utc(date).tz("Iceland");
 
     availabilitySchedule.forEach((schedule) => {
-      var day = dayjs(schedule.date);
-      if (day.isSame(date, "D")) {
+      var scheduleDay = dayjs.utc(schedule.date);
+      if (scheduleDay.tz("Iceland").isSame(d, "D")) {
         schedule.unavailableHours.forEach((hour) => {
-          if (hour === date.hour()) {
+          // if (hour === date.hour()) {
+          if (hour === d.hour()) {
             shouldDisable = true;
           }
         });
@@ -100,8 +105,11 @@ export default function CreateEvent({
     return properMinTime;
   };
 
+  useEffect(() => {
+    dispatch(getUnavailableHours(providerUserId));
+  }, []);
+
   //console.log(state);
-  dispatch(getUnavailableHours(providerUserId));
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -171,7 +179,9 @@ export default function CreateEvent({
             type="button"
             className="btn btn-primary btn-lg"
             value="Order"
-            onClick={() => dispatch(createEvent(state, serviceId))}
+            onClick={() =>
+              dispatch(createEvent(state, serviceId, providerUserId))
+            }
           />
         )}
 
