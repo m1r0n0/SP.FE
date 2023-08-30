@@ -1,7 +1,8 @@
 import { Reducer } from "redux";
 import {
   IAvailabilitySchedule,
-  IEvent,
+  ICustomerEvent,
+  IProviderEvent,
   IService,
   IServiceInfo,
 } from "../Models/service";
@@ -11,7 +12,8 @@ interface IServiceAction {
   type: string;
   payload:
     | string
-    | IEvent[]
+    | ICustomerEvent[]
+    | IProviderEvent[]
     | IServiceInfo[]
     | IServiceWithProvider[]
     | IAvailabilitySchedule[]
@@ -19,10 +21,12 @@ interface IServiceAction {
 }
 
 interface IServiceState {
-  events: IEvent[];
+  customerEvents: ICustomerEvent[];
+  providerEvents: IProviderEvent[];
   services: IServiceWithProvider[];
   availabilitySchedule: IAvailabilitySchedule[];
   isServicesFetched: boolean;
+  isEventsFetched: boolean;
   isServiceCreationRequested: boolean;
   isServiceCreationSucceeded: boolean;
   isServiceCreationFinished: boolean;
@@ -32,10 +36,12 @@ interface IServiceState {
 }
 
 const defaultState: IServiceState = {
-  events: [],
+  customerEvents: [],
+  providerEvents: [],
   services: [],
   availabilitySchedule: [],
   isServicesFetched: false,
+  isEventsFetched: false,
   isServiceCreationRequested: false,
   isServiceCreationSucceeded: false,
   isServiceCreationFinished: false,
@@ -44,10 +50,12 @@ const defaultState: IServiceState = {
   isEventCreationFinished: false,
 };
 
-const SET_EVENTS = "SET_EVENTS";
+const SET_CUSTOMER_EVENTS = "SET_CUSTOMER_EVENTS";
+const SET_PROVIDER_EVENTS = "SET_PROVIDER_EVENTS";
 const SET_SERVICES_WITH_PROVIDERS = "SET_SERVICES_WITH_PROVIDERS";
 const SET_SERVICES = "SET_SERVICES";
 const SET_SERVICE_FETCHED_STATUS = "SET_SERVICE_FETCHED_STATUS";
+const SET_EVENTS_FETCHED_STATUS = "SET_EVENTS_FETCHED_STATUS";
 const HANDLE_USER_LOGOUT = "HANDLE_USER_LOGOUT";
 
 const SET_AVAILABILITY_SCHEDULE = "SET_AVAILABILITY_SCHEDULE";
@@ -65,10 +73,15 @@ export const serviceReducer: Reducer<IServiceState, IServiceAction> = (
   action: IServiceAction
 ) => {
   switch (action.type) {
-    case SET_EVENTS:
+    case SET_CUSTOMER_EVENTS:
       return {
         ...state,
-        events: action.payload as IEvent[],
+        customerEvents: action.payload as ICustomerEvent[],
+      };
+      case SET_PROVIDER_EVENTS:
+      return {
+        ...state,
+        providerEvents: action.payload as IProviderEvent[],
       };
     case SET_SERVICES_WITH_PROVIDERS:
       return {
@@ -79,6 +92,8 @@ export const serviceReducer: Reducer<IServiceState, IServiceAction> = (
       return { ...state, services: action.payload as IServiceWithProvider[] };
     case SET_SERVICE_FETCHED_STATUS:
       return { ...state, isServicesFetched: action.payload as boolean };
+    case SET_EVENTS_FETCHED_STATUS:
+      return { ...state, isEventsFetched: action.payload as boolean };
 
     case SET_AVAILABILITY_SCHEDULE:
       return {
@@ -133,10 +148,15 @@ export const serviceReducer: Reducer<IServiceState, IServiceAction> = (
   }
 };
 
-export const setEventsAction = (payload: IEvent[]) => ({
-  type: SET_EVENTS,
+export const setCustomerEventsAction = (payload: ICustomerEvent[]) => ({
+  type: SET_CUSTOMER_EVENTS,
   payload,
 });
+export const setProviderEventsAction = (payload: IProviderEvent[]) => ({
+  type: SET_PROVIDER_EVENTS,
+  payload,
+});
+
 export const setServicesWithProvidersAction = (
   payload: IServiceWithProvider[]
 ) => ({
@@ -151,11 +171,15 @@ export const setServicesFetchedStatus = (payload: boolean) => ({
   type: SET_SERVICE_FETCHED_STATUS,
   payload,
 });
+export const setEventsFetchedStatus = (payload: boolean) => ({
+  type: SET_EVENTS_FETCHED_STATUS,
+  payload,
+});
 
 export const setAvailabilitySchedule = (payload: IAvailabilitySchedule[]) => ({
   type: SET_AVAILABILITY_SCHEDULE,
   payload,
-})
+});
 
 export const handleLogoutAction = () => ({
   type: HANDLE_USER_LOGOUT,

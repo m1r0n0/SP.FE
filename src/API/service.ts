@@ -11,7 +11,7 @@ import {
 import { AppDispatch, GetState } from "../Store";
 import { GetAuthHeader } from "../Services";
 import {
-  setEventsAction,
+  setCustomerEventsAction,
   setServicesWithProvidersAction,
   setServicesFetchedStatus,
   handleServiceCreationSuccess,
@@ -19,6 +19,8 @@ import {
   handleEventCreationFailure,
   handleEventCreationSuccess,
   setAvailabilitySchedule,
+  setEventsFetchedStatus,
+  setProviderEventsAction,
 } from "../Store/ServiceReducer";
 import {
   IEventCreation,
@@ -53,6 +55,46 @@ export async function getAllServices(query: string) {
 
       dispatch(setServicesWithProvidersAction(services.data.services));
       dispatch(setServicesFetchedStatus(true));
+    }
+  };
+}
+
+export async function getEventsForCustomer(query: string) {
+  return async (dispatch: AppDispatch) => {
+    const response = await fetch(`${GraphQlURI}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // Authorization: await dispatch(GetAuthHeader()),
+      },
+      body: JSON.stringify({ query }),
+    });
+
+    if (response.ok) {
+      var events = await response.json();
+
+      dispatch(setCustomerEventsAction(events.data.customerEvents));
+      dispatch(setEventsFetchedStatus(true));
+    }
+  };
+}
+
+export async function getEventsForProvider(query: string) {
+  return async (dispatch: AppDispatch) => {
+    const response = await fetch(`${GraphQlURI}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // Authorization: await dispatch(GetAuthHeader()),
+      },
+      body: JSON.stringify({ query }),
+    });
+
+    if (response.ok) {
+      var events = await response.json();
+
+      dispatch(setProviderEventsAction(events.data.providerEvents));
+      dispatch(setEventsFetchedStatus(true));
     }
   };
 }
@@ -129,42 +171,6 @@ export async function proceedServiceDeletion(serviceId: number) {
     if (response.ok) {
       const providerUserId = getState().user.user.userId;
       dispatch(await getServicesForProvider(providerUserId));
-    }
-  };
-}
-
-export async function getEventsForCustomer(customerUserId: string) {
-  return async (dispatch: AppDispatch) => {
-    const response = await fetch(
-      `${GetEventsForCustomerURI}/${customerUserId}`,
-      {
-        headers: {
-          Authorization: await dispatch(GetAuthHeader()),
-        },
-      }
-    );
-    if (response.ok) {
-      var events = await response.json();
-
-      dispatch(setEventsAction(events));
-    }
-  };
-}
-
-export async function getEventsForProvider(providerUserId: string) {
-  return async (dispatch: AppDispatch) => {
-    const response = await fetch(
-      `${GetEventsForProviderURI}/${providerUserId}`,
-      {
-        headers: {
-          Authorization: await dispatch(GetAuthHeader()),
-        },
-      }
-    );
-    if (response.ok) {
-      var events = await response.json();
-
-      dispatch(setEventsAction(events));
     }
   };
 }

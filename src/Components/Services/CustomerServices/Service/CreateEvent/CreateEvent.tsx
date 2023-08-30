@@ -109,8 +109,6 @@ export default function CreateEvent({
     dispatch(getUnavailableHours(providerUserId));
   }, []);
 
-  //console.log(state);
-
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div>

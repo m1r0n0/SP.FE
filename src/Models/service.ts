@@ -27,13 +27,13 @@ export interface IServiceEditionInStrings {
   price: string;
 }
 
-export interface IEvent {
-  EventId: number;
-  ServiceId: number;
-  CustomerUserId: string;
-  DateOfStart: string;
-  DateOfEnd: string;
-}
+// export interface IEvent {
+//   EventId: number;
+//   ServiceId: number;
+//   CustomerUserId: string;
+//   DateOfStart: string;
+//   DateOfEnd: string;
+// }
 
 export interface IEventCreation {
   customerUserId: string;
@@ -46,7 +46,21 @@ export interface IEventDates {
   dateOfEnd: string;
 }
 
-export interface IAvailabilitySchedule{
-  date: string,
+export interface IAvailabilitySchedule {
+  date: string;
   unavailableHours: number[];
+}
+
+export interface ICustomerEvent {
+  serviceName: string;
+  serviceId: number;
+  dateOfStart: string;
+  dateOfEnd: string;
+}
+export interface IProviderEvent {
+  serviceName: string;
+  serviceId: number;
+  dateOfStart: string;
+  dateOfEnd: string;
+  customerName: string
 }

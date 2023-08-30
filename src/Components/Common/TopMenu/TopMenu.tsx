@@ -32,6 +32,9 @@ export function TopMenu() {
                       Create Service
                     </Link>
                   ) : null}
+                  <Link className={"navi-link"} to="/History">
+                    {isProvider ? "Calendar" : "History"}
+                  </Link>
                 </div>
               ) : null}
             </div>

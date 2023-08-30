@@ -1,6 +1,8 @@
 import { AppDispatch, GetState } from "../Store";
 import {
   getAllServices,
+  getEventsForCustomer,
+  getEventsForProvider,
   getProviderAvailAbilitySchedule,
   getServicesForProvider,
   proceedEventCreation,
@@ -119,4 +121,43 @@ export const createEvent =
 export const getUnavailableHours =
   (providerUserId: string) => async (dispatch: AppDispatch) => {
     dispatch(await getProviderAvailAbilitySchedule(providerUserId));
+  };
+
+export const getCustomersEvents =
+  (customerUserId: string) => async (dispatch: AppDispatch) => {
+    const query = {
+      customerEvents: {
+        __args: {
+          customerUserId: customerUserId,
+        },
+        serviceName: true,
+        serviceId: true,
+        dateOfStart: true,
+        dateOfEnd: true,
+      },
+    };
+
+    let graphql_query = jsonToGraphQLQuery(query, { pretty: true });
+    graphql_query = `{${graphql_query}}`;
+    dispatch(await getEventsForCustomer(graphql_query));
+  };
+
+export const getProviderEvents =
+  (providerUserId: string) => async (dispatch: AppDispatch) => {
+    const query = {
+      providerEvents: {
+        __args: {
+          providerUserId: providerUserId,
+        },
+        serviceName: true,
+        serviceId: true,
+        dateOfStart: true,
+        dateOfEnd: true,
+        customerName: true,
+      },
+    };
+
+    let graphql_query = jsonToGraphQLQuery(query, { pretty: true });
+    graphql_query = `{${graphql_query}}`;
+    dispatch(await getEventsForProvider(graphql_query));
   };

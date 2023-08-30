@@ -12,6 +12,7 @@ import Profile from "../../Profile/User";
 import EditProfile from "../../Profile/User/EditProfile";
 import Services from "../../Services";
 import CreateService from "../../Services/CreateService/CreateService";
+import Events from "../../Events/Events";
 
 export const Routers = () => {
   return (
@@ -34,6 +35,8 @@ export const Routers = () => {
 
           <Route path="/Services" element={<Services />} />
           <Route path="/Service/Create" element={<CreateService />} />
+
+          <Route path="/History" element={<Events />} />
         </Routes>
       </div>
     </BrowserRouter>

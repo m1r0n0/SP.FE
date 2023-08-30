@@ -35,13 +35,13 @@ function App() {
   );
 
   return (
-    <div>
+    <div className="App">
       {isAppLoaded ? (
-        <div className="App">
+        <div>
           <Routers />
         </div>
       ) : (
-        <div className="container d-flex justify-content-center">
+        <div>
           <CircularProgress size={300} />
         </div>
       )}
