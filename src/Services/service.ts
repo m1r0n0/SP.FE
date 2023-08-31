@@ -134,6 +134,8 @@ export const getCustomersEvents =
         serviceId: true,
         dateOfStart: true,
         dateOfEnd: true,
+        providerName: true,
+        providerEnterpriseName: true,
       },
     };
 

@@ -56,11 +56,13 @@ export interface ICustomerEvent {
   serviceId: number;
   dateOfStart: string;
   dateOfEnd: string;
+  providerName: string;
+  providerEnterpriseName: string;
 }
 export interface IProviderEvent {
   serviceName: string;
   serviceId: number;
   dateOfStart: string;
   dateOfEnd: string;
-  customerName: string
+  customerName: string;
 }

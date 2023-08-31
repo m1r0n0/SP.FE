@@ -1,3 +1,4 @@
+import { CircularProgress } from "@mui/material";
 import { getServicesForProvider } from "../../../API/service";
 import { IServiceWithProvider } from "../../../Models";
 import { getProviderServices, getServices } from "../../../Services/service";
@@ -27,5 +28,9 @@ export default function ProviderServices() {
         }
       )}
     </div>
-  ) : null;
+  ) : (
+    <div>
+      <CircularProgress size={300} />
+    </div>
+  );
 }

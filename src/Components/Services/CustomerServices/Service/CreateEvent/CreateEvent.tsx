@@ -17,16 +17,14 @@ import EventCreationResultMessage from "./EventCreationResultMessage/EventCreati
 import { CircularProgress } from "@mui/material";
 import utc from "dayjs/plugin/utc";
 import tz from "dayjs/plugin/timezone";
+import { IProvider } from "../../../../../Models/provider";
 
 interface CreateEventProps {
   serviceId: number;
-  providerUserId: string;
+  provider: IProvider;
 }
 
-export default function CreateEvent({
-  serviceId,
-  providerUserId,
-}: CreateEventProps) {
+export default function CreateEvent({ serviceId, provider }: CreateEventProps) {
   const date = new Date();
   dayjs.extend(utc);
   dayjs.extend(tz);
@@ -76,19 +74,25 @@ export default function CreateEvent({
     setButtonReadiness: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
     var shouldDisable = false;
-    const d = dayjs.utc(date).tz("Iceland");
+    const calendarSelectedDate = dayjs.utc(date).tz("Iceland");
 
-    availabilitySchedule.forEach((schedule) => {
-      var scheduleDay = dayjs.utc(schedule.date);
-      if (scheduleDay.tz("Iceland").isSame(d, "D")) {
-        schedule.unavailableHours.forEach((hour) => {
-          // if (hour === date.hour()) {
-          if (hour === d.hour()) {
-            shouldDisable = true;
-          }
-        });
-      }
-    });
+    if (
+      date.hour() < provider.workHoursBegin ||
+      date.hour() > provider.workHoursEnd - 1
+    ) {
+      shouldDisable = true;
+    } else {
+      availabilitySchedule.forEach((schedule) => {
+        var scheduleDay = dayjs.utc(schedule.date);
+        if (scheduleDay.tz("Iceland").isSame(calendarSelectedDate, "D")) {
+          schedule.unavailableHours.forEach((hour) => {
+            if (hour === calendarSelectedDate.hour()) {
+              shouldDisable = true;
+            }
+          });
+        }
+      });
+    }
     setButtonReadiness(shouldDisable);
     return shouldDisable;
   };
@@ -106,7 +110,7 @@ export default function CreateEvent({
   };
 
   useEffect(() => {
-    dispatch(getUnavailableHours(providerUserId));
+    dispatch(getUnavailableHours(provider.userId));
   }, []);
 
   return (
@@ -163,7 +167,9 @@ export default function CreateEvent({
             timeSteps={{ hours: 1, minutes: 60 }}
             skipDisabled
             shouldDisableTime={(date) =>
-              shouldDisableTime(date, setIsEndDateAppropriate)
+              //add -1 hour to hide begin hour
+              //and also display clock because we subtract 1 hour from endWorkHours
+              shouldDisableTime(date.add(-1, "h"), setIsEndDateAppropriate)
             }
           />
         </div>
@@ -178,7 +184,7 @@ export default function CreateEvent({
             className="btn btn-primary btn-lg"
             value="Order"
             onClick={() =>
-              dispatch(createEvent(state, serviceId, providerUserId))
+              dispatch(createEvent(state, serviceId, provider.userId))
             }
           />
         )}

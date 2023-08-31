@@ -22,12 +22,9 @@ export default function Service({ service, provider }: props) {
         Provider: {provider.firstName} {provider.lastName}
       </p>
       <p>{provider.enterpriseName}</p>
-      <p>
-        Workhours: {provider.workHoursBegin} - {provider.workHoursEnd}
-      </p>
 
       {isCreatingEvent ? (
-        <CreateEvent serviceId={service.serviceId} providerUserId={provider.userId} />
+        <CreateEvent serviceId={service.serviceId} provider={provider} />
       ) : (
         <input
           type="button"
