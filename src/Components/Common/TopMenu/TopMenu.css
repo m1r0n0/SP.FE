@@ -1,22 +1,55 @@
+.navbar {
+  width: 85%;
+  border-bottom: 1px solid #e5e5e5;
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+  position:static;
+  padding-inline:1em;
+  border-radius: 10px;
+}
+
+.nav-items {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-items-block{
+  display: flex;
+  flex-direction: row;
+}
+
+ul{
+  list-style-type:none;
+  padding-inline-start: 0;
+}
+
 a.navbar-brand {
     white-space: normal;
     text-align: center;
     word-break: break-all;
+    font-size:1.5em;
+    text-decoration: none;
+    font-weight:bold;
+    transition: color .20s ease-in-out, background-color .20s ease-in-out, border-color .20s ease-in-out;
+    margin: 0.5em
   }
   
   a.navbar-brand:hover {
     color: #0077cc;
   }
   
-  .navi-link {
+  .nav-item-link {
     display: block;
     padding: 0.5rem 1rem;
     color: #0077cc;
     text-decoration: none;
-    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
+    transition: color .20s ease-in-out, background-color .20s ease-in-out, border-color .20s ease-in-out;
+    border-radius: 5px;
+    margin: 0.2em;
   }
   
-  a.navi-link:hover {
+  a.nav-item-link:hover {
     background-color: #0077cc;
     color: #ffffff;
   }
@@ -45,40 +78,11 @@ a.navbar-brand {
     margin: auto;
   }
   
-  .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
-  }
-  
-  .border-top {
-    border-top: 1px solid #e5e5e5;
-  }
-  .border-bottom {
-    border-bottom: 1px solid #e5e5e5;
-  }
-  
-  .box-shadow {
-    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-  }
-  
-  button.accept-policy {
-    font-size: 1rem;
-    line-height: inherit;
-  }
-  
   .footer {
     position: absolute;
     bottom: 0;
     width: 100%;
     white-space: nowrap;
     line-height: 60px;
-  }
-  
-  .navitems {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
   }
   

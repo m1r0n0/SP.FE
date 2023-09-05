@@ -17,7 +17,9 @@ import Events from "../../Events/Events";
 export const Routers = () => {
   return (
     <BrowserRouter>
-      <TopMenu />
+      <div className="router-navbar">
+        <TopMenu />
+      </div>
       <div className="app-body">
         <Routes>
           <Route path="/Unauthorized" element={<Unauthorized />} />
