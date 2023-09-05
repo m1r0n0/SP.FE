@@ -17,29 +17,31 @@ import Events from "../../Events/Events";
 export const Routers = () => {
   return (
     <BrowserRouter>
-      <div className="router-navbar">
-        <TopMenu />
-      </div>
-      <div className="app-body">
-        <Routes>
-          <Route path="/Unauthorized" element={<Unauthorized />} />
-          <Route path="/NotFound" element={<NotFound />} />
+      <div className="app">
+        <div className="app-navbar">
+          <TopMenu />
+        </div>
+        <div className="app-body">
+          <Routes>
+            <Route path="/Unauthorized" element={<Unauthorized />} />
+            <Route path="/NotFound" element={<NotFound />} />
 
-          <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<HomePage />} />
 
-          <Route path="/Login" element={<Login />} />
-          <Route path="/Register" element={<Register />} />
-          <Route path="/Profile/*" element={<Profile />} />
-          <Route path="/Profile/Edit" element={<EditProfile />} />
+            <Route path="/Login" element={<Login />} />
+            <Route path="/Register" element={<Register />} />
+            <Route path="/Profile/*" element={<Profile />} />
+            <Route path="/Profile/Edit" element={<EditProfile />} />
 
-          <Route path="/Register/Provider" element={<RegisterProvider />} />
-          <Route path="/Register/Customer" element={<RegisterCustomer />} />
+            <Route path="/Register/Provider" element={<RegisterProvider />} />
+            <Route path="/Register/Customer" element={<RegisterCustomer />} />
 
-          <Route path="/Services" element={<Services />} />
-          <Route path="/Service/Create" element={<CreateService />} />
+            <Route path="/Services" element={<Services />} />
+            <Route path="/Service/Create" element={<CreateService />} />
 
-          <Route path="/History" element={<Events />} />
-        </Routes>
+            <Route path="/History" element={<Events />} />
+          </Routes>
+        </div>
       </div>
     </BrowserRouter>
   );

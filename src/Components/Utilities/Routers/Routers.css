@@ -1,13 +1,20 @@
-.router-navbar{
+.app-navbar {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: fixed;
+  width: 100%;
+  font-size: calc(9px + 1vmin);
 }
 
 .app-body {
+  text-align: center;
+  padding-top: 3.5em;
+}
+
+.app {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   font-size: calc(10px + 2vmin);
-  text-align: center;
 }
