@@ -2,17 +2,6 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -28,11 +17,76 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.load-circle {
+  height: 100vh;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn {
+  padding: 0.3em;
+  color: #fff;
+  text-decoration: none;
+  background-color: #0077cc;
+  border-color: #0077cc;
+  border-style: outset;
+  font-size: inherit;
+  border-radius: 5px;
+  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.btn:hover {
+  color: #0077cc;
+  background-color: #fff;
+}
+
+.input-textfield-box,
+.input-checkbox-box {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5em 0;
+}
+
+.input-textfield-box label {
+  text-align: start;
+}
+
+.input-checkbox-box input,
+.input-textfield-box input {
+  border-radius: 5px;
+  border-color: #0077cc;
+  border-style: solid;
+}
+
+.input-textfield-box input {
+  height: 2em;
+}
+
+.input-checkbox-box input {
+  height: 1.5em;
+}
+
+.radiobutton-main-box {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  justify-content: center;
+  margin: 0.5em 0;
+}
+
+.radiobutton-sub-box {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 0.2em;
+  margin: 0.2em 0;
+  align-items: center;
+}
+
+.radiobutton-sub-box label {
+  text-align: start;
+}
+
+.radiobutton-sub-box input[type="radio" i] {
+  height: 2em;
 }

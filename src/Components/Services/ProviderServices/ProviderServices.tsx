@@ -29,7 +29,7 @@ export default function ProviderServices() {
       )}
     </div>
   ) : (
-    <div>
+    <div className="load-circle">
       <CircularProgress size={300} />
     </div>
   );

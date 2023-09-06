@@ -28,7 +28,7 @@ export default function CustomerEvents({}: CustomerEventsProps) {
           })}
         </div>
       ) : (
-        <div>
+        <div className="load-circle">
           <CircularProgress size={300} />
         </div>
       )}

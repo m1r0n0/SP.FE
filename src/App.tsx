@@ -41,7 +41,7 @@ function App() {
           <Routers />
         </div>
       ) : (
-        <div>
+        <div className="load-circle">
           <CircularProgress size={300} />
         </div>
       )}

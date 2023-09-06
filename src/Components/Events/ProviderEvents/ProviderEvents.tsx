@@ -1,18 +1,15 @@
 import { DateCalendar, LocalizationProvider } from "@mui/x-date-pickers";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import React, { useState } from "react";
 import utc from "dayjs/plugin/utc";
 import tz from "dayjs/plugin/timezone";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { CircularProgress } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { ICustomerEvent, IProviderEvent } from "../../../Models/service";
-import CustomerEvent from "../CustomerEvents/CustomerEvent";
-import {
-  getCustomersEvents,
-  getProviderEvents,
-} from "../../../Services/service";
+import { IProviderEvent } from "../../../Models/service";
+import { getProviderEvents } from "../../../Services/service";
 import ProviderEvent from "./ProviderEvent/ProviderEvent";
+import "./ProviderEvents.css";
 
 interface ProviderEventsProps {}
 
@@ -49,7 +46,7 @@ export default function ProviderEvents({}: ProviderEventsProps) {
         />
       </LocalizationProvider>
       {isEventsFetched ? (
-        <div className="d-flex flex-column">
+        <div className="prov-ev-calendar">
           {events?.map((event: IProviderEvent, index: number) => {
             return checkWhetherEventOnTheCurrentDate(event) ? (
               <ProviderEvent key={index} event={event} />
@@ -57,8 +54,8 @@ export default function ProviderEvents({}: ProviderEventsProps) {
           })}
         </div>
       ) : (
-        <div>
-          <CircularProgress size={300} />
+        <div className="prov-ev-load-circle">
+          <CircularProgress size={150} />
         </div>
       )}
     </div>

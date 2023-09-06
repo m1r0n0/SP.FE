@@ -24,25 +24,25 @@ export function TopMenu() {
             Service Provider
           </Link>
           {isLogon(String(userId)) ? (
-          <ul className="nav-items-block">
-            <li>
-              <Link className="nav-item-link" to="/Services">
-                {isProvider ? "My services" : "Services"}
-              </Link>
-            </li>
-            {isProvider ? (
+            <ul className="nav-items-block">
               <li>
-                <Link className="nav-item-link" to="/Service/Create">
-                  Create Service
+                <Link className="nav-item-link" to="/Services">
+                  {isProvider ? "My services" : "Services"}
                 </Link>
               </li>
-            ) : null}
-            <li>
-              <Link className="nav-item-link" to="/History">
-                {isProvider ? "Calendar" : "History"}
-              </Link>
-            </li>
-          </ul>
+              {isProvider ? (
+                <li>
+                  <Link className="nav-item-link" to="/Service/Create">
+                    Create Service
+                  </Link>
+                </li>
+              ) : null}
+              <li>
+                <Link className="nav-item-link" to="/History">
+                  {isProvider ? "Calendar" : "History"}
+                </Link>
+              </li>
+            </ul>
           ) : null}
         </div>
         <div className="nav-items-block">

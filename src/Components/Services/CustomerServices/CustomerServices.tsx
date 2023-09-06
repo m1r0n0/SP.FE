@@ -28,7 +28,7 @@ export default function CustomerServices() {
       )}
     </div>
   ) : (
-    <div>
+    <div className="load-circle">
       <CircularProgress size={300} />
     </div>
   );

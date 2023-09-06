@@ -6,6 +6,7 @@
   padding-inline: 1em;
   border-radius: 0px 0px 10px 10px;
   background-color: #ffffff;
+  z-index: 5;
 }
 
 .nav-items {
@@ -45,6 +46,7 @@ a.navbar-brand:hover {
 .navbar-brand {
   margin-inline: 0.5em;
   padding: 0.5rem 1rem;
+  word-wrap: unset;
 }
 
 .nav-item,
@@ -53,8 +55,8 @@ a.navbar-brand:hover {
   margin: 0.2em;
   transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out,
     border-color 0.2s ease-in-out;
-  border-radius: 5px;
   text-decoration: none;
+  border-radius: 5px;
 }
 
 .username {
@@ -62,12 +64,13 @@ a.navbar-brand:hover {
   text-decoration: none;
   margin: auto;
 }
+.username:hover {
+  color: #0077cc;
+}
 
 .nav-item-link {
   color: #0077cc;
 }
-
-.nav-item:hover,
 .nav-item-link:hover {
   background-color: #0077cc;
   color: #ffffff;
@@ -76,20 +79,6 @@ a.navbar-brand:hover {
 
 a {
   color: #000000;
-}
-
-.btn {
-  color: #fff;
-  text-decoration: none;
-  background-color: #0077cc;
-  border-color: #0077cc;
-  border-style: outset;
-  font-size: inherit;
-}
-
-.btn:hover {
-  color: #0077cc;
-  background-color: #fff;
 }
 
 .footer {
