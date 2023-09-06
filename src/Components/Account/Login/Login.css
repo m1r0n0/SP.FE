@@ -1,0 +1,39 @@
+.input-textfield-box,
+.input-checkbox-box {
+  display: flex;
+  flex-direction: column;
+  margin: 1em 0;
+}
+
+.input-textfield-box label {
+  text-align: start;
+}
+
+.input-checkbox-box input,
+.input-textfield-box input {
+  border-radius: 5px;
+  border-color: #0077cc;
+  border-style: solid;
+}
+
+.input-textfield-box input {
+  height: 2em;
+}
+
+.input-checkbox-box input {
+  height: 1.5em;
+}
+
+.input-radio-box {
+}
+
+.radiobutton-main-box {
+  /* display: flex;
+  flex-direction: column; */
+}
+
+.radiobutton-sub-box {
+  display: grid;
+  /* grid-auto-columns: min-content; */
+  grid-row: auto;
+}
