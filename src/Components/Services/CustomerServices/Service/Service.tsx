@@ -14,25 +14,28 @@ export default function Service({ service, provider }: props) {
   const [isCreatingEvent, setIsCreatingEvent] = useState(false);
 
   return (
-    <div>
-      <p>-----------------------------</p>
-      <p>{service.name}</p>
-      <p>Price: {service.price}$</p>
-      <p>
-        Provider: {provider.firstName} {provider.lastName}
-      </p>
-      <p>{provider.enterpriseName}</p>
-
-      {isCreatingEvent ? (
-        <CreateEvent serviceId={service.serviceId} provider={provider} />
-      ) : (
-        <input
-          type="button"
-          className="btn btn-primary btn-lg"
-          value="Order"
-          onClick={() => setIsCreatingEvent(true)}
-        />
-      )}
+    <div className="service-container">
+      <p id="name">{service.name}</p>
+      <div id="provider-area">
+        <h4>Provider</h4>
+        <p>
+          {provider.firstName} {provider.lastName},
+        </p>
+        <p> {provider.enterpriseName} </p>
+      </div>
+      <p id="price">{service.price}$</p>
+      <div id="order-area">
+        {isCreatingEvent ? (
+          <CreateEvent serviceId={service.serviceId} provider={provider} />
+        ) : (
+          <input
+            type="button"
+            className="btn btn-primary btn-lg"
+            value="Order"
+            onClick={() => setIsCreatingEvent(true)}
+          />
+        )}
+      </div>
     </div>
   );
 }

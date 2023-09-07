@@ -23,6 +23,9 @@
   font-size: calc(10px + 2vmin);
 }
 
-.component-body {
+.app-body-component {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 60%;
 }

@@ -13,7 +13,7 @@ export default function CustomerServices() {
   if (!isServicesFetched) dispatch(getServices());
 
   return isServicesFetched ? (
-    <div className="d-flex flex-column">
+    <div className="app-body-component">
       <h1>Services</h1>
       {services?.map(
         (serviceWithProvider: IServiceWithProvider, index: number) => {

@@ -1,0 +1,71 @@
+.service-container {
+  background-color: aliceblue;
+  border-radius: 10px;
+  padding: 1em;
+  margin: 1em;
+  width: 60%;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  grid-template-areas:
+    "name     name     name"
+    "provider provider price"
+    "provider provider price"
+    "provider provider price"
+    "provider provider price"
+    "order    order    order";
+}
+
+#name {
+  grid-area: name;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin: 0.1em 0;
+}
+
+#provider-area {
+  grid-area: provider;
+  margin: 0.5em;
+  padding-left: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+}
+#provider-area p {
+  margin: 0.1em 0;
+  text-align: start;
+}
+#provider-area h4 {
+  margin: 0.1em 0;
+  text-align: center;
+}
+
+#price {
+  grid-area: price;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5em;
+}
+
+#order-area {
+  grid-area: order;
+}
+
+.date-pick-area label {
+}
+
+.date-pick-block {
+  display: flex;
+  margin: 1em 0;
+}
+.calendar {
+  min-width: 60% !important;
+}
+.clock {
+  display: flex;
+  justify-content: center;
+  /* width: 15% !important; */
+}
