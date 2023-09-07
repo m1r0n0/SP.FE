@@ -25,7 +25,7 @@ export default function CreateService() {
   return (
     <div>
       <h2>Create the service</h2>
-      <div>
+      <div className="input-textfield-box">
         <label htmlFor="price">Service Name </label>
         <input
           value={state.name}
@@ -35,14 +35,14 @@ export default function CreateService() {
           id="name"
         />
       </div>
-      <div>
-        <label htmlFor="price">Service Price </label>
+      <div className="input-textfield-box">
+        <label htmlFor="price">Service Price, $ </label>
         <input
           value={state.price}
           onChange={(event) =>
             setState({ ...state, price: event.target.value })
           }
-          type="text"
+          type="number"
           name="name"
           id="name"
         />

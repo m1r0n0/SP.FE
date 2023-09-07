@@ -4,7 +4,7 @@ import IncorrectLoginInputDisclaimer from "./IncorrectLoginInputDisclaimer";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { handleLogin, isLogon } from "../../../Services/user";
 import { CircularProgress } from "@mui/material";
-import "./Login.css";
+import "../Account.css";
 
 export const Login = () => {
   const dispatch = useAppDispatch();
@@ -27,7 +27,7 @@ export const Login = () => {
   return isLogon(userId) ? (
     <Navigate to="/Profile" />
   ) : (
-    <div>
+    <div className="auth-component">
       <h2> Enter the app</h2>
       <div className="input-textfield-box">
         <label htmlFor="email">Email</label>
@@ -67,7 +67,7 @@ export const Login = () => {
         <div className="radiobutton-sub-box">
           <input
             type="radio"
-            id="customer"
+            id="radio-customer"
             name="user"
             value="customer"
             onClick={() => {
@@ -80,7 +80,7 @@ export const Login = () => {
         <div className="radiobutton-sub-box">
           <input
             type="radio"
-            id="provider"
+            id="radio-provider"
             name="user"
             value="provider"
             onClick={() => {

@@ -47,10 +47,12 @@
   display: flex;
   flex-direction: column;
   margin: 0.5em 0;
+  padding: 0.2em;
 }
 
 .input-textfield-box label {
   text-align: start;
+  margin-bottom: 0.2em;
 }
 
 .input-checkbox-box input,
@@ -58,10 +60,16 @@
   border-radius: 5px;
   border-color: #0077cc;
   border-style: solid;
+  padding-inline: 0.5em;
 }
 
 .input-textfield-box input {
   height: 2em;
+  font-size: 0.7em;
+}
+
+.input-textfield-box input:focus {
+  color: #0077cc;
 }
 
 .input-checkbox-box input {
@@ -89,4 +97,14 @@
 
 .radiobutton-sub-box input[type="radio" i] {
   height: 2em;
+}
+
+.message-result-failed {
+  color: red;
+  font-size: 0.9em;
+}
+
+.message-result-succeeded {
+  color: green;
+  font-size: 1em;
 }

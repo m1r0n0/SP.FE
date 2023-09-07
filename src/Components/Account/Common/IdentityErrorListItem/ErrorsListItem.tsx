@@ -3,5 +3,5 @@ interface props {
 }
 
 export const IdentityErrorListItem = ({ errorDescription }: props) => {
-  return <p>{errorDescription}</p>;
+  return <p className="message-result-failed">{errorDescription}</p>;
 };

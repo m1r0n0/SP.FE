@@ -1,3 +1,3 @@
 export function IncorrectLoginInputDisclaimer() {
-  return <p>Incorrect email or password!</p>;
+  return <p className="message-result-failed">Incorrect email or password!</p>;
 }

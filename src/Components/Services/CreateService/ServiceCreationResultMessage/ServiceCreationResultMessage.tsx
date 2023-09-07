@@ -10,5 +10,9 @@ export default function ServiceCreationResultMessage({
   const SucceedMessage = "Service Created Successfully!";
   const FailureMessage = "Service wasn't created! Check the input!";
 
-  return isSucceeded ? <p>{SucceedMessage}</p> : <p>{FailureMessage}</p>;
+  return isSucceeded ? (
+    <p className="message-result-succeeded">{SucceedMessage}</p>
+  ) : (
+    <p className="message-result-failed">{FailureMessage}</p>
+  );
 }

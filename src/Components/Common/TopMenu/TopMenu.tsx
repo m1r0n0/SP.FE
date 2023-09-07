@@ -3,6 +3,8 @@ import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { isLogon } from "../../../Services/user";
 import "./TopMenu.css";
 import { proceedLogOut } from "../../../Services";
+import { hideAllDisclaimersAction } from "../../../Store/DisclaimerReducer";
+import { handleLogoutAction } from "../../../Store/UserReducer";
 
 export function TopMenu() {
   const dispatch = useAppDispatch();
@@ -53,7 +55,11 @@ export function TopMenu() {
                   {isProvider ? <>{providerName}</> : <>{customerName}</>}
                 </Link>
               ) : (
-                <Link to="/Login" className="nav-item-link">
+                <Link
+                  to="/Login"
+                  className="nav-item-link"
+                  onClick={() => dispatch(handleLogoutAction())}
+                >
                   Login
                 </Link>
               )}
@@ -69,7 +75,11 @@ export function TopMenu() {
                   />
                 </Link>
               ) : (
-                <Link to="/Register" className="nav-item-link">
+                <Link
+                  to="/Register"
+                  className="nav-item-link"
+                  onClick={() => dispatch(hideAllDisclaimersAction())}
+                >
                   Register
                 </Link>
               )}
