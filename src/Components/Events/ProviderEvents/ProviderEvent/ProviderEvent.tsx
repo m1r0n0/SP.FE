@@ -8,12 +8,16 @@ interface ProviderEventProps {
 
 export default function ProviderEvent({ event }: ProviderEventProps) {
   return (
-    <div>
-      <p>----------------------</p>
-      <p>{event.serviceName}</p>
+    <div className="event-container">
+      <p>
+        <strong>{event.serviceName}</strong>
+      </p>
       <p>Client: {event.customerName} </p>
-      <p>Start: {dayjs(event.dateOfStart).format("DD.MM.YYYY HH:00")}</p>
-      <p>End: {dayjs(event.dateOfEnd).format("DD.MM.YYYY HH:00")}</p>
+      <div id="time-display-area">
+        <p>{dayjs(event.dateOfStart).format("DD.MM.YYYY HH:00")}</p>
+        <p> - </p>
+        <p>{dayjs(event.dateOfEnd).format("DD.MM.YYYY HH:00")} </p>
+      </div>
     </div>
   );
 }

@@ -3,6 +3,8 @@ import { useAppDispatch } from "../../../../hooks";
 import { IProvider, IProviderInfo } from "../../../../Models/provider";
 import { IServiceInfo } from "../../../../Models/service";
 import CreateEvent from "./CreateEvent/CreateEvent";
+import { IconButton } from "@mui/material";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 
 interface props {
   service: IServiceInfo;
@@ -26,7 +28,17 @@ export default function Service({ service, provider }: props) {
       <p id="price">{service.price}$</p>
       <div id="order-area">
         {isCreatingEvent ? (
-          <CreateEvent serviceId={service.serviceId} provider={provider} />
+          <div>
+            <IconButton
+              color="primary"
+              aria-label="hide-calendars"
+              size="large"
+              onClick={() => setIsCreatingEvent(false)}
+            >
+              <ArrowUpwardIcon fontSize="inherit" />
+            </IconButton>
+            <CreateEvent serviceId={service.serviceId} provider={provider} />
+          </div>
         ) : (
           <input
             type="button"

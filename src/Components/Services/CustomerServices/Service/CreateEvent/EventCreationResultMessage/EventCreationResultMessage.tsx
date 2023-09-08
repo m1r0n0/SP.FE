@@ -11,8 +11,8 @@ export default function EventCreationResultMessage({}: EventCreationResultMessag
   const failureMessage = "Oops! Something went wrong. Try later please";
 
   return isEventCreationSucceeded ? (
-    <p> {successMessage} </p>
+    <p className="message-result-succeeded"> {successMessage} </p>
   ) : (
-    <p> {failureMessage} </p>
+    <p className="message-result-failed"> {failureMessage} </p>
   );
 }

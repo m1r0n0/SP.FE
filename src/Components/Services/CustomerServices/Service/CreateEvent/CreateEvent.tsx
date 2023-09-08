@@ -139,6 +139,7 @@ export default function CreateEvent({ serviceId, provider }: CreateEventProps) {
               shouldDisableTime={(date) =>
                 shouldDisableTime(date, setIsStartDateAppropriate)
               }
+              
             />
           </div>
         </div>

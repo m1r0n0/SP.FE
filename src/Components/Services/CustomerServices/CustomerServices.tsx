@@ -4,6 +4,7 @@ import { IProvider } from "../../../Models/provider";
 import { getServices } from "../../../Services/service";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import Service from "./Service";
+import "./CustomerServices.css";
 
 export default function CustomerServices() {
   var dispatch = useAppDispatch();

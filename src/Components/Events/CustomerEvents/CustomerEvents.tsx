@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks";
 import Service from "../../Services/CustomerServices/Service";
 import { ICustomerEvent } from "../../../Models/service";
 import CustomerEvent from "./CustomerEvent/CustomerEvent";
+import "./CustomerEvents.css";
 
 interface CustomerEventsProps {}
 
@@ -19,10 +20,10 @@ export default function CustomerEvents({}: CustomerEventsProps) {
   if (!isEventsFetched) dispatch(getCustomersEvents(customerUID));
 
   return (
-    <div>
+    <div className="app-body-component">
       <h1>Order History</h1>
       {isEventsFetched ? (
-        <div className="d-flex flex-column">
+        <div id="events-area">
           {events?.map((event: ICustomerEvent, index: number) => {
             return <CustomerEvent key={index} event={event} />;
           })}

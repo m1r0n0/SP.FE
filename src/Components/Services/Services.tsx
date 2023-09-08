@@ -6,7 +6,6 @@ import { getServices } from "../../Services/service";
 import { IServiceWithProvider } from "../../Models";
 import ProviderServices from "./ProviderServices/ProviderServices";
 import CustomerServices from "./CustomerServices/CustomerServices";
-import "./Services.css"
 
 export default function Services() {
   var isProvider = useAppSelector((s) => s.user.isProvider);

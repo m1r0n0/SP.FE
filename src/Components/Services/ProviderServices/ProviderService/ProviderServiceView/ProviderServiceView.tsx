@@ -16,17 +16,20 @@ export default function ProviderServiceView({
   const dispatch = useAppDispatch();
 
   return (
-    <div>
-      <p>-----------------------------</p>
-      <p>{service.name}</p>
-      <p>Price: {service.price}$</p>
+    <div id="service-view-container">
+      <p id="name">
+        <strong>{service.name}</strong>
+      </p>
+      <p id="price">{service.price}$</p>
       <input
+        id="edit-button"
         type="button"
         className="btn btn-primary btn-lg"
         value="Edit"
         onClick={() => setIsEditingMode(true)}
       />
       <input
+        id="delete-button"
         type="button"
         className="btn btn-primary btn-lg"
         value="Delete"

@@ -1,0 +1,18 @@
+#service-view-container {
+  background-color: aliceblue;
+  border-radius: 10px;
+  padding: 1em;
+  margin: 1em;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+}
+
+#name {
+  grid-row: 1;
+}
+
+#name strong {
+  font-size: 1.3em;
+}

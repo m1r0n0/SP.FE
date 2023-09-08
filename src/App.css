@@ -105,6 +105,6 @@
 }
 
 .message-result-succeeded {
-  color: green;
+  color: rgb(12, 160, 12);
   font-size: 1em;
 }

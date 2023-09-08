@@ -41,7 +41,7 @@ export function TopMenu() {
               ) : null}
               <li>
                 <Link className="nav-item-link" to="/History">
-                  {isProvider ? "Calendar" : "History"}
+                  My Orders
                 </Link>
               </li>
             </ul>

@@ -2,6 +2,7 @@
   margin-bottom: 50px;
 }
 
-.prov-ev-calendar {
-  z-index: 2;
+#calendar {
+  z-index: 0 !important;
+  position: fixed;
 }

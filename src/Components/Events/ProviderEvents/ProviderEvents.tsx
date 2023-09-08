@@ -37,27 +37,37 @@ export default function ProviderEvents({}: ProviderEventsProps) {
   if (!isEventsFetched) dispatch(getProviderEvents(providerUID));
 
   return (
-    <div>
+    <div className="app-body-component calendar-component">
       <h1>Orders Calendar</h1>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DateCalendar
-          value={currentDate}
-          onChange={(newValue) => setCurrentDate(newValue!.add(1, "hour"))}
-        />
-      </LocalizationProvider>
-      {isEventsFetched ? (
-        <div className="prov-ev-calendar">
-          {events?.map((event: IProviderEvent, index: number) => {
-            return checkWhetherEventOnTheCurrentDate(event) ? (
-              <ProviderEvent key={index} event={event} />
-            ) : null;
-          })}
+      <div className="info-display-area">
+        <div className="calendar-display-area">
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <div id="calendar">
+              <DateCalendar
+                value={currentDate}
+                onChange={(newValue) =>
+                  setCurrentDate(newValue!.add(1, "hour"))
+                }
+              />
+            </div>
+          </LocalizationProvider>
         </div>
-      ) : (
-        <div className="prov-ev-load-circle">
-          <CircularProgress size={150} />
+        <div>
+          {isEventsFetched ? (
+            <div className="events-display-area">
+              {events?.map((event: IProviderEvent, index: number) => {
+                return checkWhetherEventOnTheCurrentDate(event) ? (
+                  <ProviderEvent key={index} event={event} />
+                ) : null;
+              })}
+            </div>
+          ) : (
+            <div className="prov-ev-load-circle">
+              <CircularProgress size={150} />
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }

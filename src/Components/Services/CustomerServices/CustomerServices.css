@@ -62,10 +62,16 @@
   margin: 1em 0;
 }
 .calendar {
-  min-width: 60% !important;
+  min-width: 70% !important;
 }
 .clock {
   display: flex;
   justify-content: center;
   /* width: 15% !important; */
+  padding: 0.5em 0;
+}
+
+.css-lk6str-MuiList-root-MuiMultiSectionDigitalClockSection-root {
+  max-height: fit-content !important;
+  scrollbar-width: thin;
 }
