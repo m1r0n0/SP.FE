@@ -16,25 +16,30 @@ export default function ProviderServiceView({
   const dispatch = useAppDispatch();
 
   return (
-    <div id="service-view-container">
-      <p id="name">
-        <strong>{service.name}</strong>
-      </p>
-      <p id="price">{service.price}$</p>
-      <input
-        id="edit-button"
-        type="button"
-        className="btn btn-primary btn-lg"
-        value="Edit"
-        onClick={() => setIsEditingMode(true)}
-      />
-      <input
-        id="delete-button"
-        type="button"
-        className="btn btn-primary btn-lg"
-        value="Delete"
-        onClick={async () => dispatch(deleteService(service))}
-      />
+    <div id="provider-service-view-component">
+      <div id="service-view-container">
+        <div className="name">
+          <p id="name">
+            <strong>{service.name}</strong>
+          </p>
+        </div>
+        <div className="price">
+          <p id="price">{service.price}$</p>
+        </div>
+        <input
+          id="edit-button"
+          type="button"
+          className="btn"
+          value="Edit"
+          onClick={() => setIsEditingMode(true)}
+        />
+        <input
+          type="button"
+          className="btn delete-button"
+          value="Delete"
+          onClick={async () => dispatch(deleteService(service))}
+        />
+      </div>
     </div>
   );
 }

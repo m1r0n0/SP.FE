@@ -111,3 +111,14 @@
   color: rgb(12, 160, 12);
   font-size: 1em;
 }
+
+.delete-button {
+  grid-row: 3 / 4;
+  grid-column: 2 / 3;
+  background-color: red;
+  border-color: red;
+}
+.delete-button:hover {
+  color: red;
+  background-color: #fff;
+}

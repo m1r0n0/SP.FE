@@ -16,7 +16,7 @@ export default function ProviderProfile() {
           <label>{provider.lastName}</label>
         </div>
         <div className="info-box">
-          <label>Enterprise Name:</label>
+          <label>Enterprise:</label>
           <label>{provider.enterpriseName}</label>
         </div>
         <div className="info-box">
