@@ -11,6 +11,6 @@ export default function SuccessDisclaimer() {
 
     return isProviderDataChangedSuccessfully ||
     isCustomerDataChangedSuccessfully ? (
-        <p>Changed successfully!</p>
+        <p className="message-result-succeeded">Changed successfully!</p>
     ) : null;
 }

@@ -7,7 +7,7 @@ export default function InvalidInputDisclaimer() {
         (s) => s.disclaimer.showProviderRegisterFailedDisclaimer
     );
     return showProviderRegisterFailedDisclaimer ? (
-        <p>Invalid input data!</p>
+        <p className="message-result-failed">Invalid input data!</p>
     ) : (
         <SuccessDisclaimer/>
     );

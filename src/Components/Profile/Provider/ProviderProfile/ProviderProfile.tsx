@@ -1,17 +1,33 @@
-import {Link} from "react-router-dom";
-import {useAppSelector} from "../../../../hooks";
+import { Link } from "react-router-dom";
+import { useAppSelector } from "../../../../hooks";
 
 export default function ProviderProfile() {
-    const provider = useAppSelector((s) => s.provider.provider);
+  const provider = useAppSelector((s) => s.provider.provider);
 
-    return (
-        <div>
-            <p>First Name: {provider.firstName}</p>
-            <p>Last Name: {provider.lastName}</p>
-            <p>Enterprise Name: {provider.enterpriseName}</p>
-            <p>Begin of Work: {provider.workHoursBegin}</p>
-            <p>End of Work: {provider.workHoursEnd}</p>
-            <Link to="/Profile/Edit">Edit</Link>
+  return (
+    <div id="profile-info-component">
+      <div className="profile-info">
+        <div className="info-box">
+          <label>First Name:</label>
+          <label>{provider.firstName}</label>
         </div>
-    );
+        <div className="info-box">
+          <label>Last Name:</label>
+          <label>{provider.lastName}</label>
+        </div>
+        <div className="info-box">
+          <label>Enterprise Name:</label>
+          <label>{provider.enterpriseName}</label>
+        </div>
+        <div className="info-box">
+          <label>Begin of Work:</label>
+          <label>{provider.workHoursBegin}</label>
+        </div>
+        <div className="info-box">
+          <label>End of Work:</label>
+          <label>{provider.workHoursEnd}</label>
+        </div>
+      </div>
+    </div>
+  );
 }
