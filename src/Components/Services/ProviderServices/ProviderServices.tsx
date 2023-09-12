@@ -15,7 +15,7 @@ export default function ProviderServices() {
   if (!isServicesFetched) dispatch(getProviderServices(userId));
 
   return isServicesFetched ? (
-    <div className="d-flex flex-column">
+    <div className="app-body-component">
       <h1>My services</h1>
       {services?.map(
         (serviceWithProvider: IServiceWithProvider, index: number) => {

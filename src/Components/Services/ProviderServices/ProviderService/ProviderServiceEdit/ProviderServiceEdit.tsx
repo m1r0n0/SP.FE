@@ -26,36 +26,41 @@ export default function ProviderServiceEdit({
   };
 
   return (
-    <div>
-      <p>-----------------------------</p>
-      <div>
-        <label htmlFor="price">Service Name </label>
+    <div className="provider-service-component">
+      <div className="provider-service-container">
+        <div className="provider-service-edit-input-area">
+          <div className="input-textfield-box">
+            <label htmlFor="price">Service Name</label>
+            <input
+              value={state.name}
+              onChange={(event) =>
+                setState({ ...state, name: event.target.value })
+              }
+              type="text"
+              name="name"
+              id="name"
+            />
+          </div>
+          <div className="input-textfield-box">
+            <label htmlFor="price">Service Price, $</label>
+            <input
+              value={state.price}
+              onChange={(event) =>
+                setState({ ...state, price: event.target.value })
+              }
+              type="text"
+              name="name"
+              id="name"
+            />
+          </div>
+        </div>
         <input
-          value={state.name}
-          onChange={(event) => setState({ ...state, name: event.target.value })}
-          type="text"
-          name="name"
-          id="name"
+          type="button"
+          className="btn btn-primary btn-lg"
+          value="Apply changes"
+          onClick={prepareServiceToEdit}
         />
       </div>
-      <div>
-        <label htmlFor="price">Service Price </label>
-        <input
-          value={state.price}
-          onChange={(event) =>
-            setState({ ...state, price: event.target.value })
-          }
-          type="text"
-          name="name"
-          id="name"
-        />
-      </div>
-      <input
-        type="button"
-        className="btn btn-primary btn-lg"
-        value="Apply changes"
-        onClick={prepareServiceToEdit}
-      />
     </div>
   );
 }
