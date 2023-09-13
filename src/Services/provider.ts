@@ -3,7 +3,7 @@ import {
   proceedProviderEdit,
   proceedProviderRegister,
 } from "../API/provider";
-import { IProvider } from "../Models/provider";
+import { IProviderInfo } from "../Models/provider";
 import { AppDispatch } from "../Store";
 import { hideAllDisclaimersAction } from "../Store/DisclaimerReducer";
 import {
@@ -11,15 +11,19 @@ import {
   handleRegisterRequestAction,
   setProviderInfoAction,
 } from "../Store/ProviderReducer";
+import { setIsProviderAction } from "../Store/UserReducer";
 
-export const prepareProviderData = (userId: string, isUserRegisterFinished: boolean) => async (dispatch: AppDispatch) => {
-
-  if (userId !== "" && userId !== null && !isUserRegisterFinished)
-    dispatch(await fetchProviderInfo(userId));
-};
+export const prepareProviderData =
+  (userId: string, isUserRegisterFinished: boolean) =>
+  async (dispatch: AppDispatch) => {
+    if (userId !== "" && userId !== null && !isUserRegisterFinished) {
+      dispatch(await fetchProviderInfo(userId));
+      dispatch(setIsProviderAction(true));
+    }
+  };
 
 export const handleProviderRegister =
-  (userId: string, body: IProvider) => async (dispatch: AppDispatch) => {
+  (userId: string, body: IProviderInfo) => async (dispatch: AppDispatch) => {
     dispatch(hideAllDisclaimersAction());
     dispatch(handleRegisterRequestAction());
     dispatch(setProviderInfoAction(body));
@@ -27,9 +31,8 @@ export const handleProviderRegister =
   };
 
 export const handleProviderEdit =
-  (userId: string, body: IProvider) => async (dispatch: AppDispatch) => {
+  (userId: string, body: IProviderInfo) => async (dispatch: AppDispatch) => {
     dispatch(hideAllDisclaimersAction());
     dispatch(handleDataChangeRequestAction());
-
     dispatch(await proceedProviderEdit(userId, body));
   };

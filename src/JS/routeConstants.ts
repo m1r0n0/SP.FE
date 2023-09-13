@@ -13,4 +13,19 @@ export const DELETE_USER = "user/delete";
 export const API_PROVIDER = "https://localhost:7260/api";
 export const API_VERSION_PROVIDER = "v1";
 export const PROVIDER = "provider";
-export const REGISTER_PROVIDER = "new";
+
+//Customer
+export const API_CUSTOMER = "https://localhost:7148/api";
+export const API_VERSION_CUSTOMER = "v1";
+export const CUSTOMER = "customer";
+
+//Service
+export const API_SERVICE = "https://localhost:7052/api";
+export const API_VERSION_SERVICE = "v1";
+export const SERVICE = "service";
+export const EVENTS = "events";
+export const EVENT = "event";
+export const NEW = "new";
+
+//Graphql
+export const API_GRAPHQL = "https://localhost:7130/graphql/";

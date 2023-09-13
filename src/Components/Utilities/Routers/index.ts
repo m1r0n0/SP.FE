@@ -1,3 +1,3 @@
-import { Routers } from "./Routers";
+import {Routers} from "./Routers";
 
 export default Routers;

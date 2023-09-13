@@ -1,7 +1,33 @@
+.app-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  width: 100%;
+  font-size: calc(9px + 1vmin);
+}
+
 .app-body {
+  height: inherit;
+  text-align: center;
+  padding: 3.5em 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.app {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   font-size: calc(10px + 2vmin);
-  text-align: center;
+}
+
+.app-body-component {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 60%;
+  max-width: 95%;
 }

@@ -1,3 +1,3 @@
-import { TopMenu } from "./TopMenu";
+import {TopMenu} from "./TopMenu";
 
 export default TopMenu;

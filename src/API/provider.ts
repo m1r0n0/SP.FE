@@ -1,26 +1,27 @@
 import {
   API_PROVIDER,
   API_VERSION_PROVIDER,
+  NEW,
   PROVIDER,
-  REGISTER_PROVIDER,
 } from "../JS/routeConstants";
-import { IProvider } from "../Models/provider";
+import { IProviderInfo } from "../Models/provider";
 import { GetAuthHeader, proceedLogOut } from "../Services";
 import { AppDispatch } from "../Store";
 import {
-  handleShowProviderRegisterFailedDisclaimer,
+  handleShowCustomerProviderRegisterFailedDisclaimer,
   hideAllDisclaimersAction,
 } from "../Store/DisclaimerReducer";
 import {
-  handleDataChangeFinishedAction,
   handleDataChangedSuccessfullyAction,
+  handleDataChangeFinishedAction,
   handleRegisterFailureAction,
   handleRegisterSuccessAction,
   setProviderInfoAction,
 } from "../Store/ProviderReducer";
+import { setIsPersonalDataFetched } from "../Store/UserReducer";
 
 const ProviderURI = `${API_PROVIDER}/${API_VERSION_PROVIDER}/${PROVIDER}`;
-const RegisterProviderURI = `${API_PROVIDER}/${API_VERSION_PROVIDER}/${PROVIDER}/${REGISTER_PROVIDER}`;
+const RegisterProviderURI = `${API_PROVIDER}/${API_VERSION_PROVIDER}/${PROVIDER}/${NEW}`;
 
 export async function fetchProviderInfo(userId: string) {
   return async (dispatch: AppDispatch) => {
@@ -34,11 +35,15 @@ export async function fetchProviderInfo(userId: string) {
       var provider = await response.json();
 
       dispatch(setProviderInfoAction(provider));
+      dispatch(setIsPersonalDataFetched(true));
     }
   };
 }
 
-export async function proceedProviderRegister(userId: string, body: IProvider) {
+export async function proceedProviderRegister(
+  userId: string,
+  body: IProviderInfo
+) {
   return async (dispatch: AppDispatch) => {
     const response = await fetch(`${RegisterProviderURI}/${userId}`, {
       method: "POST",
@@ -50,14 +55,14 @@ export async function proceedProviderRegister(userId: string, body: IProvider) {
     });
     if (!response.ok) {
       dispatch(handleRegisterFailureAction());
-      dispatch(handleShowProviderRegisterFailedDisclaimer());
+      dispatch(handleShowCustomerProviderRegisterFailedDisclaimer());
     } else {
       dispatch(handleRegisterSuccessAction());
     }
   };
 }
 
-export async function proceedProviderEdit(userId: string, body: IProvider) {
+export async function proceedProviderEdit(userId: string, body: IProviderInfo) {
   return async (dispatch: AppDispatch) => {
     const response = await fetch(`${ProviderURI}/${userId}`, {
       method: "PUT",
@@ -68,7 +73,7 @@ export async function proceedProviderEdit(userId: string, body: IProvider) {
       body: JSON.stringify(body),
     });
     if (!response.ok) {
-      dispatch(handleShowProviderRegisterFailedDisclaimer());
+      dispatch(handleShowCustomerProviderRegisterFailedDisclaimer());
     } else {
       dispatch(setProviderInfoAction(body));
       dispatch(handleDataChangedSuccessfullyAction());

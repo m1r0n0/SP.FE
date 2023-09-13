@@ -3,7 +3,7 @@ import { CircularProgress } from "@mui/material";
 import Routers from "./Components/Utilities/Routers";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import { prepareAppToLoad } from "./Services";
-import { tokenLS } from "./JS/constants";
+import { isProviderLS, tokenLS } from "./JS/constants";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -15,18 +15,33 @@ function App() {
   const isUserRegisterFinished = useAppSelector(
     (s) => s.user.isRegisterFinished
   );
+  const isEmailFetched = useAppSelector((s) => s.user.isEmailFetched);
+  const isPersonalDataFetched = useAppSelector(
+    (s) => s.user.isPersonalDataFetched
+  );
   const token: string | null = localStorage.getItem(tokenLS);
+  const isProvider = /true/i.test(localStorage.getItem(isProviderLS)!);
 
-  dispatch(prepareAppToLoad(user, isUserEmailRequested, isUserRegisterFinished, token));
+  dispatch(
+    prepareAppToLoad(
+      user,
+      isUserEmailRequested,
+      isUserRegisterFinished,
+      token,
+      isProvider,
+      isEmailFetched,
+      isPersonalDataFetched
+    )
+  );
 
   return (
-    <div>
+    <div className="App">
       {isAppLoaded ? (
-        <div className="App">
+        <div>
           <Routers />
         </div>
       ) : (
-        <div className="container d-flex justify-content-center">
+        <div className="load-circle">
           <CircularProgress size={300} />
         </div>
       )}

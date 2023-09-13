@@ -1,0 +1,8 @@
+.prov-ev-load-circle {
+  margin-bottom: 50px;
+}
+
+#calendar {
+  z-index: 0 !important;
+  position: fixed;
+}

@@ -1,7 +1,16 @@
+export interface IProviderInfo {
+    firstName: string;
+    lastName: string;
+    enterpriseName: string;
+    workHoursBegin: number;
+    workHoursEnd: number;
+}
+
 export interface IProvider {
-  firstName: string;
-  lastName: string;
-  enterpriseName: string;
-  workHoursBegin: number;
-  workHoursEnd: number;
+    userId: string;
+    firstName: string;
+    lastName: string;
+    enterpriseName: string;
+    workHoursBegin: number;
+    workHoursEnd: number;
 }

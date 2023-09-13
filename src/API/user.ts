@@ -1,30 +1,31 @@
 import {
-  IRegisterUser,
   ILoginUser,
+  IRegisterUser,
   IUserEmail,
   IUserPassword,
 } from "../Models/user";
 import {
-  IDENTITY,
   API_ACCOUNT,
+  API_VERSION_IDENTITY,
   CHANGE_USER_EMAIL,
   CHANGE_USER_PASSWORD,
+  DELETE_USER,
   GET_USER,
+  IDENTITY,
   LOGIN,
   REGISTER,
-  API_VERSION_IDENTITY,
-  DELETE_USER,
 } from "../JS/routeConstants";
-import { AppDispatch, GetState } from "../Store";
+import { AppDispatch } from "../Store";
 import {
-  handleEmailChangeFinishedAction,
   handleEmailChangedSuccessfullyAction,
   handlePasswordChangedSuccessfullyAction,
+  setIsEmailFetched,
   setUserEmailAction,
 } from "../Store/UserReducer";
 import { setAuthorizationErrorsAction } from "../Store/DisclaimerReducer";
 import { GetAuthHeader, proceedLogOut } from "../Services";
 import { proceedProviderDelete } from "./provider";
+import { proceedCustomerDelete } from "./customer";
 
 const LoginURI: string = `${API_ACCOUNT}/${API_VERSION_IDENTITY}/${IDENTITY}/${LOGIN}`;
 const RegisterURI: string = `${API_ACCOUNT}/${API_VERSION_IDENTITY}/${IDENTITY}/${REGISTER}`;
@@ -55,9 +56,13 @@ export function fetchUserEmail(tempUserID: string) {
       },
     });
 
-    var res = await response.json();
-
-    dispatch(setUserEmailAction(res.email));
+    if (response.ok) {
+      var res = await response.json();
+      dispatch(setUserEmailAction(res.email));
+      dispatch(setIsEmailFetched(true));
+    } else {
+      await dispatch(proceedLogOut());
+    }
   };
 }
 
@@ -133,7 +138,8 @@ export async function proceedUserDelete(userId: string) {
     });
 
     if (response.ok) {
-      dispatch(await proceedProviderDelete(userId))
+      dispatch(await proceedProviderDelete(userId));
+      dispatch(await proceedCustomerDelete(userId));
     }
   };
 }

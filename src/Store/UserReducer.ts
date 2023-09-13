@@ -7,11 +7,17 @@ import {
 
 interface IUserAction {
   type: string;
-  payload: ILoginUserResponse | string | IUser | IIdentityAuthorizationError[];
+  payload:
+    | ILoginUserResponse
+    | string
+    | IUser
+    | IIdentityAuthorizationError[]
+    | boolean;
 }
 
 interface IUserState {
   user: IUser;
+  isProvider: boolean;
   authenticationToken: string;
   isAppLoaded: boolean;
   isUserEmailRequested: boolean;
@@ -27,10 +33,13 @@ interface IUserState {
   isPasswordChangeRequested: boolean;
   isPasswordChangedSuccessfully: boolean;
   isPasswordChangeFinished: boolean;
+  isEmailFetched: boolean;
+  isPersonalDataFetched: boolean;
 }
 
 const defaultState: IUserState = {
   user: { userId: "", userEmail: "" },
+  isProvider: false,
   authenticationToken: "",
   isAppLoaded: false,
   isUserEmailRequested: false,
@@ -46,10 +55,14 @@ const defaultState: IUserState = {
   isPasswordChangeRequested: false,
   isPasswordChangedSuccessfully: false,
   isPasswordChangeFinished: false,
+  isEmailFetched: false,
+  isPersonalDataFetched: false,
 };
 
+const HIDE_ALL_DISCLAIMERS = "HIDE_ALL_DISCLAIMERS";
 const SET_USER_ID = "SET_USER_ID";
 const SET_USER_EMAIL = "SET_USER_EMAIL";
+const SET_IS_PROVIDER = "SET_IS_PROVIDER";
 const SET_AUTHENTICATION_TOKEN = "SET_AUTHENTICATION_TOKEN";
 const HANDLE_USER_LOGIN_REQUEST = "HANDLE_USER_LOGIN_REQUEST";
 const HANDLE_USER_LOGIN_SUCCESS = "HANDLE_USER_LOGIN_SUCCESS";
@@ -71,6 +84,8 @@ const HANDLE_USER_PASSWORD_CHANGED_SUCCESSFULLY =
 const HANDLE_USER_PASSWORD_CHANGE_FINISHED =
   "HANDLE_USER_PASSWORD_CHANGE_FINISHED";
 const HANDLE_USER_LOGOUT = "HANDLE_USER_LOGOUT";
+const SET_IS_EMAIL_FETCHED = "SET_IS_EMAIL_FETCHED";
+const SET_IS_PERSONAL_DATA_FETCHED = "SET_IS_PERSONAL_DATA_FETCHED";
 
 export const userReducer: Reducer<IUserState, IUserAction> = (
   state = defaultState,
@@ -79,6 +94,14 @@ export const userReducer: Reducer<IUserState, IUserAction> = (
   let loginUser: ILoginUserResponse = action.payload as ILoginUserResponse;
 
   switch (action.type) {
+    case HIDE_ALL_DISCLAIMERS:
+      return {
+        ...state,
+        isEmailChangeRequested: false,
+        isEmailChangeFinished: false,
+        isPasswordChangeRequested: false,
+        isPasswordChangeFinished: false,
+      };
     case SET_USER_ID:
       return {
         ...state,
@@ -91,6 +114,8 @@ export const userReducer: Reducer<IUserState, IUserAction> = (
           user: { ...state.user, userEmail: action.payload as string },
         };
       } else return { ...state };
+    case SET_IS_PROVIDER:
+      return { ...state, isProvider: action.payload as boolean };
 
     case SET_AUTHENTICATION_TOKEN:
       return {
@@ -174,6 +199,17 @@ export const userReducer: Reducer<IUserState, IUserAction> = (
         isPasswordChangeFinished: true,
       };
 
+    case SET_IS_EMAIL_FETCHED:
+      return {
+        ...state,
+        isEmailFetched: action.payload as boolean,
+      };
+    case SET_IS_PERSONAL_DATA_FETCHED:
+      return {
+        ...state,
+        isPersonalDataFetched: action.payload as boolean,
+      };
+
     default:
       return state;
   }
@@ -185,6 +221,10 @@ export const setUserIdAction = (payload: string) => ({
 });
 export const setUserEmailAction = (payload: string) => ({
   type: SET_USER_EMAIL,
+  payload,
+});
+export const setIsProviderAction = (payload: boolean) => ({
+  type: SET_IS_PROVIDER,
   payload,
 });
 
@@ -246,4 +286,13 @@ export const handlePasswordChangedSuccessfullyAction = () => ({
 });
 export const handlePasswordChangeFinishedAction = () => ({
   type: HANDLE_USER_PASSWORD_CHANGE_FINISHED,
+});
+
+export const setIsEmailFetched = (payload: boolean) => ({
+  type: SET_IS_EMAIL_FETCHED,
+  payload,
+});
+export const setIsPersonalDataFetched = (payload: boolean) => ({
+  type: SET_IS_PERSONAL_DATA_FETCHED,
+  payload,
 });

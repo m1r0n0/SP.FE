@@ -1,0 +1,33 @@
+.profile-info {
+  margin: 1.5em 0;
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  justify-items: center;
+  width: 80%;
+  font-size: 1.2em;
+}
+
+.info-box {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5em;
+}
+.info-box label:first-child {
+  font-weight: bold;
+  padding-left: 1em;
+  text-align: start;
+}
+.info-box label {
+  text-align: center;
+}
+
+#profile-info-component {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#delete-account-component {
+  margin: 1em;
+}
