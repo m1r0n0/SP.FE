@@ -30,92 +30,95 @@ export default function EditProvider() {
 
   return (
     <div>
-      <div className="input-textfield-box">
-        <label htmlFor="firstName">First Name</label>
-        <input
-          value={state.firstName}
-          onChange={(event) =>
-            setState({ ...state, firstName: event.target.value })
-          }
-          type="text"
-          name="firstName"
-          id="firstName"
-        />
-      </div>
-      <div className="input-textfield-box">
-        <label htmlFor="lastName">Last Name</label>
-        <input
-          value={state.lastName}
-          onChange={(event) =>
-            setState({ ...state, lastName: event.target.value })
-          }
-          type="text"
-          name="lastName"
-          id="lastName"
-        />
-      </div>
-      <div className="input-textfield-box">
-        <label htmlFor="enterpriseName">Enterprise Name</label>
-        <input
-          value={state.enterpriseName}
-          onChange={(event) =>
-            setState({ ...state, enterpriseName: event.target.value })
-          }
-          type="text"
-          name="enterpriseName"
-          id="enterpriseName"
-        />
-      </div>
-      <label htmlFor="hoursQuestion">What hours you will be available?</label>
-      <div className="input-textfield-box">
-        <label htmlFor="workHoursBegin">Begin of Work (0 - 23)</label>
-        <input
-          value={state.workHoursBegin}
-          onChange={(event) =>
-            setState({
-              ...state,
-              workHoursBegin: event.target.value,
-            })
-          }
-          type="text"
-          name="workHoursBegin"
-          id="workHoursBegin"
-        />
-      </div>
-      <div className="input-textfield-box">
-        <label htmlFor="workHoursEnd">End of Work (0 - 23)</label>
-        <input
-          value={state.workHoursEnd.toString()}
-          onChange={(event) =>
-            setState({
-              ...state,
-              workHoursEnd: event.target.value,
-            })
-          }
-          type="text"
-          name="workHoursEnd"
-          id="workHoursEnd"
-        />
-      </div>
-      {isDataChangeRequested ? (
-        <CircularProgress size={75} />
-      ) : (
-        <div className="edit-profile-buttons">
+      <form>
+        <div className="input-textfield-box">
+          <label htmlFor="firstName">First Name</label>
           <input
-            type="button"
-            value="Edit"
-            className="btn btn-success btn-lg"
-            onClick={() => dispatch(handleProviderEdit(userId, providerState))}
-          />
-          <input
-            type="button"
-            value="Cancel"
-            className="btn btn-success btn-lg"
-            onClick={() => navigate("/Profile")}
+            value={state.firstName}
+            onChange={(event) =>
+              setState({ ...state, firstName: event.target.value })
+            }
+            type="text"
+            name="firstName"
+            id="firstName"
           />
         </div>
-      )}
-
+        <div className="input-textfield-box">
+          <label htmlFor="lastName">Last Name</label>
+          <input
+            value={state.lastName}
+            onChange={(event) =>
+              setState({ ...state, lastName: event.target.value })
+            }
+            type="text"
+            name="lastName"
+            id="lastName"
+          />
+        </div>
+        <div className="input-textfield-box">
+          <label htmlFor="enterpriseName">Enterprise Name</label>
+          <input
+            value={state.enterpriseName}
+            onChange={(event) =>
+              setState({ ...state, enterpriseName: event.target.value })
+            }
+            type="text"
+            name="enterpriseName"
+            id="enterpriseName"
+          />
+        </div>
+        <label htmlFor="hoursQuestion">What hours you will be available?</label>
+        <div className="input-textfield-box">
+          <label htmlFor="workHoursBegin">Begin of Work (0 - 23)</label>
+          <input
+            value={state.workHoursBegin}
+            onChange={(event) =>
+              setState({
+                ...state,
+                workHoursBegin: event.target.value,
+              })
+            }
+            type="number"
+            name="workHoursBegin"
+            id="workHoursBegin"
+          />
+        </div>
+        <div className="input-textfield-box">
+          <label htmlFor="workHoursEnd">End of Work (0 - 23)</label>
+          <input
+            value={state.workHoursEnd.toString()}
+            onChange={(event) =>
+              setState({
+                ...state,
+                workHoursEnd: event.target.value,
+              })
+            }
+            type="number"
+            name="workHoursEnd"
+            id="workHoursEnd"
+          />
+        </div>
+        {isDataChangeRequested ? (
+          <CircularProgress size={75} />
+        ) : (
+          <div className="edit-profile-buttons">
+            <input
+              type="button"
+              value="Edit"
+              className="btn btn-success btn-lg"
+              onClick={() =>
+                dispatch(handleProviderEdit(userId, providerState))
+              }
+            />
+            <input
+              type="button"
+              value="Back"
+              className="btn btn-success btn-lg"
+              onClick={() => navigate("/Profile")}
+            />
+          </div>
+        )}
+      </form>
       <InvalidInputDisclaimer />
     </div>
   );

@@ -12,19 +12,15 @@ interface props {
 export default function ProviderService({ service }: props) {
   const [isEditingMode, setIsEditingMode] = useState(false);
 
-  return (
-    <div>
-      {isEditingMode ? (
-        <ProviderServiceEdit
-          service={service}
-          setIsEditingMode={setIsEditingMode}
-        />
-      ) : (
-        <ProviderServiceView
-          service={service}
-          setIsEditingMode={setIsEditingMode}
-        />
-      )}
-    </div>
+  return isEditingMode ? (
+    <ProviderServiceEdit
+      service={service}
+      setIsEditingMode={setIsEditingMode}
+    />
+  ) : (
+    <ProviderServiceView
+      service={service}
+      setIsEditingMode={setIsEditingMode}
+    />
   );
 }

@@ -29,81 +29,83 @@ export const Login = () => {
   ) : (
     <div className="auth-component">
       <h2> Enter the app</h2>
-      <div className="input-textfield-box">
-        <label htmlFor="email">Email</label>
-        <input
-          value={state.email}
-          onChange={(event) =>
-            setState({ ...state, email: event.target.value })
-          }
-          type="text"
-          name="email"
-          id="email"
-        />
-      </div>
-      <div className="input-textfield-box">
-        <label htmlFor="password">Password</label>
-        <input
-          onChange={(event) =>
-            setState({ ...state, password: event.target.value })
-          }
-          type="password"
-          name="password"
-          id="password"
-        />
-      </div>
-      <div className="input-checkbox-box">
-        <label htmlFor="rememberMe">Remember me?</label>
-        <input
-          onChange={(event) =>
-            setState({ ...state, rememberMe: event.target.checked })
-          }
-          type="checkbox"
-          name="rememberMe"
-          id="rememberMe"
-        />
-      </div>
-      <div className="radiobutton-main-box">
-        <div className="radiobutton-sub-box">
+      <form>
+        <div className="input-textfield-box">
+          <label htmlFor="email">Email</label>
           <input
-            type="radio"
-            id="radio-customer"
-            name="user"
-            value="customer"
-            onClick={() => {
-              setIsProvider(false);
-            }}
-            defaultChecked
+            value={state.email}
+            onChange={(event) =>
+              setState({ ...state, email: event.target.value })
+            }
+            type="text"
+            name="email"
+            id="email"
           />
-          <label htmlFor="customer">Customer</label>
         </div>
-        <div className="radiobutton-sub-box">
+        <div className="input-textfield-box">
+          <label htmlFor="password">Password</label>
           <input
-            type="radio"
-            id="radio-provider"
-            name="user"
-            value="provider"
-            onClick={() => {
-              setIsProvider(true);
-            }}
+            onChange={(event) =>
+              setState({ ...state, password: event.target.value })
+            }
+            type="password"
+            name="password"
+            id="password"
           />
-          <label htmlFor="provider">Provider</label>
         </div>
-      </div>
-      <div className="m-3">
-        {isLoginFinished ? (
-          <Navigate to="/" />
-        ) : isLoginRequested ? (
-          <CircularProgress size={75} />
-        ) : (
+        <div className="input-checkbox-box">
+          <label htmlFor="rememberMe">Remember me?</label>
           <input
-            type="button"
-            className="btn"
-            value="Log in"
-            onClick={() => dispatch(handleLogin(state, isProvider))}
+            onChange={(event) =>
+              setState({ ...state, rememberMe: event.target.checked })
+            }
+            type="checkbox"
+            name="rememberMe"
+            id="rememberMe"
           />
-        )}
-      </div>
+        </div>
+        <div className="radiobutton-main-box">
+          <div className="radiobutton-sub-box">
+            <input
+              type="radio"
+              id="radio-customer"
+              name="user"
+              value="customer"
+              onClick={() => {
+                setIsProvider(false);
+              }}
+              defaultChecked
+            />
+            <label htmlFor="customer">Customer</label>
+          </div>
+          <div className="radiobutton-sub-box">
+            <input
+              type="radio"
+              id="radio-provider"
+              name="user"
+              value="provider"
+              onClick={() => {
+                setIsProvider(true);
+              }}
+            />
+            <label htmlFor="provider">Provider</label>
+          </div>
+        </div>
+        <div>
+          {isLoginFinished ? (
+            <Navigate to="/" />
+          ) : isLoginRequested ? (
+            <CircularProgress size={75} />
+          ) : (
+            <input
+              type="button"
+              className="btn"
+              value="Log in"
+              onClick={() => dispatch(handleLogin(state, isProvider))}
+            />
+          )}
+        </div>
+      </form>
       <div>{isLoginSuccessful ? null : <IncorrectLoginInputDisclaimer />}</div>
     </div>
   );

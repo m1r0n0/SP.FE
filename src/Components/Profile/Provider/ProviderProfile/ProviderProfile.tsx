@@ -20,12 +20,10 @@ export default function ProviderProfile() {
           <label>{provider.enterpriseName}</label>
         </div>
         <div className="info-box">
-          <label>Begin of Work:</label>
-          <label>{provider.workHoursBegin}</label>
-        </div>
-        <div className="info-box">
-          <label>End of Work:</label>
-          <label>{provider.workHoursEnd}</label>
+          <label>Work hours:</label>
+          <label>
+            {provider.workHoursBegin} - {provider.workHoursEnd}
+          </label>
         </div>
       </div>
     </div>

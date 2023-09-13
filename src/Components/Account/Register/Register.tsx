@@ -51,83 +51,85 @@ export const Register = () => {
   ) : (
     <div className="auth-component">
       <h2>Register</h2>
-      <div className="input-textfield-box">
-        <label htmlFor="Email">Email</label>
-        <input
-          value={state.email}
-          onChange={(event) =>
-            setState({ ...state, email: event.target.value })
-          }
-          type="text"
-          name="email"
-          id="email"
-        />
-      </div>
-      <div className="input-textfield-box">
-        <label htmlFor="Password">Password</label>
-        <input
-          onChange={(event) =>
-            setState({ ...state, password: event.target.value })
-          }
-          type="password"
-          name="password"
-          id="password"
-        />
-      </div>
-      <div className="input-textfield-box">
-        <label htmlFor="PasswordConfirm">Password Confirm</label>
-        <input
-          onChange={(event) => setPasswordConfirm(event.target.value)}
-          type="password"
-          name="passwordConfirm"
-          id="passwordConfirm"
-        />
-      </div>
-      <div className="radiobutton-main-box">
-        <div className="radiobutton-sub-box">
+      <form>
+        <div className="input-textfield-box">
+          <label htmlFor="Email">Email</label>
           <input
-            type="radio"
-            id="radio-customer"
-            name="user"
-            value="customer"
-            onClick={() => {
-              setState({ ...state, isProvider: false });
-            }}
-            defaultChecked
+            value={state.email}
+            onChange={(event) =>
+              setState({ ...state, email: event.target.value })
+            }
+            type="text"
+            name="email"
+            id="email"
           />
-          <label htmlFor="customer">Customer</label>
         </div>
-        <div className="radiobutton-sub-box">
+        <div className="input-textfield-box">
+          <label htmlFor="Password">Password</label>
           <input
-            type="radio"
-            id="radio-provider"
-            name="user"
-            value="provider"
-            onClick={() => {
-              setState({ ...state, isProvider: true });
-            }}
+            onChange={(event) =>
+              setState({ ...state, password: event.target.value })
+            }
+            type="password"
+            name="password"
+            id="password"
           />
-          <label htmlFor="provider">Provider</label>
         </div>
-      </div>
-      <div className="m-4">
-        {isRegisterSuccessful ? (
-          state.isProvider ? (
-            <Navigate to="/Register/Provider" />
+        <div className="input-textfield-box">
+          <label htmlFor="PasswordConfirm">Password Confirm</label>
+          <input
+            onChange={(event) => setPasswordConfirm(event.target.value)}
+            type="password"
+            name="passwordConfirm"
+            id="passwordConfirm"
+          />
+        </div>
+        <div className="radiobutton-main-box">
+          <div className="radiobutton-sub-box">
+            <input
+              type="radio"
+              id="radio-customer"
+              name="user"
+              value="customer"
+              onClick={() => {
+                setState({ ...state, isProvider: false });
+              }}
+              defaultChecked
+            />
+            <label htmlFor="customer">Customer</label>
+          </div>
+          <div className="radiobutton-sub-box">
+            <input
+              type="radio"
+              id="radio-provider"
+              name="user"
+              value="provider"
+              onClick={() => {
+                setState({ ...state, isProvider: true });
+              }}
+            />
+            <label htmlFor="provider">Provider</label>
+          </div>
+        </div>
+        <div>
+          {isRegisterSuccessful ? (
+            state.isProvider ? (
+              <Navigate to="/Register/Provider" />
+            ) : (
+              <Navigate to="/Register/Customer" />
+            )
+          ) : isRegisterRequested ? (
+            <CircularProgress size={75} />
           ) : (
-            <Navigate to="/Register/Customer" />
-          )
-        ) : isRegisterRequested ? (
-          <CircularProgress size={75} />
-        ) : (
-          <input
-            type="button"
-            value="Register"
-            className="btn btn-success btn-lg"
-            onClick={handleSubmit}
-          />
-        )}
-      </div>
+            <input
+              type="button"
+              value="Register"
+              className="btn btn-success btn-lg"
+              onClick={handleSubmit}
+            />
+          )}
+        </div>
+      </form>
       <RegisterDisclaimers />
     </div>
   );

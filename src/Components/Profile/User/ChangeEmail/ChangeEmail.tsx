@@ -20,31 +20,33 @@ export const ChangeEmail = () => {
 
   return (
     <div className="app-body-component">
-      <div className="input-textfield-box">
-        <label htmlFor="email">Enter new Email:</label>
-        <input
-          value={state.newEmail}
-          onChange={(event) =>
-            setState({ ...state, newEmail: event.target.value })
-          }
-          type="text"
-          name="email"
-          id="email"
-        />
-      </div>
-      <div>
-        {isEmailChangeRequested ? (
-          <CircularProgress size={75} />
-        ) : (
+      <form>
+        <div className="input-textfield-box">
+          <label htmlFor="email">Enter new Email:</label>
           <input
-            type="button"
-            className="btn"
-            value="Change Email"
-            onClick={() => dispatch(handleEmailChange(userId, state))}
+            value={state.newEmail}
+            onChange={(event) =>
+              setState({ ...state, newEmail: event.target.value })
+            }
+            type="text"
+            name="email"
+            id="email"
           />
-        )}
-        {isEmailChangeFinished ? <EmailChangedDisclaimer /> : null}
-      </div>
+        </div>
+        <div>
+          {isEmailChangeRequested ? (
+            <CircularProgress size={75} />
+          ) : (
+            <input
+              type="button"
+              className="btn"
+              value="Change Email"
+              onClick={() => dispatch(handleEmailChange(userId, state))}
+            />
+          )}
+        </div>
+      </form>
+      {isEmailChangeFinished ? <EmailChangedDisclaimer /> : null}
     </div>
   );
 };

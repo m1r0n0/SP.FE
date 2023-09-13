@@ -25,40 +25,44 @@ export default function CreateService() {
   return (
     <div>
       <h2>Create the service</h2>
-      <div className="input-textfield-box">
-        <label htmlFor="price">Service Name </label>
-        <input
-          value={state.name}
-          onChange={(event) => setState({ ...state, name: event.target.value })}
-          type="text"
-          name="name"
-          id="name"
-        />
-      </div>
-      <div className="input-textfield-box">
-        <label htmlFor="price">Service Price, $ </label>
-        <input
-          value={state.price}
-          onChange={(event) =>
-            setState({ ...state, price: event.target.value })
-          }
-          type="number"
-          name="name"
-          id="name"
-        />
-      </div>
-      <div>
-        {isServiceCreationRequested ? (
-          <CircularProgress size={75} />
-        ) : (
+      <form>
+        <div className="input-textfield-box">
+          <label htmlFor="price">Service Name </label>
           <input
-            type="button"
-            className="btn btn-primary btn-lg"
-            value="Create"
-            onClick={() => dispatch(createService(state, providerUserId))}
+            value={state.name}
+            onChange={(event) =>
+              setState({ ...state, name: event.target.value })
+            }
+            type="text"
+            name="name"
+            id="name"
           />
-        )}
-      </div>
+        </div>
+        <div className="input-textfield-box">
+          <label htmlFor="price">Service Price, $ </label>
+          <input
+            value={state.price}
+            onChange={(event) =>
+              setState({ ...state, price: event.target.value })
+            }
+            type="number"
+            name="name"
+            id="name"
+          />
+        </div>
+        <div>
+          {isServiceCreationRequested ? (
+            <CircularProgress size={75} />
+          ) : (
+            <input
+              type="button"
+              className="btn btn-primary btn-lg"
+              value="Create"
+              onClick={() => dispatch(createService(state, providerUserId))}
+            />
+          )}
+        </div>
+      </form>
       <div>
         {isServiceCreationFinished ? (
           <ServiceCreationResultMessage

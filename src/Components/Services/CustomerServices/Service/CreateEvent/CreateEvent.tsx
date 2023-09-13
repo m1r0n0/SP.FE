@@ -116,86 +116,87 @@ export default function CreateEvent({ serviceId, provider }: CreateEventProps) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div>
-        <div className="date-pick-area">
-          <label htmlFor="price">Choose start date and time </label>
-          <div className="date-pick-block">
-            <DateCalendar
-              className="calendar"
-              minDate={dayjs(date.toISOString())}
-              value={dayjs(state.dateOfStart)}
-              onChange={(newValue) => changeDatesValues(newValue!)}
-            />
-            <MultiSectionDigitalClock
-              className="clock"
-              minTime={getMinTimeForEventCreation(
-                dayjs(state.dateOfStart),
-                dayjs(date.toISOString())
-              )}
-              value={dayjs(state.dateOfStart).startOf("hour")}
-              onChange={(newValue) => changeDatesValues(newValue!)}
-              ampm={false}
-              timeSteps={{ hours: 1, minutes: 60 }}
-              skipDisabled
-              shouldDisableTime={(date) =>
-                shouldDisableTime(date, setIsStartDateAppropriate)
-              }
-              
-            />
+        <form>
+          <div className="date-pick-area">
+            <label htmlFor="price">Choose start date and time </label>
+            <div className="date-pick-block">
+              <DateCalendar
+                className="calendar"
+                minDate={dayjs(date.toISOString())}
+                value={dayjs(state.dateOfStart)}
+                onChange={(newValue) => changeDatesValues(newValue!)}
+              />
+              <MultiSectionDigitalClock
+                className="clock"
+                minTime={getMinTimeForEventCreation(
+                  dayjs(state.dateOfStart),
+                  dayjs(date.toISOString())
+                )}
+                value={dayjs(state.dateOfStart).startOf("hour")}
+                onChange={(newValue) => changeDatesValues(newValue!)}
+                ampm={false}
+                timeSteps={{ hours: 1, minutes: 60 }}
+                skipDisabled
+                shouldDisableTime={(date) =>
+                  shouldDisableTime(date, setIsStartDateAppropriate)
+                }
+              />
+            </div>
           </div>
-        </div>
-        <div className="date-pick-area">
-          <label htmlFor="price">Choose end date and time </label>
-          <div className="date-pick-block">
-            <DateCalendar
-              className="calendar"
-              value={dayjs(state.dateOfEnd)}
-              onChange={(newValue) =>
-                setState({
-                  ...state,
-                  dateOfEnd: newValue!.startOf("hour").toISOString(),
-                })
-              }
-              minDate={dayjs(state.dateOfStart).add(1, "hours")}
-            />
-            <MultiSectionDigitalClock
-              className="clock"
-              minTime={getMinTimeForEventCreation(
-                dayjs(state.dateOfEnd),
-                dayjs(state.dateOfStart)
-              )}
-              value={dayjs(state.dateOfEnd).startOf("hour")}
-              onChange={(newValue) =>
-                setState({
-                  ...state,
-                  dateOfEnd: newValue!.startOf("hour").toISOString(),
-                })
-              }
-              ampm={false}
-              timeSteps={{ hours: 1, minutes: 60 }}
-              skipDisabled
-              shouldDisableTime={(date) =>
-                //add -1 hour to hide begin hour
-                //and also display clock because we subtract 1 hour from endWorkHours
-                shouldDisableTime(date.add(-1, "h"), setIsEndDateAppropriate)
-              }
-            />
+          <div className="date-pick-area">
+            <label htmlFor="price">Choose end date and time </label>
+            <div className="date-pick-block">
+              <DateCalendar
+                className="calendar"
+                value={dayjs(state.dateOfEnd)}
+                onChange={(newValue) =>
+                  setState({
+                    ...state,
+                    dateOfEnd: newValue!.startOf("hour").toISOString(),
+                  })
+                }
+                minDate={dayjs(state.dateOfStart).add(1, "hours")}
+              />
+              <MultiSectionDigitalClock
+                className="clock"
+                minTime={getMinTimeForEventCreation(
+                  dayjs(state.dateOfEnd),
+                  dayjs(state.dateOfStart)
+                )}
+                value={dayjs(state.dateOfEnd).startOf("hour")}
+                onChange={(newValue) =>
+                  setState({
+                    ...state,
+                    dateOfEnd: newValue!.startOf("hour").toISOString(),
+                  })
+                }
+                ampm={false}
+                timeSteps={{ hours: 1, minutes: 60 }}
+                skipDisabled
+                shouldDisableTime={(date) =>
+                  //add -1 hour to hide begin hour
+                  //and also display clock because we subtract 1 hour from endWorkHours
+                  shouldDisableTime(date.add(-1, "h"), setIsEndDateAppropriate)
+                }
+              />
+            </div>
           </div>
-        </div>
 
-        {isEventCreationRequested ? (
-          <div>
-            <CircularProgress size={75} />
-          </div>
-        ) : isStartDateAppropriate && isEndDateAppropriate ? null : (
-          <input
-            type="button"
-            className="btn btn-primary btn-lg"
-            value="Order"
-            onClick={() =>
-              dispatch(createEvent(state, serviceId, provider.userId))
-            }
-          />
-        )}
+          {isEventCreationRequested ? (
+            <div>
+              <CircularProgress size={75} />
+            </div>
+          ) : isStartDateAppropriate && isEndDateAppropriate ? null : (
+            <input
+              type="button"
+              className="btn btn-primary btn-lg"
+              value="Order"
+              onClick={() =>
+                dispatch(createEvent(state, serviceId, provider.userId))
+              }
+            />
+          )}
+        </form>
 
         {isEventCreationFinished ? <EventCreationResultMessage /> : null}
       </div>

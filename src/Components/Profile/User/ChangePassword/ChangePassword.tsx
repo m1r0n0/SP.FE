@@ -20,31 +20,33 @@ export const ChangePassword = () => {
 
   return (
     <div className="app-body-component">
-      <div className="input-textfield-box">
-        <label htmlFor="password">Enter new Password:</label>
-        <input
-          value={state.newPassword}
-          onChange={(event) =>
-            setState({ ...state, newPassword: event.target.value })
-          }
-          type="password"
-          name="password"
-          id="password"
-        />
-      </div>
-      <div>
-        {isPasswordChangeRequested ? (
-          <CircularProgress size={75} />
-        ) : (
+      <form>
+        <div className="input-textfield-box">
+          <label htmlFor="password">Enter new Password:</label>
           <input
-            type="button"
-            className="btn"
-            value="Change Password"
-            onClick={() => dispatch(handlePasswordChange(userId, state))}
+            value={state.newPassword}
+            onChange={(event) =>
+              setState({ ...state, newPassword: event.target.value })
+            }
+            type="password"
+            name="password"
+            id="password"
           />
-        )}
-        {isPasswordChangeFinished ? <PasswordChangedDisclaimer /> : null}
-      </div>
+        </div>
+        <div>
+          {isPasswordChangeRequested ? (
+            <CircularProgress size={75} />
+          ) : (
+            <input
+              type="button"
+              className="btn"
+              value="Change Password"
+              onClick={() => dispatch(handlePasswordChange(userId, state))}
+            />
+          )}
+        </div>
+      </form>
+      {isPasswordChangeFinished ? <PasswordChangedDisclaimer /> : null}
     </div>
   );
 };

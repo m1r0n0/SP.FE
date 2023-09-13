@@ -36,45 +36,46 @@ export default function RegisterProvider() {
   ) : (
     <div>
       <h2>Register</h2>
-      <div className="input-textfield-box">
-        <label htmlFor="firstName">First Name</label>
-        <input
-          value={state.firstName}
-          onChange={(event) =>
-            setState({ ...state, firstName: event.target.value })
-          }
-          type="text"
-          name="firstName"
-          id="firstName"
-        />
-      </div>
-      <div className="input-textfield-box">
-        <label htmlFor="lastName">Last Name</label>
-        <input
-          value={state.lastName}
-          onChange={(event) =>
-            setState({ ...state, lastName: event.target.value })
-          }
-          type="text"
-          name="lastName"
-          id="lastName"
-        />
-      </div>
-      <div className="submit-button-box">
-        {isRegisterRequested ? (
-          <CircularProgress size={75} />
-        ) : (
+      <form>
+        <div className="input-textfield-box">
+          <label htmlFor="firstName">First Name</label>
           <input
-            type="button"
-            value="Register"
-            className="btn btn-success btn-lg"
-            onClick={() =>
-              dispatch(handleCustomerRegister(userId, customerState))
+            value={state.firstName}
+            onChange={(event) =>
+              setState({ ...state, firstName: event.target.value })
             }
+            type="text"
+            name="firstName"
+            id="firstName"
           />
-        )}
-      </div>
-
+        </div>
+        <div className="input-textfield-box">
+          <label htmlFor="lastName">Last Name</label>
+          <input
+            value={state.lastName}
+            onChange={(event) =>
+              setState({ ...state, lastName: event.target.value })
+            }
+            type="text"
+            name="lastName"
+            id="lastName"
+          />
+        </div>
+        <div className="submit-button-box">
+          {isRegisterRequested ? (
+            <CircularProgress size={75} />
+          ) : (
+            <input
+              type="button"
+              value="Register"
+              className="btn btn-success btn-lg"
+              onClick={() =>
+                dispatch(handleCustomerRegister(userId, customerState))
+              }
+            />
+          )}
+        </div>
+      </form>
       <InvalidInputDisclaimer />
     </div>
   );

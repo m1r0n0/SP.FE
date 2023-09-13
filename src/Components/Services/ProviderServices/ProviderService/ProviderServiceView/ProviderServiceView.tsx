@@ -23,8 +23,8 @@ export default function ProviderServiceView({
             <strong>{service.name}</strong>
           </p>
         </div>
-        <div className="price">
-          <p id="price">{service.price}$</p>
+        <div className="provider-price-area">
+          <p id="provider-price">{service.price}$</p>
         </div>
         <div id="control-buttons">
           <input
