@@ -59,6 +59,7 @@ const defaultState: IUserState = {
   isPersonalDataFetched: false,
 };
 
+const HIDE_ALL_DISCLAIMERS = "HIDE_ALL_DISCLAIMERS";
 const SET_USER_ID = "SET_USER_ID";
 const SET_USER_EMAIL = "SET_USER_EMAIL";
 const SET_IS_PROVIDER = "SET_IS_PROVIDER";
@@ -93,6 +94,14 @@ export const userReducer: Reducer<IUserState, IUserAction> = (
   let loginUser: ILoginUserResponse = action.payload as ILoginUserResponse;
 
   switch (action.type) {
+    case HIDE_ALL_DISCLAIMERS:
+      return {
+        ...state,
+        isEmailChangeRequested: false,
+        isEmailChangeFinished: false,
+        isPasswordChangeRequested: false,
+        isPasswordChangeFinished: false,
+      };
     case SET_USER_ID:
       return {
         ...state,
@@ -195,7 +204,7 @@ export const userReducer: Reducer<IUserState, IUserAction> = (
         ...state,
         isEmailFetched: action.payload as boolean,
       };
-      case SET_IS_PERSONAL_DATA_FETCHED:
+    case SET_IS_PERSONAL_DATA_FETCHED:
       return {
         ...state,
         isPersonalDataFetched: action.payload as boolean,
@@ -284,6 +293,6 @@ export const setIsEmailFetched = (payload: boolean) => ({
   payload,
 });
 export const setIsPersonalDataFetched = (payload: boolean) => ({
-    type: SET_IS_PERSONAL_DATA_FETCHED,
-    payload,
-  });
+  type: SET_IS_PERSONAL_DATA_FETCHED,
+  payload,
+});

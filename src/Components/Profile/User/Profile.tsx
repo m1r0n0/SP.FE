@@ -3,12 +3,14 @@ import ChangeEmail from "./ChangeEmail";
 import ChangePassword from "./ChangePassword";
 import ProviderProfile from "../../Profile/Provider/ProviderProfile/ProviderProfile";
 import DeleteAccount from "./DeleteAccount";
-import { useAppSelector } from "../../../hooks";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { isLogon } from "../../../Services/user";
 import CustomerProfile from "../../Profile/Customer/CustomerProfile";
 import "../Profile.css";
+import { hideAllDisclaimersAction } from "../../../Store/DisclaimerReducer";
 
 export const Profile = () => {
+  const dispatch = useAppDispatch();
   const userId = useAppSelector((s) => s.user.user.userId);
   const isProvider = useAppSelector((s) => s.user.isProvider);
 
@@ -20,10 +22,18 @@ export const Profile = () => {
           <Link className="nav-item-link" to="/Profile/Edit">
             Edit
           </Link>
-          <Link className="nav-item-link" to="/Profile/ChangeEmail">
+          <Link
+            className="nav-item-link"
+            to="/Profile/ChangeEmail"
+            onClick={() => dispatch(hideAllDisclaimersAction())}
+          >
             Change Email
           </Link>
-          <Link className="nav-item-link" to="/Profile/ChangePassword">
+          <Link
+            className="nav-item-link"
+            to="/Profile/ChangePassword"
+            onClick={() => dispatch(hideAllDisclaimersAction())}
+          >
             Change Password
           </Link>
           <Link className="nav-item-link" to="/Profile/Delete">
