@@ -109,6 +109,11 @@ export default function CreateEvent({ serviceId, provider }: CreateEventProps) {
     return properMinTime;
   };
 
+  var currentDateAvailabilityHours =
+    availabilitySchedule
+      .filter((s) => dayjs(state.dateOfStart).isSame(s.date, "D"))
+      .map((s) => s.unavailableHours)[0] ?? [];
+
   useEffect(() => {
     dispatch(getUnavailableHours(provider.userId));
   }, []);
@@ -137,8 +142,12 @@ export default function CreateEvent({ serviceId, provider }: CreateEventProps) {
                 ampm={false}
                 timeSteps={{ hours: 1, minutes: 60 }}
                 skipDisabled
-                shouldDisableTime={(date) =>
-                  shouldDisableTime(date, setIsStartDateAppropriate)
+                shouldDisableTime={
+                  (date) => {
+                    var hour = date.tz("Iceland").hour();
+                    return currentDateAvailabilityHours.indexOf(hour) !== -1;
+                  }
+                  //shouldDisableTime(date, setIsStartDateAppropriate)
                 }
               />
             </div>
@@ -173,11 +182,11 @@ export default function CreateEvent({ serviceId, provider }: CreateEventProps) {
                 ampm={false}
                 timeSteps={{ hours: 1, minutes: 60 }}
                 skipDisabled
-                shouldDisableTime={(date) =>
-                  //add -1 hour to hide begin hour
-                  //and also display clock because we subtract 1 hour from endWorkHours
-                  shouldDisableTime(date.add(-1, "h"), setIsEndDateAppropriate)
-                }
+                // shouldDisableTime={(date) =>
+                //   //add -1 hour to hide begin hour
+                //   //and also display clock because we subtract 1 hour from endWorkHours
+                //   shouldDisableTime(date.add(-1, "h"), setIsEndDateAppropriate)
+                // }
               />
             </div>
           </div>

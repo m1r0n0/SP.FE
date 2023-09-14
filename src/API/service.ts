@@ -115,8 +115,9 @@ export async function getServicesForProvider(providerUserId: string) {
 
       services = modifyServicesArrayForProvider(services);
       dispatch(setServicesWithProvidersAction(services));
-      dispatch(setServicesFetchedStatus(true));
     }
+
+    dispatch(setServicesFetchedStatus(true));
   };
 }
 
