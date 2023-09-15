@@ -45,12 +45,25 @@
   margin: 1.5em 0;
 }
 
-.input-textfield-box,
-.input-checkbox-box {
+.input-textfield-box {
   display: flex;
   flex-direction: column;
   margin: 0.5em 0;
   padding: 0.2em;
+}
+
+.input-checkbox-box {
+  display: flex;
+  flex-direction: row;
+  margin: 0.5em 0;
+  padding: 0.2em;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2em;
+}
+.input-checkbox-box input {
+  height: 2em;
+  width: 2em;
 }
 
 .input-textfield-box label {

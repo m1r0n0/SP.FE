@@ -67,36 +67,6 @@ export default function CreateEvent({ serviceId, provider }: CreateEventProps) {
       });
   };
 
-  //Method which hour is passed and if specific time should be disabled the method
-  //should return true
-  const shouldDisableTime = (
-    date: Dayjs,
-    setButtonReadiness: React.Dispatch<React.SetStateAction<boolean>>
-  ) => {
-    var shouldDisable = false;
-    const calendarSelectedDate = dayjs.utc(date).tz("Iceland");
-
-    if (
-      date.hour() < provider.workHoursBegin ||
-      date.hour() > provider.workHoursEnd - 1
-    ) {
-      shouldDisable = true;
-    } else {
-      availabilitySchedule.forEach((schedule) => {
-        var scheduleDay = dayjs.utc(schedule.date);
-        if (scheduleDay.tz("Iceland").isSame(calendarSelectedDate, "D")) {
-          schedule.unavailableHours.forEach((hour) => {
-            if (hour === calendarSelectedDate.hour()) {
-              shouldDisable = true;
-            }
-          });
-        }
-      });
-    }
-    setButtonReadiness(shouldDisable);
-    return shouldDisable;
-  };
-
   const getMinTimeForEventCreation = (newDate: Dayjs, minimumDate: Dayjs) => {
     var properMinTime;
 
@@ -147,7 +117,6 @@ export default function CreateEvent({ serviceId, provider }: CreateEventProps) {
                     var hour = date.tz("Iceland").hour();
                     return currentDateAvailabilityHours.indexOf(hour) !== -1;
                   }
-                  //shouldDisableTime(date, setIsStartDateAppropriate)
                 }
               />
             </div>
@@ -182,11 +151,12 @@ export default function CreateEvent({ serviceId, provider }: CreateEventProps) {
                 ampm={false}
                 timeSteps={{ hours: 1, minutes: 60 }}
                 skipDisabled
-                // shouldDisableTime={(date) =>
-                //   //add -1 hour to hide begin hour
-                //   //and also display clock because we subtract 1 hour from endWorkHours
-                //   shouldDisableTime(date.add(-1, "h"), setIsEndDateAppropriate)
-                // }
+                shouldDisableTime={(date) => {
+                  //add -1 hour to hide begin hour
+                  //and also display clock because we subtract 1 hour from endWorkHours
+                  var hour = date.tz("Iceland").add(-1, "h").hour();
+                  return currentDateAvailabilityHours.indexOf(hour) !== -1;
+                }}
               />
             </div>
           </div>

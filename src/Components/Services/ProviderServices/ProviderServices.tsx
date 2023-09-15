@@ -17,20 +17,22 @@ export default function ProviderServices() {
   return isServicesFetched ? (
     <div className="app-body-component">
       <h1>My services</h1>
-      {services.length !== 0 ? (
-        services?.map(
-          (serviceWithProvider: IServiceWithProvider, index: number) => {
-            return (
-              <ProviderService
-                key={index}
-                service={serviceWithProvider.service}
-              />
-            );
-          }
-        )
-      ) : (
-        <h2>You haven't created any service yet!</h2>
-      )}
+      <div id="provider-services-area">
+        {services.length !== 0 ? (
+          services?.map(
+            (serviceWithProvider: IServiceWithProvider, index: number) => {
+              return (
+                <ProviderService
+                  key={index}
+                  service={serviceWithProvider.service}
+                />
+              );
+            }
+          )
+        ) : (
+          <h2>You haven't created any service yet!</h2>
+        )}
+      </div>
     </div>
   ) : (
     <div className="load-circle">
