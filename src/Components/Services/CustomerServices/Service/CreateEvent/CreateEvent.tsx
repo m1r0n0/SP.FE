@@ -112,12 +112,14 @@ export default function CreateEvent({ serviceId, provider }: CreateEventProps) {
                 ampm={false}
                 timeSteps={{ hours: 1, minutes: 60 }}
                 skipDisabled
-                shouldDisableTime={
-                  (date) => {
-                    var hour = date.tz("Iceland").hour();
-                    return currentDateAvailabilityHours.indexOf(hour) !== -1;
-                  }
-                }
+                shouldDisableTime={(date) => {
+                  var hour = date.tz("Iceland").hour();
+                  return (
+                    date.hour() < provider.workHoursBegin ||
+                    date.hour() > provider.workHoursEnd ||
+                    currentDateAvailabilityHours.indexOf(hour) !== -1
+                  );
+                }}
               />
             </div>
           </div>
@@ -154,8 +156,12 @@ export default function CreateEvent({ serviceId, provider }: CreateEventProps) {
                 shouldDisableTime={(date) => {
                   //add -1 hour to hide begin hour
                   //and also display clock because we subtract 1 hour from endWorkHours
-                  var hour = date.tz("Iceland").add(-1, "h").hour();
-                  return currentDateAvailabilityHours.indexOf(hour) !== -1;
+                  var hour = date.add(-1, "h").tz("Iceland").hour();
+                  return (
+                    date.hour() < provider.workHoursBegin ||
+                    date.hour() > provider.workHoursEnd ||
+                    currentDateAvailabilityHours.indexOf(hour) !== -1
+                  );
                 }}
               />
             </div>

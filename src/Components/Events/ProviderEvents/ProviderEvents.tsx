@@ -27,8 +27,6 @@ export default function ProviderEvents({}: ProviderEventsProps) {
   const [currentDate, setCurrentDate] = useState(
     dayjs(date.toISOString()).startOf("day").add(1, "hour")
   );
-  const [isNoEventsDisclaimerDisplayed, setIsNoEventsDisclaimerDisplayed] =
-    useState(true);
 
   const checkWhetherEventOnTheCurrentDate = (event: IProviderEvent) => {
     return (
@@ -38,13 +36,6 @@ export default function ProviderEvents({}: ProviderEventsProps) {
   };
 
   if (!isEventsFetched) dispatch(getProviderEvents(providerUID));
-
-  console.log(isNoEventsDisclaimerDisplayed);
-
-  const fff = () => {
-    if (!isNoEventsDisclaimerDisplayed) setIsNoEventsDisclaimerDisplayed(true);
-    return <></>;
-  };
 
   return (
     <div className="app-body-component calendar-component">

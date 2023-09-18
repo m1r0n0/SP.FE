@@ -39,6 +39,7 @@
 .btn:hover {
   color: #0077cc;
   background-color: #fff;
+  cursor: pointer;
 }
 
 .submit-button-box {
