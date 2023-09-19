@@ -114,13 +114,13 @@ export const createEvent =
     };
 
     dispatch(handleEventCreationRequest());
-    dispatch(await proceedEventCreation(event, serviceId));
+    await dispatch(await proceedEventCreation(event, serviceId));
     dispatch(getUnavailableHours(providerUserId));
   };
 
 export const getUnavailableHours =
   (providerUserId: string) => async (dispatch: AppDispatch) => {
-    dispatch(await getProviderAvailAbilitySchedule(providerUserId));
+    await dispatch(await getProviderAvailAbilitySchedule(providerUserId));
   };
 
 export const getCustomersEvents =

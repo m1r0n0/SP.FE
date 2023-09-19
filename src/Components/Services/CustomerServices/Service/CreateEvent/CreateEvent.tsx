@@ -51,10 +51,7 @@ export default function CreateEvent({ serviceId, provider }: CreateEventProps) {
       .toISOString(),
   });
 
-  const [isStartDateAppropriate, setIsStartDateAppropriate] = useState(false);
-  const [isEndDateAppropriate, setIsEndDateAppropriate] = useState(false);
-
-  const changeDatesValues = (newValue: Dayjs) => {
+  const changeDatesValuesDueNewDate = (newValue: Dayjs) => {
     if (dayjs(state.dateOfEnd).isAfter(newValue)) {
       setState({
         ...state,
@@ -94,12 +91,12 @@ export default function CreateEvent({ serviceId, provider }: CreateEventProps) {
         <form>
           <div className="date-pick-area">
             <label htmlFor="price">Choose start date and time </label>
-            <div className="date-pick-block">
+            {/* <div className="date-pick-block">
               <DateCalendar
                 className="calendar"
                 minDate={dayjs(date.toISOString())}
                 value={dayjs(state.dateOfStart)}
-                onChange={(newValue) => changeDatesValues(newValue!)}
+                onChange={(newValue) => changeDatesValuesDueNewDate(newValue!)}
               />
               <MultiSectionDigitalClock
                 className="clock"
@@ -108,7 +105,7 @@ export default function CreateEvent({ serviceId, provider }: CreateEventProps) {
                   dayjs(date.toISOString())
                 )}
                 value={dayjs(state.dateOfStart).startOf("hour")}
-                onChange={(newValue) => changeDatesValues(newValue!)}
+                onChange={(newValue) => changeDatesValuesDueNewDate(newValue!)}
                 ampm={false}
                 timeSteps={{ hours: 1, minutes: 60 }}
                 skipDisabled
@@ -121,11 +118,11 @@ export default function CreateEvent({ serviceId, provider }: CreateEventProps) {
                   );
                 }}
               />
-            </div>
+            </div> */}
           </div>
           <div className="date-pick-area">
             <label htmlFor="price">Choose end date and time </label>
-            <div className="date-pick-block">
+            {/* <div className="date-pick-block">
               <DateCalendar
                 className="calendar"
                 value={dayjs(state.dateOfEnd)}
@@ -164,26 +161,27 @@ export default function CreateEvent({ serviceId, provider }: CreateEventProps) {
                   );
                 }}
               />
-            </div>
+            </div> */}
           </div>
 
           {isEventCreationRequested ? (
             <div>
               <CircularProgress size={75} />
             </div>
-          ) : isStartDateAppropriate && isEndDateAppropriate ? null : (
-            <input
-              type="button"
-              className="btn btn-primary btn-lg"
-              value="Order"
-              onClick={() =>
-                dispatch(createEvent(state, serviceId, provider.userId))
-              }
-            />
+          ) : (
+            <div>
+              <input
+                type="button"
+                className="btn btn-primary btn-lg"
+                value="Order"
+                onClick={() =>
+                  dispatch(createEvent(state, serviceId, provider.userId))
+                }
+              />
+              {isEventCreationFinished ? <EventCreationResultMessage /> : null}
+            </div>
           )}
         </form>
-
-        {isEventCreationFinished ? <EventCreationResultMessage /> : null}
       </div>
     </LocalizationProvider>
   );
