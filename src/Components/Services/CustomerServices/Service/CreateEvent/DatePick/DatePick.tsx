@@ -6,6 +6,7 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import React from "react";
+import { IProvider } from "../../../../../../Models/provider";
 
 interface DatePickProps {
   state: {
@@ -14,14 +15,10 @@ interface DatePickProps {
   };
   minDate: Dayjs;
   minTime: Dayjs;
-  onStartDateComponentChange: (newValue: Dayjs) => void;
-  onEndDateComponentChange: (
-    value: React.SetStateAction<{
-      dateOfStart: string;
-      dateOfEnd: string;
-    }>
-  ) => void;
+  onChange: (newValue: Dayjs) => void;
   isStartDateComponent: boolean;
+  provider: IProvider;
+  currentDateAvailabilityHours: number[];
 }
 
 export default function DatePick({
@@ -29,42 +26,52 @@ export default function DatePick({
   minDate,
   minTime,
   isStartDateComponent,
-  onStartDateComponentChange,
-  onEndDateComponentChange,
+  onChange,
+  provider,
+  currentDateAvailabilityHours,
 }: DatePickProps) {
-  const date = new Date();
-  var shouldDisableTimeAdditionalHoursAmount: number;
+  var additionalHoursAmount: number;
 
-  //add -1 hour to hide begin hour for end date clock
+  //add -1 hour to hide end of unavailable hour for end date clock
   //and also display clock because we subtract 1 hour from endWorkHours
   isStartDateComponent
-    ? (shouldDisableTimeAdditionalHoursAmount = -1)
-    : (shouldDisableTimeAdditionalHoursAmount = 0);
+    ? (additionalHoursAmount = 0)
+    : (additionalHoursAmount = -1);
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <div className="date-pick-block">
         <DateCalendar
           className="calendar"
           minDate={minDate}
-          value={dayjs(state.dateOfStart)}
-          onChange={(newValue) => changeDatesValuesDueNewDate(newValue!)}
+          value={
+            isStartDateComponent
+              ? dayjs(state.dateOfStart).startOf("hour")
+              : dayjs(state.dateOfEnd).startOf("hour")
+          }
+          onChange={(newValue) => onChange(newValue!)}
         />
         <MultiSectionDigitalClock
           className="clock"
-          minTime={getMinTimeForEventCreation(
-            dayjs(state.dateOfStart),
-            dayjs(date.toISOString())
-          )}
-          value={dayjs(state.dateOfStart).startOf("hour")}
-          onChange={(newValue) => changeDatesValuesDueNewDate(newValue!)}
+          minTime={minTime}
+          value={
+            isStartDateComponent
+              ? dayjs(state.dateOfStart).startOf("hour")
+              : dayjs(state.dateOfEnd).startOf("hour")
+          }
+          onChange={(newValue) => onChange(newValue!)}
           ampm={false}
           timeSteps={{ hours: 1, minutes: 60 }}
           skipDisabled
           shouldDisableTime={(date) => {
-            var hour = date.tz("Iceland").hour();
+            var hour = date
+              .add(additionalHoursAmount, "h")
+              .tz("Iceland")
+              .hour();
             return (
               date.hour() < provider.workHoursBegin ||
-              date.hour() > provider.workHoursEnd ||
+              //invert additionalHoursAmount for start & end components here
+              date.hour() > provider.workHoursEnd + additionalHoursAmount ||
               currentDateAvailabilityHours.indexOf(hour) !== -1
             );
           }}
