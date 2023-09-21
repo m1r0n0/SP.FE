@@ -5,6 +5,7 @@
   position: fixed;
   width: 100%;
   font-size: calc(9px + 1vmin);
+  z-index: 5;
 }
 
 .app-body {

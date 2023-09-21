@@ -68,10 +68,14 @@ export default function DatePick({
               .add(additionalHoursAmount, "h")
               .tz("Iceland")
               .hour();
+
+            //use excessive hours to hide last work time hour from start component clock
+            var excessiveHours = 0;
+            isStartDateComponent ? (excessiveHours = 1) : (excessiveHours = 0);
+            
             return (
               date.hour() < provider.workHoursBegin ||
-              //invert additionalHoursAmount for start & end components here
-              date.hour() > provider.workHoursEnd + additionalHoursAmount ||
+              date.hour() > provider.workHoursEnd - excessiveHours ||
               currentDateAvailabilityHours.indexOf(hour) !== -1
             );
           }}

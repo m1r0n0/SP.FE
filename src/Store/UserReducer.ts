@@ -35,6 +35,7 @@ interface IUserState {
   isPasswordChangeFinished: boolean;
   isEmailFetched: boolean;
   isPersonalDataFetched: boolean;
+  isRegistered: boolean;
 }
 
 const defaultState: IUserState = {
@@ -57,6 +58,7 @@ const defaultState: IUserState = {
   isPasswordChangeFinished: false,
   isEmailFetched: false,
   isPersonalDataFetched: false,
+  isRegistered: true,
 };
 
 const HIDE_ALL_DISCLAIMERS = "HIDE_ALL_DISCLAIMERS";
@@ -86,6 +88,7 @@ const HANDLE_USER_PASSWORD_CHANGE_FINISHED =
 const HANDLE_USER_LOGOUT = "HANDLE_USER_LOGOUT";
 const SET_IS_EMAIL_FETCHED = "SET_IS_EMAIL_FETCHED";
 const SET_IS_PERSONAL_DATA_FETCHED = "SET_IS_PERSONAL_DATA_FETCHED";
+const SET_IS_USER_REGISTERED = "SET_IS_USER_REGISTERED";
 
 export const userReducer: Reducer<IUserState, IUserAction> = (
   state = defaultState,
@@ -210,6 +213,12 @@ export const userReducer: Reducer<IUserState, IUserAction> = (
         isPersonalDataFetched: action.payload as boolean,
       };
 
+    case SET_IS_USER_REGISTERED:
+      return {
+        ...state,
+        isRegistered: action.payload as boolean,
+      };
+
     default:
       return state;
   }
@@ -294,5 +303,10 @@ export const setIsEmailFetched = (payload: boolean) => ({
 });
 export const setIsPersonalDataFetched = (payload: boolean) => ({
   type: SET_IS_PERSONAL_DATA_FETCHED,
+  payload,
+});
+
+export const setIsRegistered = (payload: boolean) => ({
+  type: SET_IS_USER_REGISTERED,
   payload,
 });

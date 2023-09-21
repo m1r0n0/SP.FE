@@ -17,7 +17,8 @@ export const prepareAppToLoad =
     isProvider: boolean,
     isEmailFetched: boolean,
     isPersonalDataFetched: boolean
-  ) => async (dispatch: AppDispatch) => {
+  ) =>
+  async (dispatch: AppDispatch) => {
     await dispatch(
       prepareUserData(user, isUserEmailRequested, token as string)
     );
