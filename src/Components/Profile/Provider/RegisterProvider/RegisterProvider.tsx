@@ -19,6 +19,7 @@ export default function RegisterProvider() {
   const isRegisterSuccessful = useAppSelector(
     (s) => s.provider.isRegisterSuccessful
   );
+  const isRegistered = useAppSelector((s) => s.user.isRegistered);
 
   const [state, setState] = useState({
     firstName: "",
@@ -36,7 +37,8 @@ export default function RegisterProvider() {
     workHoursEnd: parseInt(state.workHoursEnd, 10),
   };
 
-  return (isLogon(userId) && !isRegisterFinished) || isRegisterSuccessful ? (
+  return ((isLogon(userId) && !isRegisterFinished) || isRegisterSuccessful) &&
+    isRegistered ? (
     <Navigate to="/Profile" />
   ) : (
     <div>

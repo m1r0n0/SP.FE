@@ -66,6 +66,7 @@ export async function proceedProviderRegister(
       dispatch(handleShowCustomerProviderRegisterFailedDisclaimer());
     } else {
       dispatch(handleRegisterSuccessAction());
+      dispatch(setIsRegistered(true));
     }
   };
 }

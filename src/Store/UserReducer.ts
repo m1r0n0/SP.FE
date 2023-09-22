@@ -155,7 +155,12 @@ export const userReducer: Reducer<IUserState, IUserAction> = (
       };
 
     case HANDLE_USER_REGISTER_SUCCESS:
-      return { ...state, isRegisterSuccessful: true, isRegisterFinished: true };
+      return {
+        ...state,
+        isRegisterSuccessful: true,
+        isRegisterFinished: true,
+        isRegistered: false,
+      };
     case HANDLE_USER_REGISTER_REQUEST:
       return { ...state, isRegisterRequested: true };
     case HANDLE_USER_REGISTER_FAILURE:

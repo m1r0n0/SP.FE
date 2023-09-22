@@ -18,7 +18,10 @@ import {
   handleRegisterSuccessAction,
   setCustomerInfoAction,
 } from "../Store/CustomerReducer";
-import { setIsPersonalDataFetched } from "../Store/UserReducer";
+import {
+  setIsPersonalDataFetched,
+  setIsRegistered,
+} from "../Store/UserReducer";
 
 const CustomerURI = `${API_CUSTOMER}/${API_VERSION_CUSTOMER}/${CUSTOMER}`;
 const RegisterCustomerURI = `${API_CUSTOMER}/${API_VERSION_CUSTOMER}/${CUSTOMER}/${NEW}`;
@@ -36,6 +39,11 @@ export async function fetchCustomerInfo(userId: string) {
 
       dispatch(setCustomerInfoAction(customer));
       dispatch(setIsPersonalDataFetched(true));
+    }
+
+    if (response.status === 404) {
+      dispatch(setIsPersonalDataFetched(true));
+      dispatch(setIsRegistered(false));
     }
   };
 }
@@ -55,6 +63,7 @@ export async function proceedCustomerRegister(userId: string, body: ICustomer) {
       dispatch(handleShowCustomerProviderRegisterFailedDisclaimer());
     } else {
       dispatch(handleRegisterSuccessAction());
+      dispatch(setIsRegistered(true));
     }
   };
 }

@@ -9,7 +9,7 @@ import { handleLogoutAction } from "../../../Store/UserReducer";
 export function TopMenu() {
   const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.user.user.userId);
-  const userEmail = useAppSelector((state) => state.user.user.userEmail);
+  const isRegistered = useAppSelector((state) => state.user.isRegistered);
   const isProvider = useAppSelector((state) => state.user.isProvider);
   const providerName = useAppSelector(
     (state) => state.provider.provider.firstName
@@ -25,7 +25,7 @@ export function TopMenu() {
           <Link to="/" className="navbar-brand">
             Service Provider
           </Link>
-          {isLogon(String(userId)) ? (
+          {isLogon(String(userId)) && isRegistered ? (
             <ul className="nav-items-block">
               <li>
                 <Link className="nav-item-link" to="/Services">
@@ -52,7 +52,15 @@ export function TopMenu() {
             <li className="username">
               {isLogon(String(userId)) ? (
                 <Link to="/Profile" className="nav-item username">
-                  {isProvider ? <>{providerName}</> : <>{customerName}</>}
+                  {isRegistered ? (
+                    isProvider ? (
+                      <>{providerName}</>
+                    ) : (
+                      <>{customerName}</>
+                    )
+                  ) : (
+                    <>Profile</>
+                  )}
                 </Link>
               ) : (
                 <Link

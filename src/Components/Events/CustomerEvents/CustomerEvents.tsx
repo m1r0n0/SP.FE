@@ -23,11 +23,15 @@ export default function CustomerEvents({}: CustomerEventsProps) {
     <div className="app-body-component">
       <h1>Order History</h1>
       {isEventsFetched ? (
-        <div id="events-area">
-          {events?.map((event: ICustomerEvent, index: number) => {
-            return <CustomerEvent key={index} event={event} />;
-          })}
-        </div>
+        events.length > 0 ? (
+          <div id="events-area">
+            {events?.map((event: ICustomerEvent, index: number) => {
+              return <CustomerEvent key={index} event={event} />;
+            })}
+          </div>
+        ) : (
+          <h2>You don't have any order!</h2>
+        )
       ) : (
         <div className="load-circle">
           <CircularProgress size={300} />
