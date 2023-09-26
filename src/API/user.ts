@@ -6,14 +6,18 @@ import {
 } from "../Models/user";
 import {
   API_ACCOUNT,
+  API_SERVICE,
   API_VERSION_IDENTITY,
+  API_VERSION_SERVICE,
   CHANGE_USER_EMAIL,
   CHANGE_USER_PASSWORD,
   DELETE_USER,
+  DELETE_USER_RELATED_INFO,
   GET_USER,
   IDENTITY,
   LOGIN,
   REGISTER,
+  SERVICE,
 } from "../JS/routeConstants";
 import { AppDispatch } from "../Store";
 import {
@@ -26,6 +30,8 @@ import { setAuthorizationErrorsAction } from "../Store/DisclaimerReducer";
 import { GetAuthHeader, proceedLogOut } from "../Services";
 import { proceedProviderDelete } from "./provider";
 import { proceedCustomerDelete } from "./customer";
+import { SERVFAIL } from "dns";
+import { proceedUserRelatedInfoDelete } from "./service";
 
 const LoginURI: string = `${API_ACCOUNT}/${API_VERSION_IDENTITY}/${IDENTITY}/${LOGIN}`;
 const RegisterURI: string = `${API_ACCOUNT}/${API_VERSION_IDENTITY}/${IDENTITY}/${REGISTER}`;
@@ -140,6 +146,10 @@ export async function proceedUserDelete(userId: string) {
     if (response.ok) {
       dispatch(await proceedProviderDelete(userId));
       dispatch(await proceedCustomerDelete(userId));
+      dispatch(await proceedUserRelatedInfoDelete(userId));
+
+      window.alert("User deleted successfully!");
+      dispatch(proceedLogOut());
     }
   };
 }

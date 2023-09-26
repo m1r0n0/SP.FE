@@ -100,8 +100,5 @@ export async function proceedProviderDelete(userId: string) {
         Authorization: await dispatch(GetAuthHeader()),
       },
     });
-
-    window.alert("User deleted successfully!");
-    dispatch(proceedLogOut());
   };
 }

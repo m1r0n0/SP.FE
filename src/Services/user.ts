@@ -48,13 +48,13 @@ export const prepareUserData =
   async (dispatch: AppDispatch) => {
     if (!isUserEmailRequested && token !== null) {
       dispatch(
-        setUserStateBasedOnAuthenticationToken(isUserEmailRequested, token)
+        setUserStateBasedOnAuthenticationToken(token)
       );
     }
   };
 
 export const setUserStateBasedOnAuthenticationToken =
-  (isUserEmailRequested: boolean, token: string) =>
+  (token: string) =>
   async (dispatch: AppDispatch) => {
     dispatch(setAuthenticationTokenAction(token));
 

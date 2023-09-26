@@ -97,8 +97,5 @@ export async function proceedCustomerDelete(userId: string) {
         Authorization: await dispatch(GetAuthHeader()),
       },
     });
-
-    window.alert("User deleted successfully!");
-    dispatch(proceedLogOut());
   };
 }

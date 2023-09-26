@@ -46,10 +46,12 @@ export const proceedLogOut = () => async (dispatch: AppDispatch) => {
 };
 
 export const confirmDelete =
-  (userId: string) => async (dispatch: AppDispatch) => {
-    if (window.confirm("Do you really want to delete your account?")) {
-      dispatch(await proceedUserDelete(userId));
-    }
+  (userId: string, isAlreadyDeleted: boolean) =>
+  async (dispatch: AppDispatch) => {
+    if (!isAlreadyDeleted)
+      if (window.confirm("Do you really want to delete your account?")) {
+        dispatch(await proceedUserDelete(userId));
+      }
   };
 
 export const GetAuthHeader =
