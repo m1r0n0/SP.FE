@@ -216,17 +216,13 @@ export async function getProviderAvailAbilitySchedule(providerUserId: string) {
   };
 }
 
-export async function proceedUserRelatedInfoDelete(UserId: string) {
+export async function proceedUserRelatedInfoDelete(userId: string) {
   return async (dispatch: AppDispatch) => {
-    const response = await fetch(`${DeleteUserInfoURI}/${UserId}`, {
+    const response = await fetch(`${DeleteUserInfoURI}/${userId}`, {
+      method: "DELETE",
       headers: {
         Authorization: await dispatch(GetAuthHeader()),
       },
     });
-    if (response.ok) {
-      var schedules = await response.json();
-
-      dispatch(setAvailabilitySchedule(schedules));
-    }
   };
 }

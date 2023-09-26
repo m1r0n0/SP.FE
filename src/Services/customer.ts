@@ -9,7 +9,6 @@ import {
 } from "../Store/CustomerReducer";
 
 export const prepareCustomerData = (userId: string, isUserRegisterFinished: boolean) => async (dispatch: AppDispatch) => {
-
     if (userId !== "" && userId !== null && !isUserRegisterFinished)
         dispatch(await fetchCustomerInfo(userId));
 };

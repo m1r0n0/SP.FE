@@ -44,18 +44,15 @@ import {
 import { setServicesFetchedStatus } from "../Store/ServiceReducer";
 
 export const prepareUserData =
-  (user: IUser, isUserEmailRequested: boolean, token: string) =>
+  (isUserEmailRequested: boolean, token: string) =>
   async (dispatch: AppDispatch) => {
     if (!isUserEmailRequested && token !== null) {
-      dispatch(
-        setUserStateBasedOnAuthenticationToken(token)
-      );
+      dispatch(setUserStateBasedOnAuthenticationToken(token));
     }
   };
 
 export const setUserStateBasedOnAuthenticationToken =
-  (token: string) =>
-  async (dispatch: AppDispatch) => {
+  (token: string) => async (dispatch: AppDispatch) => {
     dispatch(setAuthenticationTokenAction(token));
 
     var decodedToken: IDecodedJWT = jwtDecode(token);
@@ -64,7 +61,7 @@ export const setUserStateBasedOnAuthenticationToken =
     dispatch(setUserIdAction(userId));
     dispatch(handleEmailRequestAction());
 
-    await dispatch(fetchUserEmail(userId));
+    await dispatch(await fetchUserEmail(userId));
   };
 
 export const handleRegister =

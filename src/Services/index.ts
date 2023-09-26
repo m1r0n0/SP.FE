@@ -1,5 +1,6 @@
+import jwtDecode from "jwt-decode";
 import { proceedUserDelete } from "../API/user";
-import { IUser } from "../Models/user";
+import { IDecodedJWT, IUser } from "../Models/user";
 import { AppDispatch, GetState } from "../Store";
 import { handleCustomerLogoutAction } from "../Store/CustomerReducer";
 import { handleProviderLogoutAction } from "../Store/ProviderReducer";
@@ -10,7 +11,6 @@ import { prepareUserData, proceedUserLogOut } from "./user";
 
 export const prepareAppToLoad =
   (
-    user: IUser,
     isUserEmailRequested: boolean,
     isUserRegisterFinished: boolean,
     token: string | null,
@@ -19,21 +19,29 @@ export const prepareAppToLoad =
     isPersonalDataFetched: boolean
   ) =>
   async (dispatch: AppDispatch) => {
-    await dispatch(
-      prepareUserData(user, isUserEmailRequested, token as string)
-    );
+    if (token !== null) {
+      var decodedToken: IDecodedJWT = jwtDecode(token as string);
+      var userId: string = decodedToken.UserId;
 
-    if (!isPersonalDataFetched) {
-      if (isProvider) {
-        await dispatch(
-          prepareProviderData(user.userId, isUserRegisterFinished)
-        );
-      } else
-        await dispatch(
-          prepareCustomerData(user.userId, isUserRegisterFinished)
-        );
+      await dispatch(prepareUserData(isUserEmailRequested, token as string));
+
+      if (!isPersonalDataFetched) {
+        if (isProvider) {
+          await dispatch(prepareProviderData(userId, isUserRegisterFinished));
+        } else {
+          await dispatch(prepareCustomerData(userId, isUserRegisterFinished));
+        }
+      }
     }
+  };
 
+export const checkAppReadiness =
+  (
+    token: string | null,
+    isEmailFetched: boolean,
+    isPersonalDataFetched: boolean
+  ) =>
+  async (dispatch: AppDispatch) => {
     //Load app if there's NO user info OR all user info fetched
     if (token === null || (isEmailFetched && isPersonalDataFetched))
       dispatch(handleAppReadinessAction());
