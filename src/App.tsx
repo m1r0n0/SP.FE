@@ -12,6 +12,7 @@ function App() {
   const isUserEmailRequested = useAppSelector(
     (state) => state.user.isUserEmailRequested
   );
+  const user = useAppSelector((s) => s.user.user);
   const isUserRegisterFinished = useAppSelector(
     (s) => s.user.isRegisterFinished
   );
@@ -25,6 +26,7 @@ function App() {
   useEffect(() => {
     dispatch(
       prepareAppToLoad(
+        user,
         isUserEmailRequested,
         isUserRegisterFinished,
         token,

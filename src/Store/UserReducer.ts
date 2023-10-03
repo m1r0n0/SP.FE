@@ -152,6 +152,7 @@ export const userReducer: Reducer<IUserState, IUserAction> = (
     case HANDLE_USER_LOGOUT:
       return {
         ...defaultState,
+        isAppLoaded: true,
       };
 
     case HANDLE_USER_REGISTER_SUCCESS:

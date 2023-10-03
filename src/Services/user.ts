@@ -42,6 +42,8 @@ import {
   setUserIdAction,
 } from "../Store/UserReducer";
 import { setServicesFetchedStatus } from "../Store/ServiceReducer";
+import { prepareCustomerData } from "./customer";
+import { prepareProviderData } from "./provider";
 
 export const prepareUserData =
   (isUserEmailRequested: boolean, token: string) =>
@@ -123,6 +125,12 @@ export const handleLogin =
 
       localStorage.setItem(isProviderLS, isProvider.toString());
       dispatch(setIsProviderAction(isProvider));
+
+      if (isProvider) {
+        dispatch(prepareProviderData(user.userId, false));
+      } else {
+        dispatch(prepareCustomerData(user.userId, false));
+      }
 
       dispatch(handleLoginSuccessAction(user));
 

@@ -11,6 +11,7 @@ import { prepareUserData, proceedUserLogOut } from "./user";
 
 export const prepareAppToLoad =
   (
+    user: IUser,
     isUserEmailRequested: boolean,
     isUserRegisterFinished: boolean,
     token: string | null,
@@ -25,12 +26,10 @@ export const prepareAppToLoad =
 
       await dispatch(prepareUserData(isUserEmailRequested, token as string));
 
-      if (!isPersonalDataFetched) {
-        if (isProvider) {
-          await dispatch(prepareProviderData(userId, isUserRegisterFinished));
-        } else {
-          await dispatch(prepareCustomerData(userId, isUserRegisterFinished));
-        }
+      if (isProvider) {
+        dispatch(prepareProviderData(userId, isUserRegisterFinished));
+      } else {
+        dispatch(prepareCustomerData(userId, isUserRegisterFinished));
       }
     }
   };
