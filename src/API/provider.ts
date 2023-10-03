@@ -18,7 +18,10 @@ import {
   handleRegisterSuccessAction,
   setProviderInfoAction,
 } from "../Store/ProviderReducer";
-import { setIsPersonalDataFetched } from "../Store/UserReducer";
+import {
+  setIsPersonalDataFetched,
+  setIsRegistered,
+} from "../Store/UserReducer";
 
 const ProviderURI = `${API_PROVIDER}/${API_VERSION_PROVIDER}/${PROVIDER}`;
 const RegisterProviderURI = `${API_PROVIDER}/${API_VERSION_PROVIDER}/${PROVIDER}/${NEW}`;
@@ -36,6 +39,11 @@ export async function fetchProviderInfo(userId: string) {
 
       dispatch(setProviderInfoAction(provider));
       dispatch(setIsPersonalDataFetched(true));
+    }
+
+    if (response.status === 404) {
+      dispatch(setIsPersonalDataFetched(true));
+      dispatch(setIsRegistered(false));
     }
   };
 }
@@ -58,6 +66,7 @@ export async function proceedProviderRegister(
       dispatch(handleShowCustomerProviderRegisterFailedDisclaimer());
     } else {
       dispatch(handleRegisterSuccessAction());
+      dispatch(setIsRegistered(true));
     }
   };
 }
@@ -91,8 +100,5 @@ export async function proceedProviderDelete(userId: string) {
         Authorization: await dispatch(GetAuthHeader()),
       },
     });
-
-    window.alert("User deleted successfully!");
-    dispatch(proceedLogOut());
   };
 }

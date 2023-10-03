@@ -10,6 +10,7 @@ import { handleCustomerRegister } from "../../../../Services/customer";
 export default function RegisterProvider() {
   const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.user.user.userId);
+  const isRegistered = useAppSelector((s) => s.user.isRegistered);
   const isRegisterRequested = useAppSelector(
     (s) => s.customer.isRegisterRequested
   );
@@ -30,8 +31,9 @@ export default function RegisterProvider() {
     lastName: state.lastName,
   };
 
-  return (isLogon(userId) && !isUserRegisterFinished) ||
-    isRegisterSuccessful ? (
+  return ((isLogon(userId) && !isUserRegisterFinished) ||
+    isRegisterSuccessful) &&
+    isRegistered ? (
     <Navigate to="/Profile" />
   ) : (
     <div>

@@ -2,8 +2,9 @@ import "./App.css";
 import { CircularProgress } from "@mui/material";
 import Routers from "./Components/Utilities/Routers";
 import { useAppDispatch, useAppSelector } from "./hooks";
-import { prepareAppToLoad } from "./Services";
+import { checkAppReadiness, prepareAppToLoad } from "./Services";
 import { isProviderLS, tokenLS } from "./JS/constants";
+import { useEffect } from "react";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -22,17 +23,23 @@ function App() {
   const token: string | null = localStorage.getItem(tokenLS);
   const isProvider = /true/i.test(localStorage.getItem(isProviderLS)!);
 
-  dispatch(
-    prepareAppToLoad(
-      user,
-      isUserEmailRequested,
-      isUserRegisterFinished,
-      token,
-      isProvider,
-      isEmailFetched,
-      isPersonalDataFetched
-    )
-  );
+  useEffect(() => {
+    dispatch(
+      prepareAppToLoad(
+        user,
+        isUserEmailRequested,
+        isUserRegisterFinished,
+        token,
+        isProvider,
+        isEmailFetched,
+        isPersonalDataFetched
+      )
+    );
+  }, []);
+
+  useEffect(() => {
+    dispatch(checkAppReadiness(token, isEmailFetched, isPersonalDataFetched));
+  }, [isEmailFetched, isPersonalDataFetched]);
 
   return (
     <div className="App">

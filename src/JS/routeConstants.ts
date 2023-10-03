@@ -26,6 +26,7 @@ export const SERVICE = "service";
 export const EVENTS = "events";
 export const EVENT = "event";
 export const NEW = "new";
+export const DELETE_USER_RELATED_INFO = "user/delete";
 
 //Graphql
 export const API_GRAPHQL = "https://localhost:7130/graphql/";

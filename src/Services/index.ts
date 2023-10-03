@@ -1,9 +1,10 @@
+import jwtDecode from "jwt-decode";
 import { proceedUserDelete } from "../API/user";
-import { IUser } from "../Models/user";
+import { IDecodedJWT, IUser } from "../Models/user";
 import { AppDispatch, GetState } from "../Store";
 import { handleCustomerLogoutAction } from "../Store/CustomerReducer";
 import { handleProviderLogoutAction } from "../Store/ProviderReducer";
-import { handleAppReadinessAction } from "../Store/UserReducer";
+import { setIsAppLoaded } from "../Store/UserReducer";
 import { prepareCustomerData } from "./customer";
 import { prepareProviderData } from "./provider";
 import { prepareUserData, proceedUserLogOut } from "./user";
@@ -17,25 +18,32 @@ export const prepareAppToLoad =
     isProvider: boolean,
     isEmailFetched: boolean,
     isPersonalDataFetched: boolean
-  ) => async (dispatch: AppDispatch) => {
-    await dispatch(
-      prepareUserData(user, isUserEmailRequested, token as string)
-    );
+  ) =>
+  async (dispatch: AppDispatch) => {
+    if (token !== null) {
+      var decodedToken: IDecodedJWT = jwtDecode(token as string);
+      var userId: string = decodedToken.UserId;
 
-    if (!isPersonalDataFetched) {
+      await dispatch(prepareUserData(isUserEmailRequested, token as string));
+
       if (isProvider) {
-        await dispatch(
-          prepareProviderData(user.userId, isUserRegisterFinished)
-        );
-      } else
-        await dispatch(
-          prepareCustomerData(user.userId, isUserRegisterFinished)
-        );
+        dispatch(prepareProviderData(userId, isUserRegisterFinished));
+      } else {
+        dispatch(prepareCustomerData(userId, isUserRegisterFinished));
+      }
     }
+  };
 
+export const checkAppReadiness =
+  (
+    token: string | null,
+    isEmailFetched: boolean,
+    isPersonalDataFetched: boolean
+  ) =>
+  async (dispatch: AppDispatch) => {
     //Load app if there's NO user info OR all user info fetched
     if (token === null || (isEmailFetched && isPersonalDataFetched))
-      dispatch(handleAppReadinessAction());
+      dispatch(setIsAppLoaded(true));
   };
 
 export const proceedLogOut = () => async (dispatch: AppDispatch) => {
@@ -45,10 +53,12 @@ export const proceedLogOut = () => async (dispatch: AppDispatch) => {
 };
 
 export const confirmDelete =
-  (userId: string) => async (dispatch: AppDispatch) => {
-    if (window.confirm("Do you really want to delete your account?")) {
-      dispatch(await proceedUserDelete(userId));
-    }
+  (userId: string, isAlreadyDeleted: boolean) =>
+  async (dispatch: AppDispatch) => {
+    if (!isAlreadyDeleted)
+      if (window.confirm("Do you really want to delete your account?")) {
+        dispatch(await proceedUserDelete(userId));
+      }
   };
 
 export const GetAuthHeader =

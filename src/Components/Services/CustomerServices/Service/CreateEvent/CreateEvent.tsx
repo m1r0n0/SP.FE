@@ -18,6 +18,7 @@ import { CircularProgress } from "@mui/material";
 import utc from "dayjs/plugin/utc";
 import tz from "dayjs/plugin/timezone";
 import { IProvider } from "../../../../../Models/provider";
+import DatePick from "./DatePick";
 
 interface CreateEventProps {
   serviceId: number;
@@ -39,6 +40,7 @@ export default function CreateEvent({ serviceId, provider }: CreateEventProps) {
   const availabilitySchedule = useAppSelector(
     (s) => s.service.availabilitySchedule
   );
+  const userId = useAppSelector((s) => s.user.user.userId);
 
   const [state, setState] = useState({
     dateOfStart: dayjs(date.toISOString())
@@ -51,10 +53,7 @@ export default function CreateEvent({ serviceId, provider }: CreateEventProps) {
       .toISOString(),
   });
 
-  const [isStartDateAppropriate, setIsStartDateAppropriate] = useState(false);
-  const [isEndDateAppropriate, setIsEndDateAppropriate] = useState(false);
-
-  const changeDatesValues = (newValue: Dayjs) => {
+  const changeDatesValuesDueNewDate = (newValue: Dayjs) => {
     if (dayjs(state.dateOfEnd).isAfter(newValue)) {
       setState({
         ...state,
@@ -65,36 +64,6 @@ export default function CreateEvent({ serviceId, provider }: CreateEventProps) {
         dateOfStart: newValue!.startOf("hour").toISOString(),
         dateOfEnd: newValue!.add(1, "hour").toISOString(),
       });
-  };
-
-  //Method which hour is passed and if specific time should be disabled the method
-  //should return true
-  const shouldDisableTime = (
-    date: Dayjs,
-    setButtonReadiness: React.Dispatch<React.SetStateAction<boolean>>
-  ) => {
-    var shouldDisable = false;
-    const calendarSelectedDate = dayjs.utc(date).tz("Iceland");
-
-    if (
-      date.hour() < provider.workHoursBegin ||
-      date.hour() > provider.workHoursEnd - 1
-    ) {
-      shouldDisable = true;
-    } else {
-      availabilitySchedule.forEach((schedule) => {
-        var scheduleDay = dayjs.utc(schedule.date);
-        if (scheduleDay.tz("Iceland").isSame(calendarSelectedDate, "D")) {
-          schedule.unavailableHours.forEach((hour) => {
-            if (hour === calendarSelectedDate.hour()) {
-              shouldDisable = true;
-            }
-          });
-        }
-      });
-    }
-    setButtonReadiness(shouldDisable);
-    return shouldDisable;
   };
 
   const getMinTimeForEventCreation = (newDate: Dayjs, minimumDate: Dayjs) => {
@@ -109,6 +78,28 @@ export default function CreateEvent({ serviceId, provider }: CreateEventProps) {
     return properMinTime;
   };
 
+  var currentDateAvailabilityHours =
+    availabilitySchedule
+      .filter((s) => dayjs(state.dateOfStart).isSame(s.date, "D"))
+      .map((s) => s.unavailableHours)[0] ?? [];
+
+  const changeDateOfEnd = (newValue: Dayjs) => {
+    setState({
+      ...state,
+      dateOfEnd: newValue!.startOf("hour").toISOString(),
+    });
+  };
+
+  const isStartDateAppropriate =
+    dayjs(state.dateOfStart).isAfter(dayjs(date.toISOString())) &&
+    dayjs(state.dateOfStart).hour() >= provider.workHoursBegin &&
+    dayjs(state.dateOfStart).hour() <= provider.workHoursEnd;
+
+  const isEndDateAppropriate =
+    dayjs(state.dateOfEnd).isAfter(dayjs(date.toISOString())) &&
+    dayjs(state.dateOfStart).hour() >= provider.workHoursBegin &&
+    dayjs(state.dateOfStart).hour() <= provider.workHoursEnd - 1;
+
   useEffect(() => {
     dispatch(getUnavailableHours(provider.userId));
   }, []);
@@ -119,86 +110,55 @@ export default function CreateEvent({ serviceId, provider }: CreateEventProps) {
         <form>
           <div className="date-pick-area">
             <label htmlFor="price">Choose start date and time </label>
-            <div className="date-pick-block">
-              <DateCalendar
-                className="calendar"
-                minDate={dayjs(date.toISOString())}
-                value={dayjs(state.dateOfStart)}
-                onChange={(newValue) => changeDatesValues(newValue!)}
-              />
-              <MultiSectionDigitalClock
-                className="clock"
-                minTime={getMinTimeForEventCreation(
-                  dayjs(state.dateOfStart),
-                  dayjs(date.toISOString())
-                )}
-                value={dayjs(state.dateOfStart).startOf("hour")}
-                onChange={(newValue) => changeDatesValues(newValue!)}
-                ampm={false}
-                timeSteps={{ hours: 1, minutes: 60 }}
-                skipDisabled
-                shouldDisableTime={(date) =>
-                  shouldDisableTime(date, setIsStartDateAppropriate)
-                }
-              />
-            </div>
+            <DatePick
+              state={state}
+              minDate={dayjs(date.toISOString())}
+              minTime={getMinTimeForEventCreation(
+                dayjs(state.dateOfStart),
+                dayjs(date.toISOString())
+              )}
+              isStartDateComponent={true}
+              onChange={changeDatesValuesDueNewDate}
+              provider={provider}
+              currentDateAvailabilityHours={currentDateAvailabilityHours}
+            />
           </div>
           <div className="date-pick-area">
             <label htmlFor="price">Choose end date and time </label>
-            <div className="date-pick-block">
-              <DateCalendar
-                className="calendar"
-                value={dayjs(state.dateOfEnd)}
-                onChange={(newValue) =>
-                  setState({
-                    ...state,
-                    dateOfEnd: newValue!.startOf("hour").toISOString(),
-                  })
-                }
-                minDate={dayjs(state.dateOfStart).add(1, "hours")}
-              />
-              <MultiSectionDigitalClock
-                className="clock"
-                minTime={getMinTimeForEventCreation(
-                  dayjs(state.dateOfEnd),
-                  dayjs(state.dateOfStart)
-                )}
-                value={dayjs(state.dateOfEnd).startOf("hour")}
-                onChange={(newValue) =>
-                  setState({
-                    ...state,
-                    dateOfEnd: newValue!.startOf("hour").toISOString(),
-                  })
-                }
-                ampm={false}
-                timeSteps={{ hours: 1, minutes: 60 }}
-                skipDisabled
-                shouldDisableTime={(date) =>
-                  //add -1 hour to hide begin hour
-                  //and also display clock because we subtract 1 hour from endWorkHours
-                  shouldDisableTime(date.add(-1, "h"), setIsEndDateAppropriate)
-                }
-              />
-            </div>
+            <DatePick
+              state={state}
+              minDate={dayjs(state.dateOfStart).add(1, "hours")}
+              minTime={getMinTimeForEventCreation(
+                dayjs(state.dateOfEnd),
+                dayjs(state.dateOfStart)
+              )}
+              isStartDateComponent={false}
+              onChange={changeDateOfEnd}
+              provider={provider}
+              currentDateAvailabilityHours={currentDateAvailabilityHours}
+            />
           </div>
 
           {isEventCreationRequested ? (
             <div>
               <CircularProgress size={75} />
             </div>
-          ) : isStartDateAppropriate && isEndDateAppropriate ? null : (
-            <input
-              type="button"
-              className="btn btn-primary btn-lg"
-              value="Order"
-              onClick={() =>
-                dispatch(createEvent(state, serviceId, provider.userId))
-              }
-            />
-          )}
+          ) : isStartDateAppropriate && isEndDateAppropriate ? (
+            <div>
+              <input
+                type="button"
+                className="btn btn-primary btn-lg"
+                value="Order"
+                onClick={() =>
+                  dispatch(
+                    createEvent(state, serviceId, provider.userId, userId)
+                  )
+                }
+              />
+              {isEventCreationFinished ? <EventCreationResultMessage /> : null}
+            </div>
+          ) : null}
         </form>
-
-        {isEventCreationFinished ? <EventCreationResultMessage /> : null}
       </div>
     </LocalizationProvider>
   );

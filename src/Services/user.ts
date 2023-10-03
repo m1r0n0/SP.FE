@@ -24,7 +24,7 @@ import {
   setIsNoMatchingPasswordsAction,
 } from "../Store/DisclaimerReducer";
 import {
-  handleAppReadinessAction,
+  setIsAppLoaded,
   handleEmailChangeFinishedAction,
   handleEmailChangeRequestAction,
   handleEmailRequestAction,
@@ -42,20 +42,19 @@ import {
   setUserIdAction,
 } from "../Store/UserReducer";
 import { setServicesFetchedStatus } from "../Store/ServiceReducer";
+import { prepareCustomerData } from "./customer";
+import { prepareProviderData } from "./provider";
 
 export const prepareUserData =
-  (user: IUser, isUserEmailRequested: boolean, token: string) =>
+  (isUserEmailRequested: boolean, token: string) =>
   async (dispatch: AppDispatch) => {
     if (!isUserEmailRequested && token !== null) {
-      dispatch(
-        setUserStateBasedOnAuthenticationToken(isUserEmailRequested, token)
-      );
+      dispatch(setUserStateBasedOnAuthenticationToken(token));
     }
   };
 
 export const setUserStateBasedOnAuthenticationToken =
-  (isUserEmailRequested: boolean, token: string) =>
-  async (dispatch: AppDispatch) => {
+  (token: string) => async (dispatch: AppDispatch) => {
     dispatch(setAuthenticationTokenAction(token));
 
     var decodedToken: IDecodedJWT = jwtDecode(token);
@@ -64,7 +63,7 @@ export const setUserStateBasedOnAuthenticationToken =
     dispatch(setUserIdAction(userId));
     dispatch(handleEmailRequestAction());
 
-    await dispatch(fetchUserEmail(userId));
+    await dispatch(await fetchUserEmail(userId));
   };
 
 export const handleRegister =
@@ -126,8 +125,16 @@ export const handleLogin =
 
       localStorage.setItem(isProviderLS, isProvider.toString());
       dispatch(setIsProviderAction(isProvider));
-
       dispatch(handleLoginSuccessAction(user));
+      dispatch(setIsAppLoaded(false));
+
+      if (isProvider) {
+        dispatch(prepareProviderData(user.userId, false));
+      } else {
+        dispatch(prepareCustomerData(user.userId, false));
+      }
+
+      dispatch(setIsAppLoaded(true));
 
       if (loginData.rememberMe) {
         //setLongTermUserCookies(String(user.userId));

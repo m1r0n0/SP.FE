@@ -105,7 +105,7 @@ export const deleteService =
   };
 
 export const createEvent =
-  (dates: IEventDates, serviceId: number, providerUserId: string) =>
+  (dates: IEventDates, serviceId: number, providerUserId: string, customerUID: string) =>
   async (dispatch: AppDispatch, getState: GetState) => {
     var event: IEventCreation = {
       dateOfStart: dates.dateOfStart,
@@ -114,13 +114,14 @@ export const createEvent =
     };
 
     dispatch(handleEventCreationRequest());
-    dispatch(await proceedEventCreation(event, serviceId));
+    await dispatch(await proceedEventCreation(event, serviceId));
     dispatch(getUnavailableHours(providerUserId));
+    dispatch(getCustomersEvents(customerUID));
   };
 
 export const getUnavailableHours =
   (providerUserId: string) => async (dispatch: AppDispatch) => {
-    dispatch(await getProviderAvailAbilitySchedule(providerUserId));
+    await dispatch(await getProviderAvailAbilitySchedule(providerUserId));
   };
 
 export const getCustomersEvents =

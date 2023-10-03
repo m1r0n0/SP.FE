@@ -1,32 +1,24 @@
 .provider-service-component {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 50%;
-}
-
-#service-view-container {
-  display: grid;
-  grid-template-rows: repeat(3, 1fr);
-  grid-template-columns: repeat(2, 1fr);
-  width: 100%;
+  max-width: 60%;
 }
 
 .provider-service-container {
-  display: grid;
   background-color: aliceblue;
   border-radius: 10px;
-  padding: 0em 1em 1em 1em;
+  padding: 1em;
+  padding-top: 0;
   margin: 1em;
-  width: 100%;
+  width: inherit;
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
 }
 
-#service-view-container input {
-  font-size: 0.8em;
+#control-buttons input {
+  font-size: 1em;
   margin: 0.5em 1em;
-  width: 60%;
-  height: 60%;
+  width: 70%;
+  height: 70%;
 }
 
 #control-buttons {
@@ -35,6 +27,7 @@
   display: grid;
   justify-items: center;
   align-items: center;
+  margin: 0.5em 0;
 }
 
 #edit-button {
@@ -51,8 +44,7 @@
   display: block;
   grid-row: 1 / 2;
   grid-column: 1 / 3;
-  padding-bottom: 0.8em;
-  padding-top: 1em;
+  padding-top: 0.8em;
 }
 
 #name strong {
@@ -73,7 +65,7 @@
 }
 
 .provider-service-edit-input-area {
-  max-width: 100;
+  max-width: 100%;
   font-size: 0.8em;
 }
 .provider-service-edit-input-area input {
@@ -84,6 +76,14 @@
 }
 
 .back-button {
-  margin-top: 0.5em !important;
+  margin-top: 1.7em !important;
   width: fit-content;
+  height: fit-content;
+  grid-row: 3 / -1;
+  grid-column: 1 / -1;
+}
+
+.provider-service-container form {
+  grid-row: 1 / -1;
+  grid-column: 1 / -1;
 }

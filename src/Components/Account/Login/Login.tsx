@@ -54,7 +54,6 @@ export const Login = () => {
           />
         </div>
         <div className="input-checkbox-box">
-          <label htmlFor="rememberMe">Remember me?</label>
           <input
             onChange={(event) =>
               setState({ ...state, rememberMe: event.target.checked })
@@ -63,6 +62,7 @@ export const Login = () => {
             name="rememberMe"
             id="rememberMe"
           />
+          <label htmlFor="rememberMe">Remember me?</label>
         </div>
         <div className="radiobutton-main-box">
           <div className="radiobutton-sub-box">

@@ -10,6 +10,7 @@ import { IProviderEvent } from "../../../Models/service";
 import { getProviderEvents } from "../../../Services/service";
 import ProviderEvent from "./ProviderEvent/ProviderEvent";
 import "./ProviderEvents.css";
+import NoEventsDisclaimer from "./NoEventsDisclaimer";
 
 interface ProviderEventsProps {}
 
@@ -55,11 +56,17 @@ export default function ProviderEvents({}: ProviderEventsProps) {
         <div>
           {isEventsFetched ? (
             <div className="events-display-area">
-              {events?.map((event: IProviderEvent, index: number) => {
-                return checkWhetherEventOnTheCurrentDate(event) ? (
-                  <ProviderEvent key={index} event={event} />
-                ) : null;
-              })}
+              {events?.length > 0 ? (
+                events?.map((event: IProviderEvent, index: number) => {
+                  return checkWhetherEventOnTheCurrentDate(event) ? (
+                    <ProviderEvent key={index} event={event} />
+                  ) : (
+                    <></>
+                  );
+                })
+              ) : (
+                <h2>There's no more orders for this day</h2>
+              )}
             </div>
           ) : (
             <div className="prov-ev-load-circle">

@@ -5,13 +5,16 @@ import { getServices } from "../../../Services/service";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import Service from "./Service";
 import "./CustomerServices.css";
+import { useEffect } from "react";
 
 export default function CustomerServices() {
   var dispatch = useAppDispatch();
   var isServicesFetched = useAppSelector((s) => s.service.isServicesFetched);
   var services = useAppSelector((s) => s.service.services);
 
-  if (!isServicesFetched) dispatch(getServices());
+  useEffect(() => {
+    dispatch(getServices());
+  }, []);
 
   return isServicesFetched ? (
     <div className="app-body-component">

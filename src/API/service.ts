@@ -3,6 +3,7 @@ import {
   API_SERVICE,
   API_VERSION_SERVICE,
   CUSTOMER,
+  DELETE_USER_RELATED_INFO,
   EVENTS,
   NEW,
   PROVIDER,
@@ -38,6 +39,7 @@ const CreateServiceURI = `${API_SERVICE}/${API_VERSION_SERVICE}/${SERVICE}/${NEW
 const GetServicesForProviderURI = `${API_SERVICE}/${API_VERSION_SERVICE}/${SERVICE}/${PROVIDER}`;
 const GetEventsForProviderURI = `${API_SERVICE}/${API_VERSION_SERVICE}/${SERVICE}/${EVENTS}/${PROVIDER}`;
 const GetEventsForCustomerURI = `${API_SERVICE}/${API_VERSION_SERVICE}/${SERVICE}/${EVENTS}/${CUSTOMER}`;
+const DeleteUserInfoURI = `${API_SERVICE}/${API_VERSION_SERVICE}/${SERVICE}/${DELETE_USER_RELATED_INFO}`;
 
 export async function getAllServices(query: string) {
   return async (dispatch: AppDispatch) => {
@@ -115,8 +117,9 @@ export async function getServicesForProvider(providerUserId: string) {
 
       services = modifyServicesArrayForProvider(services);
       dispatch(setServicesWithProvidersAction(services));
-      dispatch(setServicesFetchedStatus(true));
     }
+
+    dispatch(setServicesFetchedStatus(true));
   };
 }
 
@@ -210,5 +213,16 @@ export async function getProviderAvailAbilitySchedule(providerUserId: string) {
 
       dispatch(setAvailabilitySchedule(schedules));
     }
+  };
+}
+
+export async function proceedUserRelatedInfoDelete(userId: string) {
+  return async (dispatch: AppDispatch) => {
+    const response = await fetch(`${DeleteUserInfoURI}/${userId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: await dispatch(GetAuthHeader()),
+      },
+    });
   };
 }

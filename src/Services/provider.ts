@@ -11,7 +11,7 @@ import {
   handleRegisterRequestAction,
   setProviderInfoAction,
 } from "../Store/ProviderReducer";
-import { setIsProviderAction } from "../Store/UserReducer";
+import { setIsProviderAction, setIsRegistered } from "../Store/UserReducer";
 
 export const prepareProviderData =
   (userId: string, isUserRegisterFinished: boolean) =>

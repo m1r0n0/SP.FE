@@ -17,7 +17,7 @@ export default function ProviderServiceView({
 
   return (
     <div className="provider-service-component">
-      <div id="service-view-container" className="provider-service-container">
+      <div className="provider-service-container">
         <div className="name">
           <p id="name">
             <strong>{service.name}</strong>
