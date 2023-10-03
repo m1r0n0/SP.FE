@@ -4,7 +4,7 @@ import { IDecodedJWT, IUser } from "../Models/user";
 import { AppDispatch, GetState } from "../Store";
 import { handleCustomerLogoutAction } from "../Store/CustomerReducer";
 import { handleProviderLogoutAction } from "../Store/ProviderReducer";
-import { handleAppReadinessAction } from "../Store/UserReducer";
+import { setIsAppLoaded } from "../Store/UserReducer";
 import { prepareCustomerData } from "./customer";
 import { prepareProviderData } from "./provider";
 import { prepareUserData, proceedUserLogOut } from "./user";
@@ -43,7 +43,7 @@ export const checkAppReadiness =
   async (dispatch: AppDispatch) => {
     //Load app if there's NO user info OR all user info fetched
     if (token === null || (isEmailFetched && isPersonalDataFetched))
-      dispatch(handleAppReadinessAction());
+      dispatch(setIsAppLoaded(true));
   };
 
 export const proceedLogOut = () => async (dispatch: AppDispatch) => {

@@ -40,6 +40,7 @@ export default function CreateEvent({ serviceId, provider }: CreateEventProps) {
   const availabilitySchedule = useAppSelector(
     (s) => s.service.availabilitySchedule
   );
+  const userId = useAppSelector((s) => s.user.user.userId);
 
   const [state, setState] = useState({
     dateOfStart: dayjs(date.toISOString())
@@ -91,14 +92,14 @@ export default function CreateEvent({ serviceId, provider }: CreateEventProps) {
 
   const isStartDateAppropriate =
     dayjs(state.dateOfStart).isAfter(dayjs(date.toISOString())) &&
-    dayjs(state.dateOfStart).hour() > provider.workHoursBegin &&
-    dayjs(state.dateOfStart).hour() < provider.workHoursEnd;
+    dayjs(state.dateOfStart).hour() >= provider.workHoursBegin &&
+    dayjs(state.dateOfStart).hour() <= provider.workHoursEnd;
 
   const isEndDateAppropriate =
     dayjs(state.dateOfEnd).isAfter(dayjs(date.toISOString())) &&
-    dayjs(state.dateOfStart).hour() > provider.workHoursBegin &&
-    dayjs(state.dateOfStart).hour() < provider.workHoursEnd - 1;
-    
+    dayjs(state.dateOfStart).hour() >= provider.workHoursBegin &&
+    dayjs(state.dateOfStart).hour() <= provider.workHoursEnd - 1;
+
   useEffect(() => {
     dispatch(getUnavailableHours(provider.userId));
   }, []);
@@ -149,7 +150,9 @@ export default function CreateEvent({ serviceId, provider }: CreateEventProps) {
                 className="btn btn-primary btn-lg"
                 value="Order"
                 onClick={() =>
-                  dispatch(createEvent(state, serviceId, provider.userId))
+                  dispatch(
+                    createEvent(state, serviceId, provider.userId, userId)
+                  )
                 }
               />
               {isEventCreationFinished ? <EventCreationResultMessage /> : null}

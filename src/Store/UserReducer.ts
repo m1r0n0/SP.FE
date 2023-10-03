@@ -66,10 +66,12 @@ const SET_USER_ID = "SET_USER_ID";
 const SET_USER_EMAIL = "SET_USER_EMAIL";
 const SET_IS_PROVIDER = "SET_IS_PROVIDER";
 const SET_AUTHENTICATION_TOKEN = "SET_AUTHENTICATION_TOKEN";
+
 const HANDLE_USER_LOGIN_REQUEST = "HANDLE_USER_LOGIN_REQUEST";
 const HANDLE_USER_LOGIN_SUCCESS = "HANDLE_USER_LOGIN_SUCCESS";
 const HANDLE_USER_LOGIN_FAILURE = "HANDLE_USER_LOGIN_FAILURE";
-const HANDLE_USER_APP_READINESS = "HANDLE_USER_APP_READINESS";
+
+const SET_IS_APP_LOADED = "SET_IS_APP_LOADED";
 const HANDLE_USER_EMAIL_REQUEST = "HANDLE_USER_EMAIL_REQUEST";
 const HANDLE_USER_EMAIL_FETCHED = "HANDLE_USER_EMAIL_FETCHED";
 const HANDLE_USER_REGISTER_SUCCESS = "HANDLE_USER_REGISTER_SUCCESS";
@@ -126,8 +128,8 @@ export const userReducer: Reducer<IUserState, IUserAction> = (
         authenticationToken: action.payload as string,
       };
 
-    case HANDLE_USER_APP_READINESS:
-      return { ...state, isAppLoaded: true };
+    case SET_IS_APP_LOADED:
+      return { ...state, isAppLoaded: action.payload as boolean };
     case HANDLE_USER_EMAIL_REQUEST:
       return { ...state, isUserEmailRequested: true };
     case HANDLE_USER_EMAIL_FETCHED:
@@ -248,8 +250,9 @@ export const setAuthenticationTokenAction = (payload: string) => ({
   payload,
 });
 
-export const handleAppReadinessAction = () => ({
-  type: HANDLE_USER_APP_READINESS,
+export const setIsAppLoaded = (payload: boolean) => ({
+  type: SET_IS_APP_LOADED,
+  payload,
 });
 export const handleEmailRequestAction = () => ({
   type: HANDLE_USER_EMAIL_REQUEST,

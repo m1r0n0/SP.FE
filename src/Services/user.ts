@@ -24,7 +24,7 @@ import {
   setIsNoMatchingPasswordsAction,
 } from "../Store/DisclaimerReducer";
 import {
-  handleAppReadinessAction,
+  setIsAppLoaded,
   handleEmailChangeFinishedAction,
   handleEmailChangeRequestAction,
   handleEmailRequestAction,
@@ -125,6 +125,8 @@ export const handleLogin =
 
       localStorage.setItem(isProviderLS, isProvider.toString());
       dispatch(setIsProviderAction(isProvider));
+      dispatch(handleLoginSuccessAction(user));
+      dispatch(setIsAppLoaded(false));
 
       if (isProvider) {
         dispatch(prepareProviderData(user.userId, false));
@@ -132,7 +134,7 @@ export const handleLogin =
         dispatch(prepareCustomerData(user.userId, false));
       }
 
-      dispatch(handleLoginSuccessAction(user));
+      dispatch(setIsAppLoaded(true));
 
       if (loginData.rememberMe) {
         //setLongTermUserCookies(String(user.userId));

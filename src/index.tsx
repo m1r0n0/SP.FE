@@ -11,7 +11,6 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
-  //  <React.StrictMode>
   <Provider store={store}>
     <DevSupport
       ComponentPreviews={ComponentPreviews}
@@ -20,5 +19,4 @@ root.render(
       <App />
     </DevSupport>
   </Provider>
-  // {/* </React.StrictMode> */}
 );
