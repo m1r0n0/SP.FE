@@ -26,13 +26,10 @@ function App() {
   useEffect(() => {
     dispatch(
       prepareAppToLoad(
-        user,
         isUserEmailRequested,
         isUserRegisterFinished,
         token,
-        isProvider,
-        isEmailFetched,
-        isPersonalDataFetched
+        isProvider
       )
     );
   }, []);

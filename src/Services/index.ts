@@ -11,13 +11,10 @@ import { prepareUserData, proceedUserLogOut } from "./user";
 
 export const prepareAppToLoad =
   (
-    user: IUser,
     isUserEmailRequested: boolean,
     isUserRegisterFinished: boolean,
     token: string | null,
-    isProvider: boolean,
-    isEmailFetched: boolean,
-    isPersonalDataFetched: boolean
+    isProvider: boolean
   ) =>
   async (dispatch: AppDispatch) => {
     if (token !== null) {
