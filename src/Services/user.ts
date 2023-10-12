@@ -40,6 +40,7 @@ import {
   setAuthenticationTokenAction,
   setIsProviderAction,
   setUserIdAction,
+  setIsEmailFetched,
 } from "../Store/UserReducer";
 import { setServicesFetchedStatus } from "../Store/ServiceReducer";
 import { prepareCustomerData } from "./customer";
@@ -125,7 +126,9 @@ export const handleLogin =
 
       localStorage.setItem(isProviderLS, isProvider.toString());
       dispatch(setIsProviderAction(isProvider));
+
       dispatch(handleLoginSuccessAction(user));
+
       dispatch(setIsAppLoaded(false));
 
       if (isProvider) {
@@ -133,8 +136,6 @@ export const handleLogin =
       } else {
         dispatch(prepareCustomerData(user.userId, false));
       }
-
-      dispatch(setIsAppLoaded(true));
 
       if (loginData.rememberMe) {
         //setLongTermUserCookies(String(user.userId));

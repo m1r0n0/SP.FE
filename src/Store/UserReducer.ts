@@ -143,6 +143,7 @@ export const userReducer: Reducer<IUserState, IUserAction> = (
         user: { userId: loginUser.userId, userEmail: loginUser.email },
         isLoginSuccessful: true,
         isLoginFinished: true,
+        isEmailFetched: true,
       };
     case HANDLE_USER_LOGIN_FAILURE:
       return {
