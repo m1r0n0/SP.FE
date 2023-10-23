@@ -47,7 +47,7 @@ export async function getAllServices(query: string) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // Authorization: await dispatch(GetAuthHeader()),
+         Authorization: await dispatch(GetAuthHeader()),
       },
       body: JSON.stringify({ query }),
     });
@@ -67,7 +67,7 @@ export async function getEventsForCustomer(query: string) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // Authorization: await dispatch(GetAuthHeader()),
+         Authorization: await dispatch(GetAuthHeader()),
       },
       body: JSON.stringify({ query }),
     });
@@ -87,7 +87,7 @@ export async function getEventsForProvider(query: string) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // Authorization: await dispatch(GetAuthHeader()),
+         Authorization: await dispatch(GetAuthHeader()),
       },
       body: JSON.stringify({ query }),
     });
